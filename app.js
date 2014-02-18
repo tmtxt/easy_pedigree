@@ -9,8 +9,8 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var engine = require('ejs-locals');
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var users = [
     { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' }
@@ -103,27 +103,11 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-
+// routing
 app.get('/', routes.index);
 app.get('/users', user.list);
-
-app.get('/login', function(req, res){
-  res.render('login', { user: req.user, message: req.session.messages });
-});
-
-app.post('/login', function(req, res, next) {
-  passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err) }
-    if (!user) {
-      req.session.messages = [info.message];
-      return res.redirect('/login')
-    }
-    req.logIn(user, function(err) {
-      if (err) { return next(err); }
-      return res.redirect('/');
-    });
-  })(req, res, next);
-});
+app.get('/login', routes.login_get);
+app.post('/login', routes.login_post);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
