@@ -55,7 +55,7 @@ var create_tables = function(){
 var insert_user = function(){
   // create a user
   var user = User.build({
-	username: 'john-doe',
+	username: 'admin',
 	password: make_hash_pass('password')
   });
 
