@@ -1,4 +1,4 @@
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 exports.make_hash_pass = function(pass){
   var salt = bcrypt.genSaltSync(10);
