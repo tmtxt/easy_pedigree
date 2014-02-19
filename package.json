@@ -9,6 +9,8 @@
     "express": "3.4.8",
     "ejs": "*",
     "stylus": "*",
-    "ejs-locals": "~1.0.2"
+    "ejs-locals": "~1.0.2",
+    "sequelize": "~1.7.0-rc6",
+    "mysql": "~2.0.1"
   }
 }
