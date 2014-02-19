@@ -4,16 +4,15 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var engine = require('ejs-locals');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var routing = require('./routes/routes');
 
 var users = [
-    { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' }
+  { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com' }
   , { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com' }
 ];
 
@@ -93,22 +92,20 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(passport.initialize());
-  app.use(passport.session());
+app.use(passport.session());
 app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// routing
+routing.do_routing(app);
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-// routing
-app.get('/', routes.index);
-app.get('/users', user.list);
-app.get('/login', routes.login_get);
-app.post('/login', routes.login_post);
-
+// start the server
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
