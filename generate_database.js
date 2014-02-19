@@ -12,56 +12,58 @@ var User = sequelize.define('User', {
 
 ////////////////////////////////////////////////////////////////////////////////
 // HANDLER FUNCTIONS
-
-// Database connection handlers
 var connect_database_handler = function(err) {
   if (!!err) {
-    connect_database_failure_handler(err);
+	console.log('Unable to connect to the database:', err);
   } else {
-    connect_database_success_handler();
+    console.log('Connection has been established successfully.');
+	create_tables();
   }
 };
 
-var connect_database_success_handler = function(){
-  console.log('Connection has been established successfully.');
+var create_tables_handler = function(err) {
+  if (!!err) {
+	console.log('An error occurred while create the table:', err);
+  } else {
+	console.log('It worked!');
+	insert_user();
+  }
+};
 
-  // now synchronize with the database
+var insert_user_handler = function(err) {
+  if (!!err) {
+	console.log('The instance has not been saved:', err);
+  } else {
+	console.log('We have a persisted instance now');
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+var connect_database = function(){
+  sequelize
+	.authenticate()
+	.complete(connect_database_handler);
+};
+
+var create_tables = function(){
   sequelize
 	.sync({ force: true })
-	.complete(function(err) {
-      if (!!err) {
-		console.log('An error occurred while create the table:', err);
-      } else {
-		console.log('It worked!');
-
-		var user = User.build({
-		  username: 'john-doe',
-		  password: 'abc'
-		});
-		 
-		user
-		  .save()
-		  .complete(function(err) {
-			if (!!err) {
-			  console.log('The instance has not been saved:', err);
-			} else {
-			  console.log('We have a persisted instance now');
-			}
-		  });
-
-		
-      }
-	});
+	.complete(create_tables_handler);
 };
 
-var connect_database_failure_handler = function(err){
-  console.log('Unable to connect to the database:', err);
+var insert_user = function(){
+  // create a user
+  var user = User.build({
+	username: 'john-doe',
+	password: 'abc'
+  });
+
+  // insert the user
+  user
+	.save()
+	.complete(insert_user_handler);
 };
 
-// Synchronization handlers
-
-// now start
-// check the connection
-sequelize
-  .authenticate()
-  .complete(connect_database_handler);
+////////////////////////////////////////////////////////////////////////////////
+// START
+connect_database();
