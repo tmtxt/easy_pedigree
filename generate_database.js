@@ -1,6 +1,6 @@
 // connection info
 var Sequelize = require('sequelize');
-var sequelize = require('./models/sequelize-instance');
+var sequelize = require('./database-util/sequelize-instance');
 
 // the models
 var User = require('./models/user');
