@@ -1,14 +1,12 @@
 // connection info
-var Sequelize = require('sequelize')
-, sequelize = new Sequelize('vntxt_pedigree', 'root', '123456', {
-  dialect: "mysql", // or 'sqlite', 'postgres', 'mariadb'
-  port:    3306 // or 5432 (for postgres)
-});
+var Sequelize = require('sequelize');
+var sequelize = require('./models/sequelize-instance');
 
-var User = sequelize.define('User', {
-  username: Sequelize.STRING,
-  password: Sequelize.STRING
-});
+// the models
+var User = require('./models/user');
+
+// util
+var hashing = require('./util/hashing');
 
 ////////////////////////////////////////////////////////////////////////////////
 // HANDLER FUNCTIONS
@@ -56,22 +54,13 @@ var insert_user = function(){
   // create a user
   var user = User.build({
 	username: 'admin',
-	password: make_hash_pass('password')
+	password: hashing.make_hash_pass('password')
   });
 
   // insert the user
   user
 	.save()
 	.complete(insert_user_handler);
-};
-
-////////////////////////////////////////////////////////////////////////////////
-// HELPER FUNCTIONS
-var make_hash_pass = function(pass){
-  var bcrypt = require('bcrypt');
-  var salt = bcrypt.genSaltSync(10);
-  var hash = bcrypt.hashSync(pass, salt);
-  return hash;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
