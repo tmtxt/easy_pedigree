@@ -39,6 +39,7 @@ var insert_user_handler = function(err) {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+// EXECUTION FUNCTIONS
 var connect_database = function(){
   sequelize
 	.authenticate()
@@ -55,13 +56,22 @@ var insert_user = function(){
   // create a user
   var user = User.build({
 	username: 'john-doe',
-	password: 'abc'
+	password: make_hash_pass('password')
   });
 
   // insert the user
   user
 	.save()
 	.complete(insert_user_handler);
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// HELPER FUNCTIONS
+var make_hash_pass = function(pass){
+  var bcrypt = require('bcrypt');
+  var salt = bcrypt.genSaltSync(10);
+  var hash = bcrypt.hashSync(pass, salt);
+  return hash;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
