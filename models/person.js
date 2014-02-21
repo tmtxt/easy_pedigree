@@ -13,6 +13,7 @@ var Person = sequelize.define('Person', {
   phoneNo: Sequelize.STRING,
   idCard: Sequelize.STRING,
   note: Sequelize.TEXT,
+  isRoot: Sequelize.BOOLEAN,
   fatherId: {
 	type: Sequelize.INTEGER(11),
 	references: 'People',
