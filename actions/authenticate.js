@@ -29,3 +29,8 @@ exports.login_post = function(req, res, next) {
     });
   })(req, res, next);
 };
+
+exports.logout = function(req, res){
+	req.logout();
+	res.redirect('/');
+};
