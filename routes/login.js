@@ -5,14 +5,15 @@
 var passport = require('passport');
 
 exports.login_get = function(req, res){
-  res.render('login', { user: req.user, message: req.session.messages });
-	req.session.messages = null;
+	if(req.user){									// already logged in
+		res.redirect('/');
+	} else {											// show the login form
+		res.render('login', { user: req.user, message: req.session.messages });
+		req.session.messages = null;
+	}
 };
 
 exports.login_post = function(req, res, next) {
-
-	
-	
   passport.authenticate('local', function(err, user, info) {
     if (err)
 		{
