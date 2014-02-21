@@ -13,7 +13,8 @@ var MarriageRelation = sequelize.define('MarriageRelation', {
 		referencesKey: 'id'
   },
   startDate: Sequelize.DATE,
-  endDate: Sequelize.DATE
+  endDate: Sequelize.DATE,
+	isStillMarriage: Sequelize.BOOLEAN
 });
 
 // relationship

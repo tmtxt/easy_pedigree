@@ -52,7 +52,8 @@ var create_tables = function(){
 			
 			// now insert data
 			insert_user();
-			insert_root();
+			insert_people();
+			
 		}, function(err){
 			console.log('An error occurred while creating the tables:', err);
 		});
@@ -78,46 +79,105 @@ var insert_user = function(){
 		});
 };
 
-var insert_root = function(){
+var insert_people = function(){
 
-	// create the root husband and wife
-	var rootHusband = Person.build({
-		name: "Root husband",
-		gender: app_const.CONST_GENDER_MALE,
-		isRoot: true
-	});
-	
-	// insert the root husband
-	rootHusband.save().complete(function(err){
-		if(err){
-			console.log('The root busband has not been saved:', err);
-		} else {
-			console.log('Successfully inserted root husband');
-			var rootWife = Person.build({
-				gender: app_const.CONST_GENDER_FEMALE,
-				name: "Root wife"
-			});
-			rootWife.save().complete(function(err){
-				if(err){
-					console.log('The root wife has not been saved:', err);
-				} else {
-					console.log('Successfully inserted root wife');
-					var rootMarriage = MarriageRelation.build({
-						maleId: rootHusband.id,
-						femaleId: rootWife.id
-					});
-					rootMarriage.save().complete(function(err){
-						if(err){
-							console.log('The root marriage has not been saved:', err);
-						} else {
-							console.log('Successfully inserted root marriage');
-						}
-					});
-				}
-			});
+	Person.bulkCreate([
+		{
+			name: 'Root husband',
+			gender: app_const.CONST_GENDER_MALE,
+			isRoot: true
+		},
+		{
+			name: 'Root wife',
+			gender: app_const.CONST_GENDER_FEMALE
+		},
+		{
+			name: 'F1.1 male',
+			gender:app_const.CONST_GENDER_MALE,
+			fatherId: 1,
+			motherId: 2
+		},
+		{
+			name: 'F1.1 female',
+			gender:app_const.CONST_GENDER_FEMALE
+		},
+		{
+			name: 'F1.2 male',
+			gender:app_const.CONST_GENDER_MALE,
+			fatherId: 1,
+			motherId: 2
+		},
+		{
+			name: 'F1.2 female',
+			gender:app_const.CONST_GENDER_FEMALE
+		},
+		{
+			name: 'F1.3 female',
+			gender:app_const.CONST_GENDER_FEMALE,
+			fatherId: 1,
+			motherId: 2
+		},
+		{
+			name: 'F1.3 male',
+			gender:app_const.CONST_GENDER_MALE
+		},
+		{
+			name: 'F2.1 male',
+			gender:app_const.CONST_GENDER_MALE,
+			fatherId: 3,
+			motherId: 4
+		},
+		{
+			name: 'F2.1 female',
+			gender:app_const.CONST_GENDER_MALE
+		},
+		{
+			name: 'F2.1 next female',
+			gender:app_const.CONST_GENDER_MALE
+		},
+		{
+			name: 'F3.1 male',
+			gender:app_const.CONST_GENDER_MALE,
+			fatherId: 9,
+			motherId: 10
 		}
-	});
+	])
+		.success(function(){
+			console.log('Sample family members has been successfully inserted.');
+			insert_marriage();
+		})
+		.error(function(err){
+			console.log('Sample family members cannot be created', err);
+		});
 	
+};
+
+var insert_marriage = function(){
+	MarriageRelation.bulkCreate([
+		{
+			maleId: 1,
+			femaleId: 2,
+			isStillMarriage: true
+		},
+		{
+			maleId: 3,
+			femaleId: 4,
+			isStillMarriage: true
+		},
+		{
+			maleId: 9,
+			femaleId: 10,
+			isStillMarriage: false,
+			startDate: new Date(2000, 04, 01),
+			endDate: new Date(2001, 04, 01)
+		}
+	])
+	.success(function(){
+		console.log('Sample marriage relations has been inserted successfully');
+	})
+	.error(function(err){
+		console.log('Sample marriage relations cannot be created');
+	});
 };
 
 ////////////////////////////////////////////////////////////////////////////////
