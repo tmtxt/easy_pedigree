@@ -77,6 +77,9 @@ passport.use(new LocalStrategy(
 ));
 
 
+
+
+
 var app = express();
 
 // all environments
@@ -104,6 +107,8 @@ routing.do_routing(app);
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+
+
 
 // start the server
 http.createServer(app).listen(app.get('port'), function(){
