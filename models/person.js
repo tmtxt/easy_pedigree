@@ -12,13 +12,23 @@ var Person = sequelize.define('Person', {
   gender: Sequelize.STRING,
   phoneNo: Sequelize.STRING,
   idCard: Sequelize.STRING,
-  note: Sequelize.TEXT
+  note: Sequelize.TEXT,
+  fatherId: {
+	type: Sequelize.INTEGER(11),
+	references: 'People',
+	referencesKey: 'id'
+  },
+  motherId: {
+	type: Sequelize.INTEGER(11),
+	references: 'People',
+	referencesKey: 'id'
+  }
 }, {
   tableName: 'People'
 });
 
 // relationship
-Person.hasOne(Person, {as: 'father'});
-Person.hasOne(Person, {as: 'mother'});
+// Person.hasOne(Person, {as: 'father'});
+// Person.hasOne(Person, {as: 'mother'});
 
 module.exports = Person;
