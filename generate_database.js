@@ -9,6 +9,7 @@ var MarriageRelation = require('./models/marriage-relation');
 
 // util
 var hashing = require('./util/hashing');
+var app_const = require('./util/app-const.js');
 
 // execution functions
 var start_generate = function(){
@@ -48,7 +49,6 @@ var create_tables = function(){
 			console.log('All tables has been created successfully.');
 
 			console.log('--------------------');
-
 			
 			// now insert data
 			insert_user();
@@ -59,8 +59,6 @@ var create_tables = function(){
 };
 
 var insert_user = function(){
-
-	
 	
 	// create a user
 	var user = User.build({
@@ -82,19 +80,44 @@ var insert_user = function(){
 
 var insert_root = function(){
 
-	
-	
-	var husband = Person.build({
-		name: "Root husband"
+	// create the root husband and wife
+	var rootHusband = Person.build({
+		name: "Root husband",
+		gender: app_const.CONST_GENDER_MALE,
+		isRoot: true
 	});
-
-	husband.save().complete(function(err){
+	
+	// insert the root husband
+	rootHusband.save().complete(function(err){
 		if(err){
 			console.log('The root busband has not been saved:', err);
 		} else {
 			console.log('Successfully inserted root husband');
+			var rootWife = Person.build({
+				gender: app_const.CONST_GENDER_FEMALE,
+				name: "Root wife"
+			});
+			rootWife.save().complete(function(err){
+				if(err){
+					console.log('The root wife has not been saved:', err);
+				} else {
+					console.log('Successfully inserted root wife');
+					var rootMarriage = MarriageRelation.build({
+						maleId: rootHusband.id,
+						femaleId: rootWife.id
+					});
+					rootMarriage.save().complete(function(err){
+						if(err){
+							console.log('The root marriage has not been saved:', err);
+						} else {
+							console.log('Successfully inserted root marriage');
+						}
+					});
+				}
+			});
 		}
 	});
+	
 };
 
 ////////////////////////////////////////////////////////////////////////////////
