@@ -4,6 +4,8 @@ var sequelize = require('./database-util/sequelize-instance');
 
 // the models
 var User = require('./models/user');
+var Person = require('./models/person');
+var MarriageRelation = require('./models/marriage-relation');
 
 // util
 var hashing = require('./util/hashing');
@@ -45,9 +47,19 @@ var connect_database = function(){
 };
 
 var create_tables = function(){
-  sequelize
-	.sync({ force: true })
-	.complete(create_tables_handler);
+  sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+  .then(function(){
+	return sequelize.sync({force: true});
+  })
+  .then(function(){
+	return sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+  })
+  .then(function(){
+	console.log("Database created");
+	insert_user();
+  }, function(err){
+	console.log('An error occurred while create the table:', err);
+  });
 };
 
 var insert_user = function(){
