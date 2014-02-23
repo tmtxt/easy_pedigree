@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: null
     },
     isStillMarriage: {
-      type: DataTypes.DATE,
+      type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: null
     },
