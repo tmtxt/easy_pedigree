@@ -5,21 +5,24 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       defaultValue: null,
 			references: "People",
-			referencesKey: "id"
+			referencesKey: "id",
+			primaryKey: true
     },
     outsideParentId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: null,
 			references: "People",
-			referencesKey: "id"
+			referencesKey: "id",
+			primaryKey: true
     },
     childId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: null,
 			references: "People",
-			referencesKey: "id"
+			referencesKey: "id",
+			primaryKey: true
     }
   }, {
 		timestamps: false,
