@@ -1,16 +1,16 @@
 // connection info
 var Sequelize = require('sequelize');
-var sequelize = require('./database-util/sequelize-instance');
+var sequelize = require('../database-util/sequelize-instance');
 
 // the models
-var User = sequelize.import("./models/user");
-var Person = sequelize.import("./models/person");
-var MarriageRelation = sequelize.import("./models/marriage-relation");
-var PedigreeRelation = sequelize.import("./models/pedigree-relation");
+var User = sequelize.import("../models/user");
+var Person = sequelize.import("../models/person");
+var MarriageRelation = sequelize.import("../models/marriage-relation");
+var PedigreeRelation = sequelize.import("../models/pedigree-relation");
 
 // util
-var hashing = require('./util/hashing');
-var app_const = require('./util/app-const.js');
+var hashing = require('../util/hashing');
+var app_const = require('../util/app-const.js');
 
 // execution functions
 var start_generate = function(){
