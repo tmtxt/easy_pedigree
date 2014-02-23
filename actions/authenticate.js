@@ -6,7 +6,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var Sequelize = require('sequelize');
 var sequelize = require('../database-util/sequelize-instance');
-var User = require('../models/user').User;
+var User = require('../models/user');
 var hashing = require('../util/hashing');
 
 function findById(id, fn) {
@@ -17,7 +17,7 @@ function findById(id, fn) {
   //   fn(new Error('User ' + id + ' does not exist'));
   // }
 
-	User.find(id)
+	User.model.find(id)
 	.success(function(user){
 		fn(null, user);
 	})
@@ -35,7 +35,7 @@ function findByUsername(username, fn) {
   // }
   // return fn(null, null);
 
-	User.find({where : {username: username}})
+	User.model.find({where : {username: username}})
 		.success(function(user){
 			return fn(null, user);
 		})

@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../database-util/sequelize-instance');
 
-exports.User =
+exports.model =
 	sequelize.define('Users', { 
     id: {
       type: Sequelize.INTEGER,

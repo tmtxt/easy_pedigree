@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../database-util/sequelize-instance');
 
-exports.PedigreeRelation =
+exports.model =
 	sequelize.define('PedigreeRelations', { 
     insideParentId: {
       type: Sequelize.INTEGER,
