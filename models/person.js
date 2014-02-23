@@ -1,21 +1,24 @@
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('People', { 
+var Sequelize = require('sequelize');
+var sequelize = require('../database-util/sequelize-instance');
+
+exports.Person =
+	sequelize.define('People', { 
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       primaryKey: true
     },
     name: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
       defaultValue: null
     },
     birthDate: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: true,
       defaultValue: null
     },
     deathDate: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: true,
       defaultValue: null
     },
@@ -25,37 +28,37 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: null
     },
     job: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
     },
     address: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
     },
     picture: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
     },
     gender: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
     },
     phoneNo: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
     },
     idCard: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
     },
     note: {
-      type: DataTypes.TEXT,
+      type: Sequelize.TEXT,
       allowNull: true,
       defaultValue: null
     }
@@ -63,4 +66,3 @@ module.exports = function(sequelize, DataTypes) {
 		timestamps: false,
 		tableName: "People"
 	});
-};

@@ -1,17 +1,20 @@
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Users', { 
+var Sequelize = require('sequelize');
+var sequelize = require('../database-util/sequelize-instance');
+
+exports.User =
+	sequelize.define('Users', { 
     id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       primaryKey: true
     },
     username: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
       defaultValue: null,
 			unique: true
     },
     password: {
-      type: DataTypes.TEXT,
+      type: Sequelize.TEXT,
       allowNull: false,
       defaultValue: null
     }
@@ -19,4 +22,3 @@ module.exports = function(sequelize, DataTypes) {
 		timestamps: false,
 		tableName: "Users"
 	});
-};

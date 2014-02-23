@@ -3,10 +3,10 @@ var Sequelize = require('sequelize');
 var sequelize = require('../database-util/sequelize-instance');
 
 // the models
-var User = sequelize.import("../models/user");
-var Person = sequelize.import("../models/person");
-var MarriageRelation = sequelize.import("../models/marriage-relation");
-var PedigreeRelation = sequelize.import("../models/pedigree-relation");
+var User = require("../models/user").User;
+var Person = require("../models/person").Person;
+var MarriageRelation = require("../models/marriage-relation").MarriageRelation;
+var PedigreeRelation = require("../models/pedigree-relation").PedigreeRelation;
 
 // util
 var hashing = require('../util/hashing');

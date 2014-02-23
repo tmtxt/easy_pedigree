@@ -1,7 +1,10 @@
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('PedigreeRelations', { 
+var Sequelize = require('sequelize');
+var sequelize = require('../database-util/sequelize-instance');
+
+exports.PedigreeRelation =
+	sequelize.define('PedigreeRelations', { 
     insideParentId: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: null,
 			references: "People",
@@ -9,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
 			primaryKey: true
     },
     outsideParentId: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: null,
 			references: "People",
@@ -17,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
 			primaryKey: true
     },
     childId: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: null,
 			references: "People",
@@ -28,4 +31,3 @@ module.exports = function(sequelize, DataTypes) {
 		timestamps: false,
 		tableName: "PedigreeRelations"
 	});
-};
