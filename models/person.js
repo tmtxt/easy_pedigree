@@ -1,35 +1,66 @@
-var Sequelize = require('sequelize');
-var sequelize = require('../database-util/sequelize-instance');
-
-var Person = sequelize.define('Person', {
-  name: Sequelize.TEXT,
-  birthDate: Sequelize.DATE,
-  deathDate: Sequelize.DATE,
-  isAlive: Sequelize.BOOLEAN,
-  job: Sequelize.TEXT,
-  address: Sequelize.TEXT,
-  picture: Sequelize.TEXT,
-  gender: Sequelize.STRING,
-  phoneNo: Sequelize.STRING,
-  idCard: Sequelize.STRING,
-  note: Sequelize.TEXT,
-  isRoot: Sequelize.BOOLEAN,
-  fatherId: {
-	type: Sequelize.INTEGER(11),
-	references: 'People',
-	referencesKey: 'id'
-  },
-  motherId: {
-	type: Sequelize.INTEGER(11),
-	references: 'People',
-	referencesKey: 'id'
-  }
-}, {
-  tableName: 'People'
-});
-
-// relationship
-// Person.hasOne(Person, {as: 'father'});
-// Person.hasOne(Person, {as: 'mother'});
-
-module.exports = Person;
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('People', { 
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: null
+    },
+    birthDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null
+    },
+    deathDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null
+    },
+    isAlive: {
+      type: 'BOOLEAN',
+      allowNull: true,
+      defaultValue: null
+    },
+    job: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null
+    },
+    picture: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null
+    },
+    phoneNo: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null
+    },
+    idCard: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null
+    },
+    note: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: null
+    }
+  }, {
+		timestamps: false,
+		tableName: "People"
+	});
+};

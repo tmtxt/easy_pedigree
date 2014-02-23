@@ -3,9 +3,10 @@ var Sequelize = require('sequelize');
 var sequelize = require('./database-util/sequelize-instance');
 
 // the models
-var User = require('./models/user');
-var Person = require('./models/person');
-var MarriageRelation = require('./models/marriage-relation');
+var User = sequelize.import("./models/user");
+var Person = sequelize.import("./models/person");
+var MarriageRelation = sequelize.import("./models/marriage-relation");
+var PedigreeRelation = sequelize.import("./models/pedigree-relation");
 
 // util
 var hashing = require('./util/hashing');
@@ -27,39 +28,17 @@ var start_generate = function(){
 				console.log('Connection has been established successfully.');
 
 				// create the tables
-				create_tables();
+				// create_tables();
+				sequelize.sync();
+				insert_user();
+				
 			}
 		});
 };
 
-var create_tables = function(){
-
-	console.log('--------------------');
-	console.log('Creating tables...');
-	
-	// disable foreign key check so that we can delete the existing tables
-	sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
-		.then(function(){
-			return sequelize.sync({force: true});
-		})
-		.then(function(){
-			return sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
-		})
-		.then(function(){
-			console.log('All tables has been created successfully.');
-
-			console.log('--------------------');
-			
-			// now insert data
-			insert_user();
-			insert_people();
-			
-		}, function(err){
-			console.log('An error occurred while creating the tables:', err);
-		});
-};
-
 var insert_user = function(){
+
+	
 	
 	// create a user
 	var user = User.build({
@@ -75,6 +54,7 @@ var insert_user = function(){
 				console.log('The admin user has not been saved:', err);
 			} else {
 				console.log('Admin user has been successfully inserted into the database');
+				insert_people();
 			}
 		});
 };
@@ -84,8 +64,7 @@ var insert_people = function(){
 	Person.bulkCreate([
 		{
 			name: 'Root husband',
-			gender: app_const.CONST_GENDER_MALE,
-			isRoot: true
+			gender: app_const.CONST_GENDER_MALE
 		},
 		{
 			name: 'Root wife',
@@ -93,9 +72,7 @@ var insert_people = function(){
 		},
 		{
 			name: 'F1.1 male',
-			gender:app_const.CONST_GENDER_MALE,
-			fatherId: 1,
-			motherId: 2
+			gender:app_const.CONST_GENDER_MALE
 		},
 		{
 			name: 'F1.1 female',
@@ -103,9 +80,7 @@ var insert_people = function(){
 		},
 		{
 			name: 'F1.2 male',
-			gender:app_const.CONST_GENDER_MALE,
-			fatherId: 1,
-			motherId: 2
+			gender:app_const.CONST_GENDER_MALE
 		},
 		{
 			name: 'F1.2 female',
@@ -113,9 +88,7 @@ var insert_people = function(){
 		},
 		{
 			name: 'F1.3 female',
-			gender:app_const.CONST_GENDER_FEMALE,
-			fatherId: 1,
-			motherId: 2
+			gender:app_const.CONST_GENDER_FEMALE
 		},
 		{
 			name: 'F1.3 male',
@@ -123,9 +96,7 @@ var insert_people = function(){
 		},
 		{
 			name: 'F2.1 male',
-			gender:app_const.CONST_GENDER_MALE,
-			fatherId: 3,
-			motherId: 4
+			gender:app_const.CONST_GENDER_MALE
 		},
 		{
 			name: 'F2.1 female',
@@ -137,14 +108,12 @@ var insert_people = function(){
 		},
 		{
 			name: 'F3.1 male',
-			gender:app_const.CONST_GENDER_MALE,
-			fatherId: 9,
-			motherId: 10
+			gender:app_const.CONST_GENDER_MALE
 		}
 	])
 		.success(function(){
 			console.log('Sample family members has been successfully inserted.');
-			insert_marriage();
+			// insert_marriage();
 		})
 		.error(function(err){
 			console.log('Sample family members cannot be created', err);

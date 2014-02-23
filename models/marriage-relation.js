@@ -1,24 +1,41 @@
-var Sequelize = require('sequelize');
-var sequelize = require('../database-util/sequelize-instance');
-
-var MarriageRelation = sequelize.define('MarriageRelation', {
-  maleId: {
-		type: Sequelize.INTEGER(11),
-		references: "People",
-		referencesKey: 'id'
-  },
-  femaleId: {
-		type: Sequelize.INTEGER(11),
-		references: "People",
-		referencesKey: 'id'
-  },
-  startDate: Sequelize.DATE,
-  endDate: Sequelize.DATE,
-	isStillMarriage: Sequelize.BOOLEAN
-});
-
-// relationship
-// Person.hasMany(MarriageRelation, {foreignKey: 'maleId', as: 'male'});
-// Person.hasMany(MarriageRelation, {foreignKey: 'femaleId', as: 'female'});
-
-module.exports = MarriageRelation;
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('MarriageRelations', { 
+    insidePersonId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: null,
+			references: "People",
+			referencesKey: "id"
+    },
+    outsidePersonId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: null,
+			references: "People",
+			referencesKey: "id"
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null
+    },
+    isStillMarriage: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null
+    },
+    note: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: null
+    }
+  }, {
+		timestamps: false,
+		tableName: "MarriageRelations"
+	});
+};
