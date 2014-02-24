@@ -83,44 +83,43 @@ var findRootPerson = function(){
 	// where public."People".id NOT IN (select "childId" from public."PedigreeRelations")
 	// and public."People".id NOT IN (select "outsidePersonId" from public."MarriageRelations")
 
-	
-	
-	// childId array in PedigreeRelations
+	// return root;
 	var childIdArray = [];
-	PedigreeRelation.model.findAll({
+	var outsidePersonIdArray = [];
+	
+	var root = PedigreeRelation.model.findAll({
 		attributes: ['childId']
-	}).success(function(relations){
-		// store the childId in the childIdArray
-		for(var i = 0; i < relations.length; i++){
-			childIdArray.push(relations[i].values.childId);
-		}
+	})
+		.then(function(relations){
+			// store the childId in the childIdArray
+			for(var i = 0; i < relations.length; i++){
+				childIdArray.push(relations[i].values.childId);
+			}
 
-		// outsidePersonId array in MarriageRelations
-		var outsidePersonIdArray = [];
-		MarriageRelation.model.findAll({
-			attributes: ['outsidePersonId']
-		}).success(function(relations){
+			return MarriageRelation.model.findAll({
+				attributes: ['outsidePersonId']
+			});
+		})
+		.then(function(relations){
 			// store the outsidePersonId in the array
 			for(var i = 0; i < relations.length; i++){
 				outsidePersonIdArray.push(relations[i].values.outsidePersonId);
 			}
 
 			// find the root
-			model.find({
+			return model.find({
 				where: Sequelize.and(
 					["id not in (" + childIdArray.join(',') + ")"],
 					["id not in (" + outsidePersonIdArray.join(',') + ")"]
 				)
-			}).success(function(rootPerson){
-				// root = rootPerson;
-			}); 
+			});
+		})
+		.then(function(root){
+			return root;
 		});
-	});
-
-	// return root;
+	
+	return root;
 };
-
-// findRootPerson();
 
 // exports
 exports.model = model;
