@@ -5,7 +5,7 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var Sequelize = require('sequelize');
-var sequelize = require('../database-util/sequelize-instance');
+var sequelize = require('../database/sequelize-instance');
 var User = require('../models/user');
 var hashing = require('../util/hashing');
 

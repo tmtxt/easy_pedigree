@@ -1,16 +1,16 @@
 // connection info
 var Sequelize = require('sequelize');
-var sequelize = require('../database-util/sequelize-instance');
+var sequelize = require('./database/sequelize-instance');
 
 // the models
-var User = require("../models/user").model;
-var Person = require("../models/person").model;
-var MarriageRelation = require("../models/marriage-relation").model;
-var PedigreeRelation = require("../models/pedigree-relation").model;
+var User = require("./models/user").model;
+var Person = require("./models/person").model;
+var MarriageRelation = require("./models/marriage-relation").model;
+var PedigreeRelation = require("./models/pedigree-relation").model;
 
 // util
-var hashing = require('../util/hashing');
-var app_const = require('../util/app-const.js');
+var hashing = require('./util/hashing');
+var app_const = require('./util/app-const.js');
 
 // execution functions
 var start_generate = function(){
@@ -148,6 +148,14 @@ var insert_people = function(){
 		{
 			name: 'F2.4 inside',
 			gender:app_const.CONST_GENDER_MALE
+		},
+		{
+			name: 'F2.4 outside',
+			gender:app_const.CONST_GENDER_MALE
+		},
+		{
+			name: 'F3.1 inside',
+			gender:app_const.CONST_GENDER_MALE
 		}
 	])
 		.success(function(){
@@ -189,6 +197,11 @@ var insert_marriage = function(){
 			{
 				insidePersonId: people[4].id,
 				outsidePersonId: people[8].id,
+				isStillMarriage: true
+			},
+			{
+				insidePersonId: people[12].id,
+				outsidePersonId: people[13].id,
 				isStillMarriage: true
 			}
 		])
@@ -239,6 +252,11 @@ var insert_pedigree = function(){
 				insideParentId: people[3].id,
 				outsideParentId: people[7].id,
 				childId: people[12].id
+			},
+			{
+				insideParentId: people[12].id,
+				outsideParentId: people[13].id,
+				childId: people[14].id
 			}
 		])
 			.success(function(){

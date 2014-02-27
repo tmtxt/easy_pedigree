@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../database/sequelize-instance');
-var PedigreeRelation = require("pedigree-relation");
-var MarriageRelation = require("marriage-relation");
+var PedigreeRelation = require("./pedigree-relation");
+var MarriageRelation = require("./marriage-relation");
 var Q = require('q');
 var QX = require('qx');
 var rq = require('../util/read-query');
@@ -133,7 +133,7 @@ function getFamilyTree(){
 	});
 }
 
-getFamilyTree();
+
 
 // exports
 exports.model = model;
