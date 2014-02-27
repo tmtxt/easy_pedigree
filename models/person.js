@@ -90,17 +90,45 @@ function findDescendants(parent){
 	}
 
 	var query = rq('find_descendants');
-	return sequelize.query(query, null, {logging: console.log, plain: true, raw: true},
-												 {rootId: parentId});
+	return sequelize.query(query, null, {
+		logging: console.log, plain: true, raw: true}, {rootId: parentId});
 }
-
-findDescendants(70).then(function(data){
-	console.log(data);
-});
 
 // return a promise
 function getFamilyTree(){
-	
+	return findRootPerson()
+		.then(function(root){
+			return findDescendants(root)
+			.then(function(descendants){
+
+				// init the tree
+				var tree = root;
+				tree.children = {};
+				
+				// construct the tree
+				for(var i = 0; i < descendants.length; i++) {
+					// get the current person
+					var currentPerson = {
+						id: descendants[i].childid,
+						name: descendants[i].childname,
+						children: {}
+					};
+
+					// append it to the parent
+					appendChild(tree, descendants[i].path, currentPerson);
+				}
+				
+				return tree;
+			});
+		});
+}
+
+function appendChild(root, path, child){
+	var parent = root;
+	for(var i = 1; i < path.length; i++) {
+		parent = parent.children[path[i]];
+	}
+	parent.children[child.id] = child;
 }
 
 // exports
