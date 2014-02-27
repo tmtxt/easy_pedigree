@@ -1,6 +1,6 @@
 {
-	"database": "test_2",
-	"user": "tmtxt",
+	"database": "pedigree_dev",
+	"user": "postgres",
 	"password": "123456",
 	"host": "localhost",
 	"port": 5432

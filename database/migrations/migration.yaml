@@ -1,25 +1,81 @@
 ---
-table: warp_avatar
+table: Users
 from: null
-to: warp_1
+to: pd_1
 sql: |
-  CREATE TABLE warp_avatar (
-    id SERIAL NOT NULL PRIMARY KEY,
-    email VARCHAR,
-    password VARCHAR,
-    UNIQUE(email)
+  CREATE TABLE "Users"
+  (
+    id serial NOT NULL,
+    password text NOT NULL,
+    username character varying NOT NULL,
+    CONSTRAINT pk_users PRIMARY KEY (id),
+    CONSTRAINT un_users UNIQUE (username)
   );
 
 ---
-table: warp_avatar
-from: warp_1
-to: warp_2
+table: People
+from: null
+to: pd_1
 sql: |
-  ALTER TABLE warp_avatar ADD COLUMN test integer;
+  CREATE TABLE "People"
+  (
+    id serial NOT NULL,
+    name character varying NOT NULL,
+    "birthDate" date,
+    "deathDate" date,
+    "isAlive" boolean,
+    job character varying,
+    address character varying,
+    picture character varying,
+    gender character varying,
+    "phoneNo" bit varying,
+    "idCard" bit varying,
+    note text,
+    CONSTRAINT pk_people PRIMARY KEY (id)
+  );
 
 ---
-table: warp_avatar
-from: warp_2
-to: warp_3
+table: PedigreeRelations
+from: null
+to: pd_1
 sql: |
-  ALTER TABLE warp_avatar ADD COLUMN test2 integer;
+  CREATE TABLE "PedigreeRelations"
+  (
+    "insideParentId" integer NOT NULL,
+    "outsideParentId" integer NOT NULL,
+    "childId" integer NOT NULL,
+    
+    CONSTRAINT pk_pedigree PRIMARY KEY ("insideParentId", "outsideParentId", "childId"),
+    
+    CONSTRAINT fk_pedigree_child FOREIGN KEY ("childId")
+        REFERENCES "People" (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT fk_pedigree_inside FOREIGN KEY ("insideParentId")
+        REFERENCES "People" (id) MATCH SIMPLE
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_pedigree_outside FOREIGN KEY ("outsideParentId")
+        REFERENCES "People" (id) MATCH SIMPLE
+        ON UPDATE CASCADE ON DELETE CASCADE
+  );
+
+---
+table: MarriageRelations
+from: null
+to: pd_1
+sql: |
+  CREATE TABLE "MarriageRelations"
+  (
+    "insidePersonId" integer NOT NULL, -- the ID of the person inside the family pedigree (natural children)
+    "outsidePersonId" integer NOT NULL, -- the Id of the outside person
+    "startDate" date, -- starting date of the marriage
+    "endDate" date, -- the end date of the marriage
+    note text,
+    "isStillMarriage" boolean,
+    CONSTRAINT pk_marriage PRIMARY KEY ("insidePersonId", "outsidePersonId"),
+    CONSTRAINT fk_marriage_inside FOREIGN KEY ("insidePersonId")
+        REFERENCES "People" (id) MATCH SIMPLE
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_marriage_outside FOREIGN KEY ("outsidePersonId")
+        REFERENCES "People" (id) MATCH SIMPLE
+        ON UPDATE CASCADE ON DELETE CASCADE
+  )
