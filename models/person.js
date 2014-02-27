@@ -73,67 +73,35 @@ var model =
 		tableName: "People"
 	});
 
-// recursion
-function appendChildren(parent){
-	parent.children = [];
-
-	// base case
-	
-}
-
-// TODO: change to query using SQL command and retrieve only necessary properites
+// return a promise
 function findRootPerson(){
-	// to find the root person, execute this sql query
-	// select * from public."People"
-	// where public."People".id NOT IN (select "childId" from public."PedigreeRelations")
-	// and public."People".id NOT IN (select "outsidePersonId" from public."MarriageRelations")
-
-	// return root;
-	var childIdArray = [];
-	var outsidePersonIdArray = [];
-	
-	var root = PedigreeRelation.model.findAll({
-		attributes: ['childId']
-	})
-		.then(function(relations){
-			// store the childId in the childIdArray
-			for(var i = 0; i < relations.length; i++){
-				childIdArray.push(relations[i].values.childId);
-			}
-
-			return MarriageRelation.model.findAll({
-				attributes: ['outsidePersonId']
-			});
-		})
-		.then(function(relations){
-			// store the outsidePersonId in the array
-			for(var i = 0; i < relations.length; i++){
-				outsidePersonIdArray.push(relations[i].values.outsidePersonId);
-			}
-
-			// find the root
-			return model.find({
-				where: Sequelize.and(
-					["id not in (" + childIdArray.join(',') + ")"],
-					["id not in (" + outsidePersonIdArray.join(',') + ")"]
-				)
-			});
-		})
-		.then(function(root){
-			return root.values;
-		});
-	
-	return root;
+	var query = rq("find_root");
+	return sequelize.query(query, null, {logging: console.log, plain: true, raw: true});
 }
 
+// return a promise
+function findDescendants(parent){
+	// check the type of parent
+	var parentId;
+	if(typeof parent === 'number'){
+		parentId = parent;
+	} else {
+		parentId = parent.id;
+	}
+
+	var query = rq('find_descendants');
+	return sequelize.query(query, null, {logging: console.log, plain: true, raw: true},
+												 {rootId: parentId});
+}
+
+findDescendants(70).then(function(data){
+	console.log(data);
+});
+
+// return a promise
 function getFamilyTree(){
-	var root = findRootPerson();
-	root.done(function(root){
-		
-	});
+	
 }
-
-
 
 // exports
 exports.model = model;
