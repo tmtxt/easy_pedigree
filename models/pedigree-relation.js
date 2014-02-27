@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var sequelize = require('../database-util/sequelize-instance');
+var sequelize = require('../database/sequelize-instance');
 
 exports.model =
 	sequelize.define('PedigreeRelations', { 

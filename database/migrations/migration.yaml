@@ -1,0 +1,25 @@
+---
+table: warp_avatar
+from: null
+to: warp_1
+sql: |
+  CREATE TABLE warp_avatar (
+    id SERIAL NOT NULL PRIMARY KEY,
+    email VARCHAR,
+    password VARCHAR,
+    UNIQUE(email)
+  );
+
+---
+table: warp_avatar
+from: warp_1
+to: warp_2
+sql: |
+  ALTER TABLE warp_avatar ADD COLUMN test integer;
+
+---
+table: warp_avatar
+from: warp_2
+to: warp_3
+sql: |
+  ALTER TABLE warp_avatar ADD COLUMN test2 integer;

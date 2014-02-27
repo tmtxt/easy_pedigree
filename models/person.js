@@ -1,7 +1,11 @@
 var Sequelize = require('sequelize');
-var sequelize = require('../database-util/sequelize-instance');
+var sequelize = require('../database/sequelize-instance');
 var PedigreeRelation = require("pedigree-relation");
 var MarriageRelation = require("marriage-relation");
+var Q = require('q');
+var QX = require('qx');
+var rq = require('../util/read-query');
+var async = require('async');
 
 var model =
 	sequelize.define('People', { 
@@ -69,15 +73,16 @@ var model =
 		tableName: "People"
 	});
 
-var getFamilyTree = function(){
-	// init the tree
-	var tree = {};
+// recursion
+function appendChildren(parent){
+	parent.children = [];
 
-	// find the root node
+	// base case
 	
-};
+}
 
-var findRootPerson = function(){
+// TODO: change to query using SQL command and retrieve only necessary properites
+function findRootPerson(){
 	// to find the root person, execute this sql query
 	// select * from public."People"
 	// where public."People".id NOT IN (select "childId" from public."PedigreeRelations")
@@ -115,11 +120,20 @@ var findRootPerson = function(){
 			});
 		})
 		.then(function(root){
-			return root;
+			return root.values;
 		});
 	
 	return root;
-};
+}
+
+function getFamilyTree(){
+	var root = findRootPerson();
+	root.done(function(root){
+		
+	});
+}
+
+getFamilyTree();
 
 // exports
 exports.model = model;
