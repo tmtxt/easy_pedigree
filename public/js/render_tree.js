@@ -1,6 +1,6 @@
 var m = [20, 120, 20, 120],
-w = 1280 - m[1] - m[3],
-h = 800 - m[0] - m[2],
+w = 1280,
+h = 800,
 i = 0,
 root;
 
@@ -11,8 +11,9 @@ var diagonal = d3.svg.diagonal()
   .projection(function(d) { return [d.x, d.y]; });
 
 var vis = d3.select("#body").append("svg:svg")
-  .attr("width", w + m[1] + m[3])
-  .attr("height", h + m[0] + m[2])
+  .attr("width", w)
+  .attr("height", h)
+	.attr("align", "center")
   .append("svg:g")
   .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
@@ -56,7 +57,7 @@ function update(source) {
   nodeEnter.append("svg:circle")
     .attr("r", 1e-6)
     .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
-	.on("click", function(d) { toggle(d); update(d); });
+		.on("click", function(d) { toggle(d); update(d); });
 
   nodeEnter.append("svg:text")
     .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
@@ -64,7 +65,7 @@ function update(source) {
     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6)
-	.on("click", function(d) {console.log(d);});
+		.on("click", function(d) {console.log(d);});
 
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
