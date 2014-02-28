@@ -31,10 +31,6 @@ d3.json("/tree-data", function(json) {
 
   // Initialize the display to show a few nodes.
   root.children.forEach(toggleAll);
-  toggle(root.children[1]);
-  // toggle(root.children[1].children[2]);
-  // toggle(root.children[9]);
-  // toggle(root.children[9].children[0]);
 
   update(root);
 });
@@ -55,19 +51,20 @@ function update(source) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("svg:g")
     .attr("class", "node")
-    .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-    .on("click", function(d) { toggle(d); update(d); });
+    .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; });
 
   nodeEnter.append("svg:circle")
     .attr("r", 1e-6)
-    .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+    .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
+	.on("click", function(d) { toggle(d); update(d); });
 
   nodeEnter.append("svg:text")
     .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
     .attr("dy", ".35em")
     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
     .text(function(d) { return d.name; })
-    .style("fill-opacity", 1e-6);
+    .style("fill-opacity", 1e-6)
+	.on("click", function(d) {console.log(d);});
 
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
