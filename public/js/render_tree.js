@@ -8,7 +8,7 @@ var tree = d3.layout.tree()
   .size([h, w]);
 
 var diagonal = d3.svg.diagonal()
-  .projection(function(d) { return [d.y, d.x]; });
+  .projection(function(d) { return [d.x, d.y]; });
 
 var vis = d3.select("#body").append("svg:svg")
   .attr("width", w + m[1] + m[3])
@@ -19,8 +19,8 @@ var vis = d3.select("#body").append("svg:svg")
 d3.json("/tree-data", function(json) {
 	console.log(json);
   root = json;
-  root.x0 = h / 2;
-  root.y0 = 0;
+  root.x0 = 0;
+  root.y0 = w / 2;
 
   function toggleAll(d) {
     if (d.children) {
@@ -51,7 +51,7 @@ function update(source) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("svg:g")
     .attr("class", "node")
-    .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; });
+    .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; });
 
   nodeEnter.append("svg:circle")
     .attr("r", 1e-6)
@@ -69,7 +69,7 @@ function update(source) {
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
   nodeUpdate.select("circle")
     .attr("r", 4.5)
@@ -81,7 +81,7 @@ function update(source) {
   // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+    .attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
     .remove();
 
   nodeExit.select("circle")
