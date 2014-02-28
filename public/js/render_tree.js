@@ -1,8 +1,9 @@
-var m = [20, 120, 20, 120],
-w = 1280,
-h = 800,
+var m = [20, 0, 20, 0],
 i = 0,
 root;
+
+var w = $("#body").width();
+var h = w;
 
 var tree = d3.layout.tree()
   .size([h, w]);
@@ -13,7 +14,6 @@ var diagonal = d3.svg.diagonal()
 var vis = d3.select("#body").append("svg:svg")
   .attr("width", w)
   .attr("height", h)
-	.attr("align", "center")
   .append("svg:g")
   .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
