@@ -1,0 +1,13 @@
+var Person = require('../models/person.js');
+var convert_tree = require('../util/convert-tree');
+
+exports.tree_get_render = function(req, res){
+  res.render('tree', { title: 'Express' });
+};
+
+exports.tree_get_data = function(req, res){
+	Person.getFamilyTree().then(function(tree){
+		convert_tree.childrenObjectToArray(tree);
+		res.json(tree);
+	});
+};

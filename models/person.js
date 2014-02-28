@@ -1,11 +1,10 @@
+// TODO: improve getFamilyTree() to receive the root and find all the descendant
+// from that node
 var Sequelize = require('sequelize');
 var sequelize = require('../database/sequelize-instance');
 var PedigreeRelation = require("./pedigree-relation");
 var MarriageRelation = require("./marriage-relation");
-var Q = require('q');
-var QX = require('qx');
 var rq = require('../util/read-query');
-var async = require('async');
 
 var model =
 	sequelize.define('People', { 
@@ -123,6 +122,12 @@ function getFamilyTree(){
 		});
 }
 
+// var convert = require('../util/convert-tree');
+// getFamilyTree().then(function(tree){
+// 	convert.childrenObjectToArray(tree);
+// 	console.log(tree.children[2].children);
+// });
+
 function appendChild(root, path, child){
 	var parent = root;
 	for(var i = 1; i < path.length; i++) {
@@ -135,3 +140,4 @@ function appendChild(root, path, child){
 exports.model = model;
 exports.getFamilyTree = getFamilyTree;
 exports.findRootPerson = findRootPerson;
+exports.findDescendants = findDescendants;
