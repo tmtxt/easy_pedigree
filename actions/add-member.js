@@ -33,17 +33,17 @@ exports.add_member_insert = function (req, res){
 
 		// build the Person model
 		Person.model.build({
-			name: req.body.name,
+			name: name,
 			birthDate: birthdate,
-			deathDate: null,
-			isAlive: req.body.isalive,
-			job: req.body.job,
-			address: req.body.address,
-			picture: req.body.picture,
-			gender: req.body.gender,
-			phoneNo: req.body.phoneno,
-			idCard: req.body.idcard,
-			note: req.body.note
+			deathDate: deathdate,
+			isAlive: isalive,
+			job: job,
+			address: address,
+			picture: picture,
+			gender: gender,
+			phoneNo: phoneno,
+			idCard: idcard,
+			note: note
 		}).save()
 		.success(function(person){
 			t.commit();
