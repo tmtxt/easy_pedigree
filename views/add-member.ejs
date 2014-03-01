@@ -82,3 +82,24 @@
   <button type="submit" class="btn btn-lg btn-primary">Submit</button>
 </form>
 
+<script language="javascript">
+ $(function(){
+	 // set the date picker
+	 $("#birthdate").datepicker({
+		 changeMonth: true,
+		 changeYear: true
+	 });
+	 $( "#birthdate" ).datepicker( "option", "showAnim", "slideDown" );
+	 $( "#birthdate" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
+	 
+	 $("#deathdate").datepicker({
+		 changeMonth: true,
+		 changeYear: true
+	 });
+	 $( "#deathdate" ).datepicker( "option", "showAnim", "slideDown" );
+	 $( "#deathdate" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
+	 
+ });
+ 
+ 
+</script>
