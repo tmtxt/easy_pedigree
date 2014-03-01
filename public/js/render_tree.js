@@ -9,40 +9,37 @@ var tree, diagonal, vis;
 
 var link_height = 150;
 
-d3.json("/tree-max-depth", function(max_depth){
+h = 1000;
 
-	h = 1000;
-	
-	tree = d3.layout.tree()
-		.size([h, w]);
+tree = d3.layout.tree()
+	.size([h, w]);
 
-	diagonal = d3.svg.diagonal()
-		.projection(function(d) { return [d.x, d.y]; });
+diagonal = d3.svg.diagonal()
+	.projection(function(d) { return [d.x, d.y]; });
 
-	vis = d3.select("#body").append("svg:svg")
-		.attr("width", w)
-		.attr("height", h)
-		.append("svg:g")
-		.attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+vis = d3.select("#body").append("svg:svg")
+	.attr("width", w)
+	.attr("height", h)
+	.append("svg:g")
+	.attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-	d3.json("/tree-data", function(json) {
-		root = json;
-		root.x0 = w / 2;
-		root.y0 = 0;
+d3.json("/tree-data", function(json) {
+	root = json;
+	root.x0 = w / 2;
+	root.y0 = 0;
 
-		function toggleAll(d) {
-			if (d.children) {
-				d.children.forEach(toggleAll);
-				toggle(d);
-			}
+	function toggleAll(d) {
+		if (d.children) {
+			d.children.forEach(toggleAll);
+			toggle(d);
 		}
+	}
 
-		// Initialize the display to show a few nodes.
-		root.children.forEach(toggleAll);
+	// Initialize the display to show a few nodes.
+	root.children.forEach(toggleAll);
 
-		// update the new position
-		update(root);
-	});
+	// update the new position
+	update(root);
 });
 
 function update(source) {
