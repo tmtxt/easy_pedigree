@@ -1,4 +1,7 @@
 var Person = require('../models/person');
+var moment = require('moment');
+var Sequelize = require('sequelize');
+var sequelize = require('../database/sequelize-instance');
 
 exports.add_member_render = function (req, res){
 	res.render('add-member', {
@@ -7,26 +10,33 @@ exports.add_member_render = function (req, res){
 };
 
 exports.add_member_insert = function (req, res){
-	console.log(req.body.birthdate);
-	var birthDate = Date.parse(req.body.birthdate);
-	console.log(birthDate);
-	
-	// Person.model.build({
-	// 	name: req.body.name,
-	// 	birthDate: req.body.birthdate,
-	// 	deathDate: req.body.deathdate,
-	// 	isAlive: req.body.isalive,
-	// 	job: req.body.job,
-	// 	address: req.body.address,
-	// 	picture: req.body.picture,
-	// 	gender: req.body.gender,
-	// 	phoneNo: req.body.phoneno,
-	// 	idCard: req.body.idcard,
-	// 	note: req.body.note
-	// }).save().success(function(){
-	// 	console.log('ok');
-	// }).error(function(err){
-	// 	console.log(err);
-	// });
+	var birthdate = moment(req.body.birthdate, "DD/MM/YYYY");
+
+	// start a transaction
+	sequelize.transaction(function(t){
+
+		// build the Person model
+		Person.model.build({
+			name: req.body.name,
+			birthDate: req.body.birthdate,
+			deathDate: null,
+			isAlive: req.body.isalive,
+			job: req.body.job,
+			address: req.body.address,
+			picture: req.body.picture,
+			gender: req.body.gender,
+			phoneNo: req.body.phoneno,
+			idCard: req.body.idcard,
+			note: req.body.note
+		}).save()
+		.success(function(person){
+			t.commit();
+			console.log('ok');
+		}).error(function(err){
+			t.rollback();
+			console.log('err');
+		});
+		
+	});
 	
 };
