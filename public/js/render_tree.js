@@ -25,54 +25,36 @@ d3.json("/tree-max-depth", function(max_depth){
 		.attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
 	d3.json("/tree-data", function(json) {
-	
-  root = json;
-  root.x0 = w / 2;
-  root.y0 = 0;
+		root = json;
+		root.x0 = w / 2;
+		root.y0 = 0;
 
-		
+		function toggleAll(d) {
+			if (d.children) {
+				d.children.forEach(toggleAll);
+				toggle(d);
+			}
+		}
 
-  function toggleAll(d) {
-    if (d.children) {
-      d.children.forEach(toggleAll);
-      toggle(d);
-    }
-  }
+		// Initialize the display to show a few nodes.
+		root.children.forEach(toggleAll);
 
-  // Initialize the display to show a few nodes.
-  root.children.forEach(toggleAll);
-
-		
-	
-  update(root);
-
-		
+		// update the new position
+		update(root);
+	});
 });
-});
-
-function convertPosition(nodes){
-	var ratio = 360 / (w/2);
-
-	for(var i = 0; i < nodes.length; i++) {
-		nodes[i].x = nodes[i].x / ratio;
-		nodes[i].x0 = nodes[i].x0 / ratio;
-	}
-}
 
 function update(source) {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
-	
-	
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse();
 
-	// convert the position from 360 radius to co-ordinate on screen
-//	convertPosition(nodes);
-
-	var ratio = root.x / (w/2);
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+	// update the x position
+	var ratio = root.x / (w/2);
 	nodes.forEach(function(d) {
 		d.x = d.x / ratio;
 	});
@@ -86,8 +68,6 @@ function update(source) {
     .attr("class", "node")
     .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; });
 
-	
-
   nodeEnter.append("svg:circle")
     .attr("r", 1e-6)
     .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
@@ -100,14 +80,12 @@ function update(source) {
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6)
 		.on("click", function(d) {console.log(d);});
-
-	
 	
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
     .duration(duration)
     .attr("transform", function(d) { 
-															return "translate(" + d.x + "," + d.y + ")"; });
+			return "translate(" + d.x + "," + d.y + ")"; });
 
   nodeUpdate.select("circle")
     .attr("r", 4.5)
