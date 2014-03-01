@@ -18,6 +18,7 @@ exports.do_routing = function(app){
 	app.get('/logout', middleware, authenticate.logout);
 	app.get('/tree', middleware, tree.tree_get_render);
 	app.get('/tree-data', middleware, tree.tree_get_data);
+	app.get('/tree-max-depth', middleware, tree.tree_get_max_depth);
 
 	// processing request
   app.post('/login', middleware, authenticate.login_post);

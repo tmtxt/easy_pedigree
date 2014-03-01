@@ -11,3 +11,9 @@ exports.tree_get_data = function(req, res){
 		res.json(tree);
 	});
 };
+
+exports.tree_get_max_depth = function(req, res){
+	Person.findMaxDepth().then(function(depth){
+		res.json(depth);
+	});
+};
