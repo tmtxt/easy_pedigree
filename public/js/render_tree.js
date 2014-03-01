@@ -11,8 +11,7 @@ var link_height = 150;
 
 d3.json("/tree-max-depth", function(max_depth){
 
-	var tree_max_depth = max_depth.max;
-	h = (tree_max_depth + 1) * link_height;
+	h = 1000;
 	
 	tree = d3.layout.tree()
 		.size([h, w]);
@@ -64,7 +63,7 @@ function update(source) {
   // Update the nodes…
   var node = vis.selectAll("g.node")
     .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
+	
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("svg:g")
     .attr("class", "node")
@@ -82,6 +81,22 @@ function update(source) {
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6)
 		.on("click", function(d) {console.log(d);});
+
+	// compute the new tree height
+	var currentMaxDepth = 0;
+	function findMaxDepth(parent){
+		if(parent.children && parent.children.length > 0){
+			parent.children.forEach(function(d){
+				findMaxDepth(d);
+			});
+		} else if(parent.depth > currentMaxDepth){
+			currentMaxDepth = parent.depth;
+		}
+	}
+	findMaxDepth(root);
+	var newHeight = (currentMaxDepth + 1) * link_height;
+	// tree = tree.size([newHeight, w]);
+	d3.select("svg").attr("height", newHeight);
 	
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
