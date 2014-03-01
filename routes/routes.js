@@ -2,9 +2,11 @@ var homepage = require('../actions/homepage');
 var authenticate = require('../actions/authenticate');
 var user = require('../actions/user');
 var tree = require('../actions/tree');
+var add_member = require('../actions/add-member.js');
 
 var middleware = function(req, res, next) {
   res.locals.currentUser = req.user;
+	res.locals.title = "Easy Pedigree";
   next();
 };
 
@@ -19,6 +21,7 @@ exports.do_routing = function(app){
 
 	// routes for views
 	app.get('/views/tree', middleware, tree.tree_get_render);
+	app.get('/views/add-member', middleware, add_member.add_member_render);
 
 	// routes for getting data
 	app.get('/data/tree-data', middleware, tree.tree_get_data);
@@ -26,6 +29,7 @@ exports.do_routing = function(app){
 
 	// processing request
   app.post('/login', middleware, authenticate.login_post);
+	app.post('/actions/add-member', middleware, add_member.add_member_insert);
 };
 
 

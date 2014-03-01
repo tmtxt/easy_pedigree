@@ -15,6 +15,7 @@
 		"bcrypt-nodejs": "0.0.3",
 		"passport": "0.2.0",
 		"passport-local": "0.1.6",
-		"pg": "2.11.1"
+		"pg": "2.11.1",
+		"moment": "*"
   }
 }

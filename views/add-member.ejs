@@ -1,0 +1,112 @@
+<% layout('layout-content-container-full') -%>
+
+<form role="form" method="post" action="/actions/add-member">
+
+	<div class="row">
+		<div class="col-md-6">
+			
+			<div class="form-group">
+				<label for="name">Full Name</label>
+				<input type="text" name="name" class="form-control" id="name"
+							 placeholder="Full name">
+			</div>
+			
+			<div class="form-group">
+				<label for="">Birth Date</label>
+				<input type="text" class="form-control" id="birthdate" name="birthdate">
+			</div>
+
+			<div class="checkbox">
+				<label>
+					<input name="isalive" id="isalive" type="checkbox" checked="true">
+					Is Alive?
+				</label>
+			</div>
+			
+			<div class="form-group">
+				<label for="">Death Date</label>
+				<input type="text" class="form-control" id="deathdate" name="deathdate" disabled="disabled">
+			</div>
+
+			<div class="form-group">
+				<label for="">Job</label>
+				<input type="text" class="form-control" id="job" name="job">
+			</div>
+
+			<div class="form-group">
+				<label for="">Picture</label>
+				<input type="file" class="form-control" id="picture" name="picture" accept="image/*">
+			</div>
+
+			<div class="form-group">
+				<label for="">Phone No</label>
+				<input type="text" class="form-control" id="phoneno" name="phoneno">
+			</div>
+			
+		</div>
+		<div class="col-md-6">
+
+			
+
+			<div class="form-group">
+				<label for="">Address</label>
+				<textarea class="form-control" name="address" id="address" rows="3"></textarea>
+			</div>
+
+			
+
+			<div class="form-group">
+				<label for="">Gender</label>
+				<select class="form-control" name="gender" id="gender">
+					<option>Male</option>
+					<option>Female</option>
+					<option>Other</option>
+				</select>
+			</div>
+
+			
+
+			<div class="form-group">
+				<label for="">ID Card</label>
+				<input type="text" class="form-control" id="idcard" name="idcard">
+			</div>
+
+			<div class="form-group">
+				<label for="">Note</label>
+				<textarea class="form-control" name="note" id="note" rows="4"></textarea>
+			</div>
+			
+		</div>
+	</div>
+	
+  <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+</form>
+
+<script language="javascript">
+ $(function(){
+	 // set the date picker
+	 $("#birthdate").datepicker({
+		 changeMonth: true,
+		 changeYear: true
+	 });
+	 $( "#birthdate" ).datepicker( "option", "showAnim", "slideDown" );
+	 $( "#birthdate" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
+	 
+	 $("#deathdate").datepicker({
+		 changeMonth: true,
+		 changeYear: true
+	 });
+	 $( "#deathdate" ).datepicker( "option", "showAnim", "slideDown" );
+	 $( "#deathdate" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
+
+	 // disable death date if isalive is checked
+	 $("#isalive").click(function(){
+		 if($("#isalive").is(":checked")){
+			 $("#deathdate").attr("disabled", "disabled");
+		 } else {
+			 $("#deathdate").removeAttr("disabled");
+		 }
+	 });
+ });
+ 
+</script>
