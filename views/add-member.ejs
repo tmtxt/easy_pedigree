@@ -18,14 +18,14 @@
 
 			<div class="checkbox">
 				<label>
-					<input name="isalive" id="isalive" type="checkbox" value="">
+					<input name="isalive" id="isalive" type="checkbox" checked="true">
 					Is Alive?
 				</label>
 			</div>
-
+			
 			<div class="form-group">
 				<label for="">Death Date</label>
-				<input type="text" class="form-control" id="deathdate" name="deathdate">
+				<input type="text" class="form-control" id="deathdate" name="deathdate" disabled="disabled">
 			</div>
 
 			<div class="form-group">
@@ -98,8 +98,15 @@
 	 });
 	 $( "#deathdate" ).datepicker( "option", "showAnim", "slideDown" );
 	 $( "#deathdate" ).datepicker( "option", "dateFormat", "dd/mm/yy" );
-	 
+
+	 // disable death date if isalive is checked
+	 $("#isalive").click(function(){
+		 if($("#isalive").is(":checked")){
+			 $("#deathdate").attr("disabled", "disabled");
+		 } else {
+			 $("#deathdate").removeAttr("disabled");
+		 }
+	 });
  });
- 
  
 </script>
