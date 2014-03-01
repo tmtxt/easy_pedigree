@@ -156,6 +156,14 @@ var insert_people = function(){
 		{
 			name: 'F3.1 inside',
 			gender:app_const.CONST_GENDER_MALE
+		},
+		{
+			name: 'F2.2 outside',
+			gender:app_const.CONST_GENDER_MALE
+		},
+		{
+			name: 'F3.2 inside',
+			gender:app_const.CONST_GENDER_MALE
 		}
 	])
 		.success(function(){
@@ -203,6 +211,11 @@ var insert_marriage = function(){
 				insidePersonId: people[12].id,
 				outsidePersonId: people[13].id,
 				isStillMarriage: true
+			},
+			{
+				insidePersonId: people[10].id,
+				outsidePersonId: people[15].id,
+				isStillMarriage: false
 			}
 		])
 			.success(function(){
@@ -257,6 +270,11 @@ var insert_pedigree = function(){
 				insideParentId: people[12].id,
 				outsideParentId: people[13].id,
 				childId: people[14].id
+			},
+			{
+				insideParentId: people[10].id,
+				outsideParentId: people[15].id,
+				childId: people[16].id
 			}
 		])
 			.success(function(){
