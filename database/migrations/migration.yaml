@@ -79,3 +79,10 @@ sql: |
         REFERENCES "People" (id) MATCH SIMPLE
         ON UPDATE CASCADE ON DELETE CASCADE
   )
+
+---
+table: People
+from: pd_1
+to: pd_2
+sql: |
+  ALTER TABLE "People" ADD COLUMN "order" integer
