@@ -5,6 +5,7 @@ var tree = require('../actions/tree');
 
 var middleware = function(req, res, next) {
   res.locals.currentUser = req.user;
+	res.locals.title = "Easy Pedigree";
   next();
 };
 
