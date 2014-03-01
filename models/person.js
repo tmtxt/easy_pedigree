@@ -28,7 +28,7 @@ var model =
       defaultValue: null
     },
     isAlive: {
-      type: 'BOOLEAN',
+      type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
     },

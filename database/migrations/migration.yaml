@@ -78,11 +78,18 @@ sql: |
     CONSTRAINT fk_marriage_outside FOREIGN KEY ("outsidePersonId")
         REFERENCES "People" (id) MATCH SIMPLE
         ON UPDATE CASCADE ON DELETE CASCADE
-  )
+  );
 
 ---
 table: People
 from: pd_1
 to: pd_2
 sql: |
-  ALTER TABLE "People" ADD COLUMN "order" integer
+  ALTER TABLE "People" ADD COLUMN "order" integer;
+
+---
+table: People
+from: pd_2
+to: pd_3
+sql: |
+  ALTER TABLE "People" ALTER COLUMN "isAlive" TYPE character(50);
