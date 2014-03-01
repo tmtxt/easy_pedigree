@@ -98,35 +98,40 @@ function getFamilyTree(){
 	return findRootPerson()
 		.then(function(root){
 			return findDescendants(root)
-			.then(function(descendants){
+				.then(function(descendants){
 
-				// init the tree
-				var tree = root;
-				tree.children = {};
-				
-				// construct the tree
-				for(var i = 0; i < descendants.length; i++) {
-					// get the current person
-					var currentPerson = {
-						id: descendants[i].childid,
-						name: descendants[i].childname,
-						children: {}
-					};
+					// init the tree
+					var tree = root;
+					tree.children = {};
+					
+					// construct the tree
+					for(var i = 0; i < descendants.length; i++) {
+						// get the current person
+						var currentPerson = {
+							id: descendants[i].childid,
+							name: descendants[i].childname,
+							children: {}
+						};
 
-					// append it to the parent
-					appendChild(tree, descendants[i].path, currentPerson);
-				}
-				
-				return tree;
-			});
+						// append it to the parent
+						appendChild(tree, descendants[i].path, currentPerson);
+					}
+					
+					return tree;
+				});
 		});
 }
 
-// var convert = require('../util/convert-tree');
-// getFamilyTree().then(function(tree){
-// 	convert.childrenObjectToArray(tree);
-// 	console.log(tree.children[2].children);
-// });
+// return a promise
+function findMaxDepth(){
+	var query = rq("find_max_depth");
+	return findRootPerson()
+		.then(function(root){
+			return sequelize.query(query, null,
+														 {logging: console.log, plain: true, raw: true},
+														 {rootId: root.id });
+		});
+}
 
 function appendChild(root, path, child){
 	var parent = root;
