@@ -1,3 +1,84 @@
 <% layout('layout-content-container-full') -%>
 
+<form role="form" method="post" action="/actions/add-member">
+
+	<div class="row">
+		<div class="col-md-6">
+			
+			<div class="form-group">
+				<label for="name">Full Name</label>
+				<input type="email" name="name" class="form-control" id="name"
+							 placeholder="Full name">
+			</div>
+			
+			<div class="form-group">
+				<label for="">Birth Date</label>
+				<input type="text" class="form-control" id="birthdate" name="birthdate">
+			</div>
+
+			<div class="checkbox">
+				<label>
+					<input name="isalive" id="isalive" type="checkbox" value="">
+					Is Alive?
+				</label>
+			</div>
+
+			<div class="form-group">
+				<label for="">Death Date</label>
+				<input type="text" class="form-control" id="deathdate" name="deathdate">
+			</div>
+
+			<div class="form-group">
+				<label for="">Job</label>
+				<input type="text" class="form-control" id="job" name="job">
+			</div>
+
+			<div class="form-group">
+				<label for="">Picture</label>
+				<input type="text" class="form-control" id="picture" name="picture">
+			</div>
+
+			<div class="form-group">
+				<label for="">Phone No</label>
+				<input type="text" class="form-control" id="phoneno" name="phoneno">
+			</div>
+			
+		</div>
+		<div class="col-md-6">
+
+			
+
+			<div class="form-group">
+				<label for="">Address</label>
+				<textarea class="form-control" name="address" id="address" rows="3"></textarea>
+			</div>
+
+			
+
+			<div class="form-group">
+				<label for="">Gender</label>
+				<select class="form-control" name="gender" id="gender">
+					<option>Male</option>
+					<option>Female</option>
+					<option>Other</option>
+				</select>
+			</div>
+
+			
+
+			<div class="form-group">
+				<label for="">ID Card</label>
+				<input type="text" class="form-control" id="idcard" name="idcard">
+			</div>
+
+			<div class="form-group">
+				<label for="">Note</label>
+				<textarea class="form-control" name="note" id="note" rows="4"></textarea>
+			</div>
+			
+		</div>
+	</div>
+	
+  <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+</form>
 

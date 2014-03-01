@@ -3,3 +3,7 @@ exports.add_member_render = function (req, res){
 		title: "Add member"
 	});
 };
+
+exports.add_member_insert = function (req, res){
+	
+};
