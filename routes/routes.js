@@ -2,6 +2,7 @@ var homepage = require('../actions/homepage');
 var authenticate = require('../actions/authenticate');
 var user = require('../actions/user');
 var tree = require('../actions/tree');
+var add_memeber = require('../actions/add-member.js');
 
 var middleware = function(req, res, next) {
   res.locals.currentUser = req.user;
@@ -20,6 +21,7 @@ exports.do_routing = function(app){
 
 	// routes for views
 	app.get('/views/tree', middleware, tree.tree_get_render);
+	app.get('/views/add-member', middleware, add_memeber.add_member_render);
 
 	// routes for getting data
 	app.get('/data/tree-data', middleware, tree.tree_get_data);
