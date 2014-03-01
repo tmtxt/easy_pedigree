@@ -10,7 +10,23 @@ exports.add_member_render = function (req, res){
 };
 
 exports.add_member_insert = function (req, res){
-	var birthdate = moment(req.body.birthdate, "DD/MM/YYYY");
+
+	var body = req.body;
+	var format = "DD/MM/YYYY";
+	
+	// init the data
+	var name = !!body.name ? body.name : null;
+	var birthdate = !!body.birthDate ? moment(body.birthdate, format) : null;
+	var isalive = body.isalive;
+	var deathdate = isalive ? null :
+		(!!body.deathdate ? moment(body.deathdate, format) : null);
+	var job = !!body.job ? body.job : null;
+	var picture = !!body.picture ? body.picture : null;
+	var phoneno = !!body.phoneno ? body.phoneno : null;
+	var address = !!body.address ? body.address : null;
+	var gender = !!body.gender ? body.gender : null;
+	var idcard = !!body.idcard ? body.idcard : null;
+	var note = !!body.note ? body.note : null;
 
 	// start a transaction
 	sequelize.transaction(function(t){
@@ -18,7 +34,7 @@ exports.add_member_insert = function (req, res){
 		// build the Person model
 		Person.model.build({
 			name: req.body.name,
-			birthDate: req.body.birthdate,
+			birthDate: birthdate,
 			deathDate: null,
 			isAlive: req.body.isalive,
 			job: req.body.job,
@@ -34,7 +50,7 @@ exports.add_member_insert = function (req, res){
 			console.log('ok');
 		}).error(function(err){
 			t.rollback();
-			console.log('err');
+			console.log(err);
 		});
 		
 	});
