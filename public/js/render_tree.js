@@ -7,10 +7,12 @@ var h = w;
 
 var tree, diagonal, vis;
 
+var link_height = 150;
+
 d3.json("/tree-max-depth", function(max_depth){
 
 	var tree_max_depth = max_depth.max;
-	h = (tree_max_depth + 1) * 180;
+	h = (tree_max_depth + 1) * link_height;
 	
 	tree = d3.layout.tree()
 		.size([h, w]);
@@ -51,7 +53,7 @@ function update(source) {
   var nodes = tree.nodes(root).reverse();
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 180; });
+  nodes.forEach(function(d) { d.y = d.depth * link_height; });
 
 	// update the x position
 	var ratio = root.x / (w/2);
