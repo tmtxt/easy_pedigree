@@ -23,7 +23,7 @@ vis = d3.select("#body").append("svg:svg")
 	.append("svg:g")
 	.attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-d3.json("/tree-data", function(json) {
+d3.json("/data/tree-data", function(json) {
 	root = json;
 	root.x0 = w / 2;
 	root.y0 = 0;

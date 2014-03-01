@@ -14,11 +14,15 @@ exports.do_routing = function(app){
 	// rendering
   app.get('/', middleware, homepage.index);
   app.get('/users', middleware, user.list);
-  app.get('/login', middleware, authenticate.login_get);
 	app.get('/logout', middleware, authenticate.logout);
-	app.get('/tree', middleware, tree.tree_get_render);
-	app.get('/tree-data', middleware, tree.tree_get_data);
-	app.get('/tree-max-depth', middleware, tree.tree_get_max_depth);
+  app.get('/login', middleware, authenticate.login_get);
+
+	// routes for views
+	app.get('/views/tree', middleware, tree.tree_get_render);
+
+	// routes for getting data
+	app.get('/data/tree-data', middleware, tree.tree_get_data);
+	app.get('/data/tree-max-depth', middleware, tree.tree_get_max_depth);
 
 	// processing request
   app.post('/login', middleware, authenticate.login_post);
