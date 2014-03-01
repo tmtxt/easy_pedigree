@@ -130,7 +130,10 @@ function findMaxDepth(){
 			return sequelize.query(query, null,
 														 {logging: console.log, plain: true, raw: true},
 														 {rootId: root.id });
-		});
+		})
+	.then(function(depth){
+		return depth[0];
+	});
 }
 
 function appendChild(root, path, child){
@@ -146,3 +149,4 @@ exports.model = model;
 exports.getFamilyTree = getFamilyTree;
 exports.findRootPerson = findRootPerson;
 exports.findDescendants = findDescendants;
+exports.findMaxDepth = findMaxDepth;
