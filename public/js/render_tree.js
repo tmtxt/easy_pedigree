@@ -5,23 +5,32 @@ root;
 var w = $("#body").width();
 var h = w;
 
-var tree = d3.layout.tree()
-  .size([h, w]);
+var tree, diagonal, vis;
 
-var diagonal = d3.svg.diagonal()
-  .projection(function(d) { return [d.x, d.y]; });
+d3.json("/tree-max-depth", function(max_depth){
 
-var vis = d3.select("#body").append("svg:svg")
-  .attr("width", w)
-  .attr("height", h)
-  .append("svg:g")
-  .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+	var tree_max_depth = max_depth.max;
+	h = (tree_max_depth + 1) * 180;
+	
+	tree = d3.layout.tree()
+		.size([h, w]);
 
-d3.json("/tree-data", function(json) {
-	console.log(json);
+	diagonal = d3.svg.diagonal()
+		.projection(function(d) { return [d.x, d.y]; });
+
+	vis = d3.select("#body").append("svg:svg")
+		.attr("width", w)
+		.attr("height", h)
+		.append("svg:g")
+		.attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+	d3.json("/tree-data", function(json) {
+	
   root = json;
-  root.x0 = 0;
-  root.y0 = w / 2;
+  root.x0 = w / 2;
+  root.y0 = 0;
+
+		
 
   function toggleAll(d) {
     if (d.children) {
@@ -33,17 +42,40 @@ d3.json("/tree-data", function(json) {
   // Initialize the display to show a few nodes.
   root.children.forEach(toggleAll);
 
+		
+	
   update(root);
+
+		
 });
+});
+
+function convertPosition(nodes){
+	var ratio = 360 / (w/2);
+
+	for(var i = 0; i < nodes.length; i++) {
+		nodes[i].x = nodes[i].x / ratio;
+		nodes[i].x0 = nodes[i].x0 / ratio;
+	}
+}
 
 function update(source) {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
+	
+	
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse();
 
+	// convert the position from 360 radius to co-ordinate on screen
+//	convertPosition(nodes);
+
+	var ratio = root.x / (w/2);
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
+	nodes.forEach(function(d) {
+		d.x = d.x / ratio;
+	});
 
   // Update the nodes…
   var node = vis.selectAll("g.node")
@@ -53,6 +85,8 @@ function update(source) {
   var nodeEnter = node.enter().append("svg:g")
     .attr("class", "node")
     .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; });
+
+	
 
   nodeEnter.append("svg:circle")
     .attr("r", 1e-6)
@@ -67,10 +101,13 @@ function update(source) {
     .style("fill-opacity", 1e-6)
 		.on("click", function(d) {console.log(d);});
 
+	
+	
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
     .duration(duration)
-    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+    .attr("transform", function(d) { 
+															return "translate(" + d.x + "," + d.y + ")"; });
 
   nodeUpdate.select("circle")
     .attr("r", 4.5)
