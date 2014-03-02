@@ -18,7 +18,7 @@ exports.add_member_insert = function (req, res){
 	var name = !!body.name ? body.name : null;
 	var birthdate = !!body.birthDate ? moment(body.birthdate, format) : null;
 	var isalive = body.isalive;
-	var deathdate = isalive ? null :
+	var deathdate = isalive != "Death" ? null :
 		(!!body.deathdate ? moment(body.deathdate, format) : null);
 	var job = !!body.job ? body.job : null;
 	var picture = !!body.picture ? body.picture : null;
