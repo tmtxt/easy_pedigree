@@ -107,5 +107,17 @@ sql: |
   OR (father_id IS NOT NULL AND mother_id IS NULL))
   );
 
-  CREATE UNIQUE INDEX un_hierarchy_relations_father ON hierarchy_relations (father_id) WHERE mother_id IS NULL;
-  CREATE UNIQUE INDEX un_hierarchy_relations_mother ON hierarchy_relations (mother_id) WHERE father_id IS NULL;
+  CREATE UNIQUE INDEX un_hierarchy_relations_father
+  ON hierarchy_relations (father_id, child_id)WHERE mother_id IS NULL;
+  CREATE UNIQUE INDEX un_hierarchy_relations_mother
+  ON hierarchy_relations (mother_id, child_id) WHERE father_id IS NULL;
+
+---
+table: hierarchy_relations
+from: pd_1
+to: pd_2
+sql: |
+  ALTER TABLE hierarchy_relations
+  ADD CONSTRAINT fk_hierarchy_relations_child
+  FOREIGN KEY (child_id) REFERENCES people(id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE;
