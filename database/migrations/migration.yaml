@@ -121,3 +121,22 @@ sql: |
   ADD CONSTRAINT fk_hierarchy_relations_child
   FOREIGN KEY (child_id) REFERENCES people(id) MATCH SIMPLE
   ON UPDATE CASCADE ON DELETE CASCADE;
+
+---
+table: pedigrees
+from: null
+to: pd_1
+sql: |
+  CREATE TABLE pedigrees
+  (
+  root_id BIGINT NOT NULL,
+  note TEXT,
+  information TEXT,
+  place CHARACTER VARYING,
+
+  CONSTRAINT pk_pedigrees PRIMARY KEY (root_id),
+
+  CONSTRAINT fk_pedigrees_root FOREIGN KEY (root_id)
+  REFERENCES people(id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE
+  );
