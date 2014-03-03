@@ -71,6 +71,13 @@ sql: |
   CREATE UNIQUE INDEX un_marriage_relations_wife ON marriage_relations (wife_id) WHERE husband_id IS NULL;
 
 ---
+table: marriage_relations
+from: pd_1
+to: pd_2
+sql: |
+  ALTER TABLE marriage_relations ADD COLUMN "order" SMALLINT;
+
+---
 table: hierarchy_relations
 from: null
 to: pd_1
