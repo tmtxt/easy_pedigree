@@ -1,6 +1,7 @@
 {
-  "Users": "pd_1",
-	"People": "pd_3",
-	"PedigreeRelations": "pd_1",
-	"MarriageRelations": "pd_1"
+  "users": "pd_1",
+	"people": "pd_1",
+	"marriage_relations": "pd_2",
+  "people_hierarchy_relations": "pd_2",
+  "pedigrees": "pd_1"
 }

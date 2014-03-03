@@ -1,95 +1,142 @@
 ---
-table: Users
+table: users
 from: null
 to: pd_1
 sql: |
-  CREATE TABLE "Users"
+  CREATE TABLE users
   (
-    id serial NOT NULL,
-    password text NOT NULL,
-    username character varying NOT NULL,
-    CONSTRAINT pk_users PRIMARY KEY (id),
-    CONSTRAINT un_users UNIQUE (username)
+  id SERIAL NOT NULL,
+  password TEXT NOT NULL,
+  username CHARACTER VARYING NOT NULL,
+  CONSTRAINT pk_users PRIMARY KEY (id),
+  CONSTRAINT un_users UNIQUE (username)
   );
 
 ---
-table: People
+table: people
 from: null
 to: pd_1
 sql: |
-  CREATE TABLE "People"
+  CREATE TABLE people
   (
-    id serial NOT NULL,
-    name character varying NOT NULL,
-    "birthDate" date,
-    "deathDate" date,
-    "isAlive" boolean,
-    job character varying,
-    address character varying,
-    picture character varying,
-    gender character varying,
-    "phoneNo" bit varying,
-    "idCard" bit varying,
-    note text,
-    CONSTRAINT pk_people PRIMARY KEY (id)
+  id serial NOT NULL,
+  name CHARACTER VARYING NOT NULL,
+  birth_date DATE,
+  death_date DATE,
+  alive_status BOOLEAN,
+  job CHARACTER VARYING,
+  address CHARACTER VARYING,
+  picture CHARACTER VARYING,
+  gender CHARACTER VARYING,
+  phone_no BIT VARYING,
+  id_card BIT VARYING,
+  note TEXT,
+
+  CONSTRAINT pk_people PRIMARY KEY (id)
   );
 
 ---
-table: PedigreeRelations
+table: marriage_relations
 from: null
 to: pd_1
 sql: |
-  CREATE TABLE "PedigreeRelations"
+  CREATE TABLE marriage_relations
   (
-    "insideParentId" integer NOT NULL,
-    "outsideParentId" integer NOT NULL,
-    "childId" integer NOT NULL,
-    
-    CONSTRAINT pk_pedigree PRIMARY KEY ("insideParentId", "outsideParentId", "childId"),
-    
-    CONSTRAINT fk_pedigree_child FOREIGN KEY ("childId")
-        REFERENCES "People" (id) MATCH SIMPLE
-        ON UPDATE NO ACTION ON DELETE NO ACTION,
-    CONSTRAINT fk_pedigree_inside FOREIGN KEY ("insideParentId")
-        REFERENCES "People" (id) MATCH SIMPLE
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_pedigree_outside FOREIGN KEY ("outsideParentId")
-        REFERENCES "People" (id) MATCH SIMPLE
-        ON UPDATE CASCADE ON DELETE CASCADE
+  id bigserial NOT NULL,
+  husband_id BIGINT,
+  wife_id BIGINT,
+  start_date DATE,
+  end_date DATE,
+  status SMALLINT,
+  note TEXT,
+
+  CONSTRAINT pk_marriage_relations PRIMARY KEY (id),
+
+  CONSTRAINT fk_marriage_relations_husband FOREIGN KEY (husband_id)
+  REFERENCES people (id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE,
+
+  CONSTRAINT fk_marriage_relations_wife FOREIGN KEY (wife_id)
+  REFERENCES people (id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE,
+
+  CONSTRAINT un_marriage_relations_compound UNIQUE (husband_id, wife_id),
+
+  CHECK ((husband_id is not null and wife_id is not null)
+  or (husband_id is null and wife_id is not null)
+  or (husband_id is not null and wife_id is null))
   );
 
----
-table: MarriageRelations
-from: null
-to: pd_1
-sql: |
-  CREATE TABLE "MarriageRelations"
-  (
-    "insidePersonId" integer NOT NULL, -- the ID of the person inside the family pedigree (natural children)
-    "outsidePersonId" integer NOT NULL, -- the Id of the outside person
-    "startDate" date, -- starting date of the marriage
-    "endDate" date, -- the end date of the marriage
-    note text,
-    "isStillMarriage" boolean,
-    CONSTRAINT pk_marriage PRIMARY KEY ("insidePersonId", "outsidePersonId"),
-    CONSTRAINT fk_marriage_inside FOREIGN KEY ("insidePersonId")
-        REFERENCES "People" (id) MATCH SIMPLE
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_marriage_outside FOREIGN KEY ("outsidePersonId")
-        REFERENCES "People" (id) MATCH SIMPLE
-        ON UPDATE CASCADE ON DELETE CASCADE
-  );
+  CREATE UNIQUE INDEX un_marriage_relations_husband ON marriage_relations (husband_id) WHERE wife_id IS NULL;
+  CREATE UNIQUE INDEX un_marriage_relations_wife ON marriage_relations (wife_id) WHERE husband_id IS NULL;
 
 ---
-table: People
+table: marriage_relations
 from: pd_1
 to: pd_2
 sql: |
-  ALTER TABLE "People" ADD COLUMN "order" integer;
+  ALTER TABLE marriage_relations ADD COLUMN "order" SMALLINT;
 
 ---
-table: People
-from: pd_2
-to: pd_3
+table: people_hierarchy_relations
+from: null
+to: pd_1
 sql: |
-  ALTER TABLE "People" ALTER COLUMN "isAlive" TYPE character(50);
+  CREATE TABLE people_hierarchy_relations
+  (
+  id BIGSERIAL NOT NULL,
+  father_id BIGINT,
+  mother_id BIGINT,
+  child_id BIGINT NOT NULL,
+  child_order SMALLINT,
+
+  CONSTRAINT pk_people_hierarchy_relations PRIMARY KEY (id),
+
+  CONSTRAINT fk_people_hierarchy_relations_father FOREIGN KEY (father_id)
+  REFERENCES people(id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE,
+
+  CONSTRAINT fk_people_hierarchy_relations_mother FOREIGN KEY (mother_id)
+  REFERENCES people(id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE,
+
+  CONSTRAINT un_people_hierarchy_relations_compound UNIQUE (father_id, mother_id, child_id),
+
+  CHECK ((father_id IS NOT NULL AND mother_id IS NOT NULL)
+  OR (father_id IS NULL AND mother_id IS NOT NULL)
+  OR (father_id IS NOT NULL AND mother_id IS NULL))
+  );
+
+  CREATE UNIQUE INDEX un_people_hierarchy_relations_father
+  ON people_hierarchy_relations (father_id, child_id)WHERE mother_id IS NULL;
+  CREATE UNIQUE INDEX un_people_hierarchy_relations_mother
+  ON people_hierarchy_relations (mother_id, child_id) WHERE father_id IS NULL;
+
+---
+table: people_hierarchy_relations
+from: pd_1
+to: pd_2
+sql: |
+  ALTER TABLE people_hierarchy_relations
+  ADD CONSTRAINT fk_people_hierarchy_relations_child
+  FOREIGN KEY (child_id) REFERENCES people(id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE;
+
+---
+table: pedigrees
+from: null
+to: pd_1
+sql: |
+  CREATE TABLE pedigrees
+  (
+  root_id BIGINT NOT NULL,
+  note TEXT,
+  information TEXT,
+  place CHARACTER VARYING,
+
+  CONSTRAINT pk_pedigrees PRIMARY KEY (root_id),
+
+  CONSTRAINT fk_pedigrees_root FOREIGN KEY (root_id)
+  REFERENCES people(id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE
+  );
