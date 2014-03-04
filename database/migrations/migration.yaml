@@ -54,7 +54,7 @@ to: pd_1
 sql: |
   CREATE TABLE marriage_relations
   (
-  id bigserial NOT NULL,
+  id BIGSERIAL NOT NULL,
   husband_id BIGINT,
   wife_id BIGINT,
   start_date DATE,
@@ -152,3 +152,13 @@ sql: |
   REFERENCES people(id) MATCH SIMPLE
   ON UPDATE CASCADE ON DELETE CASCADE
   );
+
+---
+table: pedigrees
+from: pd_1
+to: pd_2
+sql: |
+  ALTER TABLE pedigrees DROP CONSTRAINT pk_pedigrees;
+  ALTER TABLE pedigrees ADD COLUMN id BIGSERIAL NOT NULL;
+  ALTER TABLE pedigrees ADD CONSTRAINT pk_pedigrees PRIMARY KEY (id);
+  CREATE UNIQUE INDEX un_pedigrees_root ON pedigrees (root_id);
