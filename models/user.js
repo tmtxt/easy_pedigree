@@ -20,5 +20,5 @@ exports.model =
     }
   }, {
 		timestamps: false,
-		tableName: "Users"
+		tableName: "users"
 	});
