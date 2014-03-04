@@ -81,7 +81,7 @@ var model =
     },
     
 		timestamps: false,
-		tableName: "People"
+		tableName: "people"
 	});
 
 // return a promise
