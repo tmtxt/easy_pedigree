@@ -2,8 +2,8 @@
 // from that node
 var Sequelize = require('sequelize');
 var sequelize = require('../database/sequelize-instance');
-var PedigreeRelation = require("./pedigree-relation");
-var MarriageRelation = require("./marriage-relation");
+var PeopleHierarchyRelations = require("./people-hierarchy-relations");
+var MarriageRelations = require("./marriage-relations");
 var rq = require('../util/read-query');
 
 var model =
@@ -14,23 +14,19 @@ var model =
     },
     name: {
       type: Sequelize.STRING,
-      allowNull: false,
-      defaultValue: null
+      allowNull: false
     },
-    birthDate: {
+    birth_date: {
       type: Sequelize.DATE,
-      allowNull: true,
-      defaultValue: null
+      allowNull: true
     },
-    deathDate: {
+    death_date: {
       type: Sequelize.DATE,
-      allowNull: true,
-      defaultValue: null
+      allowNull: true
     },
-    isAlive: {
-      type: Sequelize.STRING,
-      allowNull: true,
-      defaultValue: null
+    alive_status: {
+      type: Sequelize.INTEGER,
+      allowNull: true
     },
     job: {
       type: Sequelize.STRING,
@@ -52,12 +48,12 @@ var model =
       allowNull: true,
       defaultValue: null
     },
-    phoneNo: {
+    phone_no: {
       type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
     },
-    idCard: {
+    id_card: {
       type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null
@@ -68,6 +64,22 @@ var model =
       defaultValue: null
     }
   }, {
+    // getters and setters
+    getterMethods: {
+      birthDate: function(){return this.getDataValue("birth_date");},
+      deathDate: function(){return this.getDataValue("death_date");},
+      aliveStatus: function(){return this.getDataValue("alive_status");},
+      phoneNo: function(){return this.getDataValue("phone_no");},
+      idCard: function(){return this.getDataValue("id_card");}
+    },
+    setterMethods: {
+      birthDate: function(v){this.setDataValue("birth_date", v);},
+      deathDate: function(v){this.setDataValue("death_date", v);},
+      aliveStatus: function(v){this.setDataValue("alive_status", v);},
+      phoneNo: function(v){this.setDataValue("phone_no", v);},
+      idCard: function(v){this.setDataValue("id_card", v);}
+    },
+    
 		timestamps: false,
 		tableName: "People"
 	});
