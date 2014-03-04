@@ -36,6 +36,18 @@ sql: |
   );
 
 ---
+table: people
+from: pd_1
+to: pd_2
+sql: |
+  ALTER TABLE people ALTER COLUMN alive_status TYPE SMALLINT
+  USING
+  CASE
+  WHEN false THEN 0
+  ELSE 1
+  END;
+
+---
 table: marriage_relations
 from: null
 to: pd_1
