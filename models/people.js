@@ -85,6 +85,7 @@ var model =
 	});
 
 // return a promise
+// TODO: update findRootPerson to receive a pedigree id and find root of that pedigree
 function findRootPerson(){
 	var query = rq("find_root");
 	return sequelize.query(query, null, {logging: console.log, plain: true, raw: true});
