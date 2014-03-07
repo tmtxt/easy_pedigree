@@ -196,3 +196,38 @@ sql: |
   WHERE ph.mother_id = p1.id
   AND ph.father_id = p2.id
   AND ph.child_id = p3.id;
+
+---
+table: people_hierarchy_relations_union
+from: pd_1
+to: pd_2
+sql: |
+  DROP VIEW people_hierarchy_relations_union;
+  CREATE VIEW people_hierarchy_relations_union AS
+  SELECT
+  ph.father_id AS inside_parent_id,
+  p1.name AS inside_parent_name,
+  ph.mother_id AS outside_parent_id,
+  p2.name AS outside_parent_name,
+  ph.child_id AS child_id,
+  p3.name AS child_name,
+  p3.picture AS child_picture,
+  ph.child_order AS child_order
+  FROM people_hierarchy_relations AS ph, people AS p1, people AS p2, people AS p3
+  WHERE ph.father_id = p1.id
+  AND ph.mother_id = p2.id
+  AND ph.child_id = p3.id
+  UNION
+  SELECT
+  ph.mother_id AS inside_parent_id,
+  p1.name AS inside_parent_name,
+  ph.father_id AS outside_parent_id,
+  p2.name AS outside_parent_name,
+  ph.child_id AS child_id,
+  p3.name AS child_name,
+  p3.picture AS child_picture,
+  ph.child_order AS child_order
+  FROM people_hierarchy_relations AS ph, people AS p1, people AS p2, people AS p3
+  WHERE ph.mother_id = p1.id
+  AND ph.father_id = p2.id
+  AND ph.child_id = p3.id;

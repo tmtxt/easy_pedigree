@@ -1,3 +1,4 @@
+// some varables
 var m = [20, 0, 20, 0],
 i = 0,
 root;
@@ -78,6 +79,14 @@ function update(source) {
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6)
 		.on("click", function(d) {console.log(d);});
+
+  // append picture
+  nodeEnter.append("svg:image")
+    .attr("xlink:href", function(d){ return "/member_images/" + d.picture; })
+  .attr("x", -30)
+  .attr("y", 10)
+  .attr("height", "50px")
+  .attr("width", "50px");
 
 	// compute the new tree height
 	var currentMaxDepth = 0;
