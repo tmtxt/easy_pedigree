@@ -1,21 +1,24 @@
-WITH RECURSIVE nodes(insideParentId, insideParentName, outsideParentId, outsideParentName, childId, childName, childPicture, path) AS (
+WITH RECURSIVE nodes(
+     insideParentId,
+     insideParentName,
+     outsideParentId,
+     outsideParentName,
+     childId,
+     childName, path) AS (
 	SELECT
-		r."insideParentId", p1."name",
-		r."outsideParentId", p2."name",
-		r."childId", p3."name", p3."picture",
-		ARRAY[r."insideParentId"]
-	FROM "PedigreeRelations" AS r, "People" AS p1, "People" AS p2, "People" AS p3
-	WHERE r."insideParentId" = :rootId
-	AND p1."id" = r."insideParentId" AND p2."id" = r."outsideParentId" AND p3."id" = r."childId"
+		r."inside_parent_id", r."inside_parent_name",
+		r."outside_parent_id", r."outside_parent_name",
+		r."child_id", r."child_name",
+		ARRAY[r."inside_parent_id"]
+	FROM "people_hierarchy_relations_union" AS r
+	WHERE r."inside_parent_id" = :rootId
 	UNION ALL
 	SELECT
-		r."insideParentId", p1."name",
-		r."outsideParentId", p2."name",
-		r."childId", p3."name", p3."picture",
-		path || r."insideParentId"
-	FROM "PedigreeRelations" AS r, "People" AS p1, "People" AS p2, "People" AS p3,
-		nodes AS nd
-	WHERE r."insideParentId" = nd.childId
-	AND p1."id" = r."insideParentId" AND p2."id" = r."outsideParentId" AND p3."id" = r."childId"
+		r."inside_parent_id", r."inside_parent_name",
+		r."outside_parent_id", r."outside_parent_name",
+		r."child_id", r."child_name",
+		path || r."inside_parent_id"
+	FROM "people_hierarchy_relations_union" AS r, nodes AS nd
+	WHERE r."inside_parent_id" = nd.childId
 )
 SELECT * FROM nodes;
