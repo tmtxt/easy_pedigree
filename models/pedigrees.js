@@ -3,8 +3,12 @@ var sequelize = require('../database/sequelize-instance');
 
 var model =
   sequelize.define('Pedigrees', {
-    root_id : {
+    id: {
       primaryKey: true,
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    root_id : {
       allowNull: false,
       type: Sequelize.INTEGER,
       references: "People",
