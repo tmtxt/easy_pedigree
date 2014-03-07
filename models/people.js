@@ -123,6 +123,7 @@ function getFamilyTree(){
 						var currentPerson = {
 							id: descendants[i].childid,
 							name: descendants[i].childname,
+              picture: descendants[i].childpicture,
 							children: {}
 						};
 
