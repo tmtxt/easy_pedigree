@@ -22,7 +22,7 @@ vis = d3.select("#body").append("svg:svg")
 	.attr("width", w)
 	.attr("height", h)
 	.append("svg:g")
-	.attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+	.attr("transform", "translate(" + m[3] + "," + 80 + ")");
 
 d3.json("/data/tree-data", function(json) {
 	root = json;
@@ -84,9 +84,10 @@ function update(source) {
 		.on("click", function(d) { toggle(d); update(d); });
 
   nodeEnter.append("svg:text")
-    .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+    //.attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+    .attr("y", -19)
     .attr("dy", ".35em")
-    .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+    .attr("text-anchor", "middle")
     .text(function(d) { return d.name; })
     .style("fill-opacity", 1e-6)
 		.on("click", function(d) {console.log(d);});
@@ -94,8 +95,8 @@ function update(source) {
   // append picture
   nodeEnter.append("svg:image")
     .attr("xlink:href", function(d){ return "/member_images/" + d.picture; })
-    .attr("x", -30)
-    .attr("y", 10)
+    .attr("x", -25)
+    .attr("y", -78)
     .attr("height", "50px")
     .attr("width", "50px");
 
@@ -122,7 +123,7 @@ function update(source) {
 			return "translate(" + d.x + "," + d.y + ")"; });
 
   nodeUpdate.select("circle")
-    .attr("r", 4.5)
+    .attr("r", 10)
     .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
   nodeUpdate.select("text")
