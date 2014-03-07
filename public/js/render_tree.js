@@ -43,6 +43,8 @@ d3.json("/data/tree-data", function(json) {
 	update(root);
 });
 
+
+
 function update(source) {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
@@ -53,9 +55,18 @@ function update(source) {
   nodes.forEach(function(d) { d.y = d.depth * link_height; });
 
 	// update the x position
-	var ratio = root.x / (w/2);
-	nodes.forEach(function(d) {
-		d.x = d.x / ratio;
+  var offsetLeft = 0;
+  var ratio;
+  if(nodes.length == 1){
+    ratio = root.x / (w/2);
+  } else {
+    offsetLeft = d3.min(nodes, function(d) {return d.x;});
+    offsetLeft -= 50;
+    ratio = (root.x - offsetLeft) / (w/2);
+  }
+
+  nodes.forEach(function(d) {
+		d.x = (d.x - offsetLeft) / ratio;
 	});
 
   // Update the nodes…
@@ -83,10 +94,10 @@ function update(source) {
   // append picture
   nodeEnter.append("svg:image")
     .attr("xlink:href", function(d){ return "/member_images/" + d.picture; })
-  .attr("x", -30)
-  .attr("y", 10)
-  .attr("height", "50px")
-  .attr("width", "50px");
+    .attr("x", -30)
+    .attr("y", 10)
+    .attr("height", "50px")
+    .attr("width", "50px");
 
 	// compute the new tree height
 	var currentMaxDepth = 0;
