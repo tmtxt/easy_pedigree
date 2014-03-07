@@ -121,9 +121,9 @@ function getFamilyTree(){
 					for(var i = 0; i < descendants.length; i++) {
 						// get the current person
 						var currentPerson = {
-							id: descendants[i].childid,
-							name: descendants[i].childname,
-              picture: descendants[i].childpicture,
+							id: descendants[i].childId,
+							name: descendants[i].childName,
+              picture: descendants[i].childPicture,
 							children: {}
 						};
 
