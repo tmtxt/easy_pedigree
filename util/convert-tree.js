@@ -14,7 +14,12 @@ function childrenObjectToArray (tree){
 			childrenObjectToArray(childTree);
 			children.push(childTree);
 		}
-		tree.children = children;
+    if(children.length === 0){
+      tree.children = null;
+    } else {
+      tree.children = children;
+    }
+		
 	}
 }
 
