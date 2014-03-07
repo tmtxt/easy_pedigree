@@ -1,4 +1,4 @@
-var Person = require('../models/person.js');
+var Person = require('../models/people.js');
 var convert_tree = require('../util/convert-tree');
 
 exports.tree_get_render = function(req, res){

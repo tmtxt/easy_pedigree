@@ -1,4 +1,4 @@
-var Person = require('../models/person');
+var Person = require('../models/people');
 var moment = require('moment');
 var Sequelize = require('sequelize');
 var sequelize = require('../database/sequelize-instance');
