@@ -17,12 +17,12 @@ function appendPrefixPath(files, path){
   return result;
 }
 
-gulp.task('default', ['watch'] ,function() {
+gulp.task('default', ['watch-client'] ,function() {
   // place code for your default task here
 });
 
-gulp.task('lint', function(){
-  return gulp.src('*.js')
+gulp.task('lint-client', function(){
+  return gulp.src(appendPrefixPath(clientFiles, 'client'))
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
@@ -51,10 +51,11 @@ gulp.task('browserify', function(){
     .pipe(gulp.dest('public/js_app'));
 });
 
-gulp.task('watch', function() {
-  // browserify client file
-  gulp.watch(appendPrefixPath(clientFiles, 'client'), ['browserify']);
+gulp.task('watch-client', function() {
+  // linting and then browserify client file
+  gulp.watch(appendPrefixPath(clientFiles, 'client'), ['lint-client', 'browserify']);
 
   // and then uglify them
   gulp.watch(appendPrefixPath(clientFiles, 'public/js_app'), ['uglify-client']);
 });
+
