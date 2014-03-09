@@ -12,10 +12,16 @@
     "ejs-locals": "~1.0.2",
     "sequelize": "~1.7.0-rc6",
     "mysql": "~2.0.1",
-		"bcrypt-nodejs": "0.0.3",
-		"passport": "0.2.0",
-		"passport-local": "0.1.6",
-		"pg": "2.11.1",
-		"moment": "*"
+    "bcrypt-nodejs": "0.0.3",
+    "passport": "0.2.0",
+    "passport-local": "0.1.6",
+    "pg": "2.11.1",
+    "moment": "*",
+    "jquery-browserify": "~1.8.1",
+    "jquery": "~2.1.0"
+  },
+  "devDependencies": {
+    "gulp": "~3.5.5",
+    "gulp-uglify": "~0.2.1"
   }
 }
