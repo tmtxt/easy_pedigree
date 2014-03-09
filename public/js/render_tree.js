@@ -18,11 +18,20 @@ tree = d3.layout.tree()
 diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.x, d.y]; });
 
+function zoom() {
+  vis.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
+// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+
 vis = d3.select("#body").append("svg:svg")
 	.attr("width", w)
 	.attr("height", h)
+  .call(zoomListener)
 	.append("svg:g")
-	.attr("transform", "translate(" + m[3] + "," + 80 + ")");
+	.attr("transform", "translate(" + 0 + "," + 80 + ")");
+
 
 d3.json("/data/tree-data", function(json) {
 	root = json;
@@ -84,7 +93,7 @@ function update(source) {
 		.on("click", function(d) { toggle(d); update(d); });
 
   nodeEnter.append("svg:text")
-    //.attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+  //.attr("x", function(d) { return d.children || d._children ? -10 : 10; })
     .attr("y", -19)
     .attr("dy", ".35em")
     .attr("text-anchor", "middle")
