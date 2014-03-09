@@ -17,7 +17,7 @@ function appendPrefixPath(files, path){
   return result;
 }
 
-gulp.task('default', function() {
+gulp.task('default', ['watch'] ,function() {
   // place code for your default task here
 });
 
@@ -27,7 +27,7 @@ gulp.task('lint', function(){
     .pipe(jshint.reporter('default'));
 });
 
-gulp.task('uglify-client',function(){
+gulp.task('uglify-client', function(){
   gulp.src(appendPrefixPath(clientFiles, 'public/js_app'))
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
@@ -41,8 +41,7 @@ gulp.task('uglify-client-lib',function(){
     .pipe(gulp.dest('public/js_app/lib'));
 });
 
-gulp.task('browserify', function(){
-  
+gulp.task('browserify', function(){  
   gulp.src(appendPrefixPath(clientFiles, 'client'))
     .pipe(browserify())
     .on('prebundle', function(bundle){
@@ -53,6 +52,9 @@ gulp.task('browserify', function(){
 });
 
 gulp.task('watch', function() {
+  // browserify client file
   gulp.watch(appendPrefixPath(clientFiles, 'client'), ['browserify']);
+
+  // and then uglify them
   gulp.watch(appendPrefixPath(clientFiles, 'public/js_app'), ['uglify-client']);
 });
