@@ -18,7 +18,8 @@
     "pg": "2.11.1",
     "moment": "*",
     "jquery-browserify": "~1.8.1",
-    "jquery": "~2.1.0"
+    "jquery": "~2.1.0",
+    "d3-browserify": "~3.3.13"
   },
   "devDependencies": {
     "gulp": "~3.5.5",

@@ -4,6 +4,7 @@ i = 0,
 root;
 
 var jquery = require('jquery-browserify');
+var d3 = require('d3-browserify');
 
 var w = jquery("#body").width();
 var h = w;
