@@ -1,9 +1,12 @@
 // some varables
-var m = [20, 0, 20, 0],
+var
 i = 0,
 root;
 
-var w = $("#body").width();
+var jquery = require('jquery-browserify');
+var d3 = require('d3-browserify');
+
+var w = jquery("#body").width();
 var h = w;
 
 var tree, diagonal, vis;
