@@ -2,12 +2,10 @@
 // from that node
 var Sequelize = require('sequelize');
 var sequelize = require('../database/sequelize-instance');
-var PeopleHierarchyRelations = require("./people-hierarchy-relations");
-var MarriageRelations = require("./marriage-relations");
 var rq = require('../util/read-query');
 
 var model =
-	sequelize.define('People', { 
+  sequelize.define('People', { 
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true
@@ -80,82 +78,85 @@ var model =
       idCard: function(v){this.setDataValue("id_card", v);}
     },
     
-		timestamps: false,
-		tableName: "people"
-	});
+    timestamps: false,
+    tableName: "people"
+  });
 
 // return a promise
 // TODO: update findRootPerson to receive a pedigree id and find root of that pedigree
 function findRootPerson(){
-	var query = rq("find_root");
-	return sequelize.query(query, null, {logging: console.log, plain: true, raw: true});
+  var query = rq("find_root");
+  return sequelize.query(query, null, {logging: console.log, plain: true, raw: true});
 }
 
 // return a promise
 function findDescendants(parent){
-	// check the type of parent
-	var parentId;
-	if(typeof parent === 'number'){
-		parentId = parent;
-	} else {
-		parentId = parent.id;
-	}
+  // check the type of parent
+  var parentId;
+  if(typeof parent === 'number'){
+    parentId = parent;
+  } else {
+    parentId = parent.id;
+  }
 
-	var query = rq('find_descendants');
-	return sequelize.query(query, null, {
-		logging: console.log, plain: true, raw: true}, {rootId: parentId});
+  var query = rq('find_descendants');
+  return sequelize.query(query, null, {
+    logging: console.log,
+    plain: true,
+    raw: true
+  }, {rootId: parentId});
 }
 
 // return a promise
 function getFamilyTree(){
-	return findRootPerson()
-		.then(function(root){
-			return findDescendants(root)
-				.then(function(descendants){
+  return findRootPerson()
+    .then(function(root){
+      return findDescendants(root)
+        .then(function(descendants){
 
-					// init the tree
-					var tree = root;
-					tree.children = {};
-					
-					// construct the tree
-					for(var i = 0; i < descendants.length; i++) {
-						// get the current person
-						var currentPerson = {
-							id: descendants[i].childId,
-							name: descendants[i].childName,
+          // init the tree
+          var tree = root;
+          tree.children = {};
+          
+          // construct the tree
+          for(var i = 0; i < descendants.length; i++) {
+            // get the current person
+            var currentPerson = {
+              id: descendants[i].childId,
+              name: descendants[i].childName,
               picture: descendants[i].childPicture,
-							children: {}
-						};
+              children: {}
+            };
 
-						// append it to the parent
-						appendChild(tree, descendants[i].path, currentPerson);
-					}
-					
-					return tree;
-				});
-		});
+            // append it to the parent
+            appendChild(tree, descendants[i].path, currentPerson);
+          }
+          
+          return tree;
+        });
+    });
 }
 
 // return a promise
 function findMaxDepth(){
-	var query = rq("find_max_depth");
-	return findRootPerson()
-		.then(function(root){
-			return sequelize.query(query, null,
-														 {logging: console.log, plain: true, raw: true},
-														 {rootId: root.id });
-		})
-	.then(function(depth){
-		return depth[0];
-	});
+  var query = rq("find_max_depth");
+  return findRootPerson()
+    .then(function(root){
+      return sequelize.query(query, null,
+                             {logging: console.log, plain: true, raw: true},
+                             {rootId: root.id });
+    })
+  .then(function(depth){
+    return depth[0];
+  });
 }
 
 function appendChild(root, path, child){
-	var parent = root;
-	for(var i = 1; i < path.length; i++) {
-		parent = parent.children[path[i]];
-	}
-	parent.children[child.id] = child;
+  var parent = root;
+  for(var i = 1; i < path.length; i++) {
+    parent = parent.children[path[i]];
+  }
+  parent.children[child.id] = child;
 }
 
 // exports
