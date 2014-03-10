@@ -47,7 +47,7 @@ rootSvg = d3.select("#tree-body").append("svg:svg")
 	.attr("width", w)
 	.attr("height", h);
 vis = rootSvg.append("svg:g")
-	.attr("transform", "translate(" + 0 + "," + 80 + ")");
+	.attr("transform", "translate(" + 0 + "," + 0 + ")");
 
 ////////////////////////////////////////////////////////////////////////////////
 // Enable/Disable zoom
@@ -80,8 +80,8 @@ function enableZoom(){
 d3.select("#reset-zoom").on("click", function(){
 
   enableZoom();
-  zoomListener.translate([0,80]).scale(1);
-  zoomListener.event(rootSvg);
+  zoomListener.translate([0,0]).scale(1);
+  zoomListener.event(rootSvg.transition().duration(500));
 
   if(d3.select("#zoom-enable").node().checked === false){
     disableZoom();
@@ -145,6 +145,7 @@ function update(source) {
   }
   nodes.forEach(function(d) {
 		d.x = (d.x - offsetLeft) / ratio;
+    d.y += 80;
 	});
 
   // Update the nodes…
