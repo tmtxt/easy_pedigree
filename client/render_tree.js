@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 // required libraries
 var jquery = require('jquery-browserify');
 var d3 = require('d3-browserify');
@@ -11,19 +12,23 @@ var w = jquery("#body").width(); // width
 var h = 1000;                    // height
 var link_height = 150;           // height of the connection link
 
-// create a tree layout using d3js
-tree = d3.layout.tree()
-	.size([h, w]);
-diagonal = d3.svg.diagonal()
-	.projection(function(d) { return [d.x, d.y]; });
+////////////////////////////////////////////////////////////////////////////////
+// Zoom feature for tree
+// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
 // zoom handler
 function zoom() {
   vis.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
 
-// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+////////////////////////////////////////////////////////////////////////////////
+// basic layout for the tree
+// create a tree layout using d3js
+tree = d3.layout.tree()
+	.size([h, w]);
+diagonal = d3.svg.diagonal()
+	.projection(function(d) { return [d.x, d.y]; });
 
 // create the svg tag and append to the body of the website
 vis = d3.select("#body").append("svg:svg")
@@ -33,6 +38,7 @@ vis = d3.select("#body").append("svg:svg")
 	.append("svg:g")
 	.attr("transform", "translate(" + 0 + "," + 80 + ")");
 
+////////////////////////////////////////////////////////////////////////////////
 // request the tree data from the server and then render
 d3.json("/data/tree-data", function(json) {
 	root = json;
@@ -53,6 +59,19 @@ d3.json("/data/tree-data", function(json) {
 	update(root);
 });
 
+////////////////////////////////////////////////////////////////////////////////
+// Toggle children.
+function toggle(d) {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // update for each toggle
 function update(source) {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
@@ -185,15 +204,4 @@ function update(source) {
     d.x0 = d.x;
     d.y0 = d.y;
   });
-}
-
-// Toggle children.
-function toggle(d) {
-  if (d.children) {
-    d._children = d.children;
-    d.children = null;
-  } else {
-    d.children = d._children;
-    d._children = null;
-  }
 }
