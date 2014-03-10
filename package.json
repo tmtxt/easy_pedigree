@@ -23,7 +23,8 @@
     "jquery-ui-browserify": "~1.11.0-pre-seelio",
     "reactify": "~0.9.1",
     "envify": "~1.2.1",
-    "react": "~0.9.0"
+    "react": "~0.9.0",
+    "underscore": "~1.6.0"
   },
   "devDependencies": {
     "gulp": "~3.5.5",
