@@ -16,11 +16,22 @@ var link_height = 150;           // height of the connection link
 ////////////////////////////////////////////////////////////////////////////////
 // Zoom feature for tree
 // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+var zoomListener = d3.behavior.zoom()
+  .scaleExtent([0.1, 3])
+  .on("zoom", zoomHandler)
+  .on("zoomend", zoomEndHandler);
 
 // zoom handler
-function zoom() {
+function zoomHandler() {
   vis.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
+function zoomStartHandler(){
+  
+}
+
+function zoomEndHandler(){
+  
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +63,7 @@ disableZoom();
 
 // functions for disable and enable zoom
 function disableZoom(){
-  zoomListener.on("zoom", null);
+  zoomListener.on("zoom", null).on("zoomend", null);
   rootSvg.on("mousedown.zoom", null).on("wheel.zoom", null)
     .on("mousemove.zoom", null)
     .on("dblclick.zoom", null)
@@ -60,9 +71,23 @@ function disableZoom(){
 }
 
 function enableZoom(){
-  zoomListener.on("zoom", zoom);
+  zoomListener.on("zoom", zoomHandler).on("zoomend", zoomEndHandler);
   zoomListener(rootSvg);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// Reset zoom
+d3.select("#reset-zoom").on("click", function(){
+
+  enableZoom();
+  zoomListener.translate([0,80]).scale(1);
+  zoomListener.event(rootSvg);
+
+  if(d3.select("#zoom-enable").node().checked === false){
+    disableZoom();
+  }
+    
+});
 
 ////////////////////////////////////////////////////////////////////////////////
 // request the tree data from the server and then render
