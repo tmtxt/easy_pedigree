@@ -6,7 +6,7 @@ var browserify = require('gulp-browserify');
 var react = require('gulp-react');
 
 var clientFiles = ['render_tree'];
-var clientLibFiles = ['jquery', 'd3'];
+var clientLibFiles = ['jquery', 'd3', 'jquery-ui'];
 
 function appendPrefixPath(files, path){
   var result = [];
@@ -46,6 +46,7 @@ gulp.task('browserify', function(){
     .on('prebundle', function(bundle){
       bundle.external('jquery-browserify');
       bundle.external('d3-browserify');
+      bundle.external('jquery-ui-browserify');
     })
     .pipe(gulp.dest('public/js_app'));
 });
