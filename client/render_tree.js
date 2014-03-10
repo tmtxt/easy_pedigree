@@ -2,13 +2,14 @@
 // required libraries
 var jquery = require('jquery-browserify');
 var d3 = require('d3-browserify');
+var underscore = require('underscore');
 
 var i = 0;
 var root; // this is the hierarchy tree
-var tree, diagonal, vis;        // supporting variables for drawing tree
+var tree, diagonal, vis, rootSvg;        // supporting variables for drawing tree
 
 // component size
-var w = jquery("#body").width(); // width
+var w = jquery("#tree-body").width(); // width
 var h = 1000;                    // height
 var link_height = 150;           // height of the connection link
 
@@ -31,12 +32,37 @@ diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.x, d.y]; });
 
 // create the svg tag and append to the body of the website
-vis = d3.select("#body").append("svg:svg")
+rootSvg = d3.select("#tree-body").append("svg:svg")
 	.attr("width", w)
-	.attr("height", h)
-  .call(zoomListener)
-	.append("svg:g")
+	.attr("height", h);
+vis = rootSvg.append("svg:g")
 	.attr("transform", "translate(" + 0 + "," + 80 + ")");
+
+////////////////////////////////////////////////////////////////////////////////
+// Enable/Disable zoom
+d3.select("#zoom-enable").on("change", function(){
+  if(this.checked)
+    enableZoom();
+  else
+    disableZoom();
+});
+
+// disable zoom by default
+disableZoom();
+
+// functions for disable and enable zoom
+function disableZoom(){
+  zoomListener.on("zoom", null);
+  rootSvg.on("mousedown.zoom", null).on("wheel.zoom", null)
+    .on("mousemove.zoom", null)
+    .on("dblclick.zoom", null)
+    .on("touchstart.zoom", null);
+}
+
+function enableZoom(){
+  zoomListener.on("zoom", zoom);
+  zoomListener(rootSvg);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // request the tree data from the server and then render
