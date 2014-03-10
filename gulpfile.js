@@ -1,16 +1,15 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
-var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var browserify = require('gulp-browserify');
-var plumber = require('gulp-plumber');
+var react = require('gulp-react');
 
 var clientFiles = ['render_tree'];
-var clientLibFiles = ['jquery', 'd3'];
+var clientLibFiles = ['jquery', 'd3', 'jquery-ui'];
 
 function appendPrefixPath(files, path){
-  var result = new Array();
+  var result = [];
   for(var i = 0; i < files.length; i++) {
     result.push(path + '/' + files[i] + '.js');
   }
@@ -47,6 +46,7 @@ gulp.task('browserify', function(){
     .on('prebundle', function(bundle){
       bundle.external('jquery-browserify');
       bundle.external('d3-browserify');
+      bundle.external('jquery-ui-browserify');
     })
     .pipe(gulp.dest('public/js_app'));
 });
@@ -59,3 +59,14 @@ gulp.task('watch-client', function() {
   gulp.watch(appendPrefixPath(clientFiles, 'public/js_app'), ['uglify-client']);
 });
 
+gulp.task('react', function () {
+  gulp.src('client/react.jsx')
+    .pipe(react())
+    .pipe(browserify({
+      transform: ['reactify']
+    }))
+    .on('prebundle', function(bundle){
+      bundle.external('react');
+    })
+    .pipe(gulp.dest('public/js_app'));
+});
