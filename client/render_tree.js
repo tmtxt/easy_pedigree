@@ -4,6 +4,10 @@ var jquery = require('jquery-browserify');
 var d3 = require('d3-browserify');
 var underscore = require('underscore');
 
+// js-csp
+var csp = require('js-csp');
+var ch = csp.chan(csp.buffers.dropping(1));
+
 var i = 0;
 var root; // this is the hierarchy tree
 var tree, diagonal, vis, rootSvg;        // supporting variables for drawing tree
@@ -31,8 +35,31 @@ function zoomStartHandler(){
 }
 
 function zoomEndHandler(){
-  
+  csp.putAsync(ch, "value", noOp);
 }
+
+// js csp for determine when the zoom is really end
+function noOp() {}
+
+csp.go(function*() {
+  for(;;){
+    yield csp.take(ch);
+    console.log("START");
+
+    for(;;){
+      var result = yield csp.alts([ch, csp.timeout(500)]);
+      var value = result.value;
+      if(value === csp.CLOSED){
+        console.log("STOP");
+
+        // it really end here, start align the node here
+        
+        break;
+      }
+      
+    }
+  }
+});
 
 ////////////////////////////////////////////////////////////////////////////////
 // basic layout for the tree
