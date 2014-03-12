@@ -3,6 +3,7 @@
 var jquery = require('jquery-browserify');
 var d3 = require('d3-browserify');
 var underscore = require('underscore');
+var math = require('mathjs');
 
 // js-csp
 var csp = require('js-csp');
@@ -10,7 +11,9 @@ var ch = csp.chan(csp.buffers.dropping(1));
 
 var i = 0;
 var root; // this is the hierarchy tree
-var tree, diagonal, vis, rootSvg;        // supporting variables for drawing tree
+var tree, diagonal, vis, rootSvg;        // supporting variables for drawing
+// tree
+var nodesList;
 
 // component size
 var w = jquery("#tree-body").width(); // width
@@ -53,6 +56,7 @@ csp.go(function*() {
         console.log("STOP");
 
         // it really end here, start align the node here
+        alignNode();
         
         break;
       }
@@ -60,6 +64,52 @@ csp.go(function*() {
     }
   }
 });
+
+////////////////////////////////////////////////////////////////////////////////
+// align the node to the center
+function alignNode(){
+  var nodes = nodesList;
+  var minDistance = null;              // min distance to the center
+  var centerX = w/2;
+  var centerY = 80;
+
+  var translateX = zoomListener.translate()[0];
+  var translateY = zoomListener.translate()[1];
+  var scale = zoomListener.scale();
+
+  var nodeX;
+  var nodeY;
+
+  // find the nearest node to the center
+  if(nodes.length > 0){
+    var nearestNode = {};
+    nodeX = nodes[0].x * scale + translateX;
+    nodeY = nodes[0].y * scale + translateY;
+    nodeX = Math.abs(centerX - nodeX);
+    nodeY = Math.abs(centerY - nodeY);
+    nearestNode.distance = Math.sqrt(nodeX*nodeX + nodeY*nodeY);
+    nearestNode.data = nodes[0];
+
+    nodes.forEach(function(d){
+      var distance;
+      nodeX = d.x * scale + translateX;
+      nodeY = d.y * scale + translateY;
+      nodeX = Math.abs(centerX - nodeX);
+      nodeY = Math.abs(centerY - nodeY);
+      distance = Math.sqrt(nodeX*nodeX + nodeY*nodeY);
+      if(distance < nearestNode.distance){
+        nearestNode.distance = distance;
+        nearestNode.data = d;
+      }
+
+      
+    });
+
+    // do something with the nearest node here
+    console.log(nearestNode);
+    
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // basic layout for the tree
@@ -113,7 +163,7 @@ d3.select("#reset-zoom").on("click", function(){
   if(d3.select("#zoom-enable").node().checked === false){
     disableZoom();
   }
-    
+  
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,6 +206,7 @@ function update(source) {
 
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse();
+  nodesList = nodes;
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * link_height; });
