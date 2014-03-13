@@ -4,6 +4,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var browserify = require('gulp-browserify');
 var react = require('gulp-react');
+var plumber = require('gulp-plumber');
 
 var clientFiles = ['render_tree'];
 var clientLibFiles = ['jquery', 'd3', 'jquery-ui', 'react', 'underscore', 'js-csp'];
@@ -22,12 +23,14 @@ gulp.task('default', ['watch-client'] ,function() {
 
 gulp.task('lint-client', function(){
   return gulp.src(appendPrefixPath(clientFiles, 'client'))
+    .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
 
 gulp.task('uglify-client', function(){
   gulp.src(appendPrefixPath(clientFiles, 'public/js_app'))
+    .pipe(plumber())
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('public/js_app'));
@@ -35,6 +38,7 @@ gulp.task('uglify-client', function(){
 
 gulp.task('uglify-client-lib',function(){
   gulp.src(appendPrefixPath(clientLibFiles, 'public/js_app/lib'))
+    .pipe(plumber())
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('public/js_app/lib'));
@@ -42,6 +46,7 @@ gulp.task('uglify-client-lib',function(){
 
 gulp.task('browserify', function(){  
   gulp.src(appendPrefixPath(clientFiles, 'client'))
+    .pipe(plumber())
     .pipe(browserify())
     .on('prebundle', function(bundle){
       bundle.external('jquery-browserify');
@@ -59,6 +64,8 @@ gulp.task('watch-client', function() {
 
   // and then uglify them
   gulp.watch(appendPrefixPath(clientFiles, 'public/js_app'), ['uglify-client']);
+
+  
 });
 
 gulp.task('react', function () {
