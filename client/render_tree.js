@@ -18,13 +18,14 @@ var nodesList;
 // component size
 var w = jquery("#tree-body").width(); // width
 var h = 1000;                    // height
-var link_height = 150;           // height of the connection link
+var link_height = 200;           // height of the connection link
 
 ////////////////////////////////////////////////////////////////////////////////
 // Zoom feature for tree
 // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
 var zoomListener = d3.behavior.zoom()
-  .scaleExtent([0.1, 3])
+  //.scaleExtent([1, 1])
+.scale(1)
   .on("zoom", zoomHandler)
   .on("zoomend", zoomEndHandler);
 
@@ -42,7 +43,9 @@ function zoomEndHandler(){
 }
 
 // js csp for determine when the zoom is really end
-function noOp() {}
+function noOp() {
+  
+}
 
 csp.go(function*() {
   for(;;){
@@ -68,7 +71,26 @@ csp.go(function*() {
 ////////////////////////////////////////////////////////////////////////////////
 // align the node to the center
 function alignNode(){
+  var centerX = w/2;
+  var centerY = 80;
+  var nearestNode = findNodeNearestToCenter();
+
+  var translateX, translateY;
+  console.log(nearestNode);
+  translateX = (centerX - nearestNode.data.x);
+  translateY = (centerY - nearestNode.data.y);
+  console.log(zoomListener.scale());
+  console.log(centerX + " " + centerY);
+  console.log(translateX + " " + translateY);
+  
+  vis.transition().duration(500)
+    .attr("transform", "translate(" + translateX + "," + translateY + ")" + " scale(" + zoomListener.scale() + ")");
+  zoomListener.translate([translateX,translateY]).scale(zoomListener.scale());
+}
+
+function findNodeNearestToCenter(){
   var nodes = nodesList;
+  var a;
   var minDistance = null;              // min distance to the center
   var centerX = w/2;
   var centerY = 80;
@@ -79,10 +101,11 @@ function alignNode(){
 
   var nodeX;
   var nodeY;
+  var nearestNode = null;
 
   // find the nearest node to the center
   if(nodes.length > 0){
-    var nearestNode = {};
+    nearestNode = {};
     nodeX = nodes[0].x * scale + translateX;
     nodeY = nodes[0].y * scale + translateY;
     nodeX = Math.abs(centerX - nodeX);
@@ -101,14 +124,10 @@ function alignNode(){
         nearestNode.distance = distance;
         nearestNode.data = d;
       }
-
-      
-    });
-
-    // do something with the nearest node here
-    console.log(nearestNode);
-    
+    }); 
   }
+  
+  return nearestNode;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
