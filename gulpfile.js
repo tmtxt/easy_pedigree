@@ -4,9 +4,11 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var browserify = require('gulp-browserify');
 var react = require('gulp-react');
+var plumber = require('gulp-plumber');
+var regenerator = require('gulp-regenerator');
 
 var clientFiles = ['render_tree'];
-var clientLibFiles = ['jquery', 'd3', 'jquery-ui'];
+var clientLibFiles = ['jquery', 'd3', 'jquery-ui', 'react', 'underscore'];
 
 function appendPrefixPath(files, path){
   var result = [];
@@ -22,31 +24,57 @@ gulp.task('default', ['watch-client'] ,function() {
 
 gulp.task('lint-client', function(){
   return gulp.src(appendPrefixPath(clientFiles, 'client'))
+    .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
 
 gulp.task('uglify-client', function(){
   gulp.src(appendPrefixPath(clientFiles, 'public/js_app'))
+    .pipe(plumber())
+    .pipe(regenerator({includeRuntime: true}))
+    .pipe(uglify())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('public/js_app'));
+});
+
+gulp.task('uglify-client-lib-reg',function(){
+  gulp.src('public/js_app/js-csp.js')
+    .pipe(plumber())
+    .pipe(regenerator({includeRuntime: true}))
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('public/js_app'));
 });
 
 gulp.task('uglify-client-lib',function(){
-  gulp.src(appendPrefixPath(clientLibFiles, 'public/js_app/lib'))
+  gulp.src(appendPrefixPath(clientLibFiles, 'public/js_app'))
+    .pipe(plumber())
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest('public/js_app/lib'));
+    .pipe(gulp.dest('public/js_app'));
 });
 
 gulp.task('browserify', function(){  
   gulp.src(appendPrefixPath(clientFiles, 'client'))
+    .pipe(plumber())
     .pipe(browserify())
     .on('prebundle', function(bundle){
       bundle.external('jquery-browserify');
       bundle.external('d3-browserify');
       bundle.external('jquery-ui-browserify');
+      bundle.external('underscore');
+      bundle.external('js-csp');
+    })
+    .pipe(gulp.dest('public/js_app'));
+});
+
+gulp.task('test', function(){  
+  gulp.src('client/test.js')
+    .pipe(plumber())
+    .pipe(browserify())
+    .on('prebundle', function(bundle){
+      bundle.require('./test.js', {expose: 'test'});
     })
     .pipe(gulp.dest('public/js_app'));
 });
@@ -57,6 +85,8 @@ gulp.task('watch-client', function() {
 
   // and then uglify them
   gulp.watch(appendPrefixPath(clientFiles, 'public/js_app'), ['uglify-client']);
+
+  
 });
 
 gulp.task('react', function () {

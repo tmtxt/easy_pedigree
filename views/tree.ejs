@@ -22,10 +22,27 @@
 
 </style>
 
-<div id="body">
-
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-inline">
+      <div class="checkbox">
+        <label>
+          <input id="zoom-enable" name="zoom-enable" type="checkbox">
+          Enable Zoom
+        </label>
+      </div>
+      <button id="reset-zoom" name="reset-zoom" class="btn btn-default">
+        Reset Zoom
+      </button>
+    </div>
+  </div>
 </div>
 
-<script language="javascript" src="/js_app/lib/d3.min.js"></script>
+<hr/>
+
+<div id="tree-body">
+</div>
+
+<script language="javascript" src="/js_app/d3.min.js"></script>
 <script language="javascript" src="/js_app/render_tree.min.js">
 </script>

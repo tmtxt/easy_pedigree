@@ -1,41 +1,200 @@
-// some varables
-var
-i = 0,
-root;
-
+////////////////////////////////////////////////////////////////////////////////
+// required libraries
 var jquery = require('jquery-browserify');
 var d3 = require('d3-browserify');
+var underscore = require('underscore');
 
-var w = jquery("#body").width();
-var h = w;
+// js-csp
+var csp = require('js-csp');
+var ch = csp.chan(csp.buffers.dropping(1));
 
-var tree, diagonal, vis;
+var i = 0;
+var root; // this is the hierarchy tree
+var tree, diagonal, vis, rootSvg;        // supporting variables for drawing
+// tree
+var nodesList;
 
-var link_height = 150;
+// component size
+var w = jquery("#tree-body").width(); // width
+var h = 1000;                    // height
+var link_height = 200;           // height of the connection link
 
-h = 1000;
+////////////////////////////////////////////////////////////////////////////////
+// Zoom feature for tree
+// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+var zoomListener = d3.behavior.zoom()
+  .scaleExtent([1, 1])
+  .on("zoom", zoomHandler)
+  .on("zoomend", zoomEndHandler);
 
+// zoom handler
+function zoomHandler() {
+  // vis.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  vis.attr("transform", "translate(" + d3.event.translate + ")");
+}
+
+function zoomStartHandler(){
+  
+}
+
+function zoomEndHandler(){
+  csp.putAsync(ch, "value", noOp);
+}
+
+// js csp for determine when the zoom is really end
+function noOp() {
+  
+}
+
+csp.go(function*() {
+  for(;;){
+    yield csp.take(ch);
+    console.log("START");
+
+    for(;;){
+      var result = yield csp.alts([ch, csp.timeout(200)]);
+      var value = result.value;
+      if(value === csp.CLOSED){
+        console.log("STOP");
+
+        // it really end here, start align the node here
+        alignNode();            // align node to center
+        
+        
+        break;
+      }
+      
+    }
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////
+// align the node to the center
+function alignNode(){
+  var centerX = w/2;
+  var centerY = 80;
+  var nearestNode = findNodeNearestToCenter();
+
+  var translateX, translateY;
+  console.log(nearestNode);
+  translateX = (centerX - nearestNode.data.x);
+  translateY = (centerY - nearestNode.data.y);
+  // console.log(zoomListener.scale());
+  // console.log(centerX + " " + centerY);
+  // console.log(translateX + " " + translateY);
+  
+  // vis.transition().duration(500)
+  //   .attr("transform", "translate(" + translateX + "," + translateY + ")" + "
+  //   scale(" + zoomListener.scale() + ")");
+  // zoomListener.translate([translateX,translateY]).scale(zoomListener.scale());
+  vis.transition().duration(500)
+    .attr("transform", "translate(" + translateX + "," + translateY + ")");
+  zoomListener.translate([translateX,translateY]);
+}
+
+// find the nearest node to the center
+function findNodeNearestToCenter(){
+  var nodes = nodesList;
+  var a;
+  var minDistance = null;              // min distance to the center
+  var centerX = w/2;
+  var centerY = 80;
+
+  var translateX = zoomListener.translate()[0];
+  var translateY = zoomListener.translate()[1];
+  // var scale = zoomListener.scale();
+
+  var nodeX;
+  var nodeY;
+  var nearestNode = null;
+
+  // find the nearest node to the center
+  if(nodes.length > 0){
+    nearestNode = {};
+    nodeX = nodes[0].x + translateX;
+    nodeY = nodes[0].y + translateY;
+    nodeX = Math.abs(centerX - nodeX);
+    nodeY = Math.abs(centerY - nodeY);
+    nearestNode.distance = Math.sqrt(nodeX*nodeX + nodeY*nodeY);
+    nearestNode.data = nodes[0];
+
+    nodes.forEach(function(d){
+      var distance;
+      nodeX = d.x + translateX;
+      nodeY = d.y + translateY;
+      nodeX = Math.abs(centerX - nodeX);
+      nodeY = Math.abs(centerY - nodeY);
+      distance = Math.sqrt(nodeX*nodeX + nodeY*nodeY);
+      if(distance < nearestNode.distance){
+        nearestNode.distance = distance;
+        nearestNode.data = d;
+      }
+    }); 
+  }
+  
+  return nearestNode;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// basic layout for the tree
+// create a tree layout using d3js
 tree = d3.layout.tree()
 	.size([h, w]);
-
 diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.x, d.y]; });
 
-function zoom() {
-  vis.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+// create the svg tag and append to the body of the website
+rootSvg = d3.select("#tree-body").append("svg:svg")
+	.attr("width", w)
+	.attr("height", h);
+vis = rootSvg.append("svg:g")
+	.attr("transform", "translate(" + 0 + "," + 0 + ")");
+
+////////////////////////////////////////////////////////////////////////////////
+// Enable/Disable zoom
+d3.select("#zoom-enable").on("change", function(){
+  if(this.checked)
+    enableZoom();
+  else
+    disableZoom();
+});
+
+// disable zoom by default
+disableZoom();
+
+// functions for disable and enable zoom
+function disableZoom(){
+  zoomListener.on("zoom", null).on("zoomend", null);
+  rootSvg.on("mousedown.zoom", null).on("wheel.zoom", null)
+    .on("mousemove.zoom", null)
+    .on("dblclick.zoom", null)
+    .on("touchstart.zoom", null);
 }
 
-// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+function enableZoom(){
+  zoomListener.on("zoom", zoomHandler).on("zoomend", zoomEndHandler);
+  zoomListener(rootSvg);
+}
 
-vis = d3.select("#body").append("svg:svg")
-	.attr("width", w)
-	.attr("height", h)
-  .call(zoomListener)
-	.append("svg:g")
-	.attr("transform", "translate(" + 0 + "," + 80 + ")");
+////////////////////////////////////////////////////////////////////////////////
+// Reset zoom
+d3.select("#reset-zoom").on("click", function(){
 
+  enableZoom();
+  // zoomListener.translate([0,0]).scale(1);
+  vis.transition().duration(300)
+    .attr("transform", "translate(" + 0 + "," + 0 + ")");
+  zoomListener.translate([0,0]);
+  // zoomListener.event(rootSvg.transition().duration(500));
 
+  if(d3.select("#zoom-enable").node().checked === false){
+    disableZoom();
+  }
+  
+});
+
+////////////////////////////////////////////////////////////////////////////////
+// request the tree data from the server and then render
 d3.json("/data/tree-data", function(json) {
 	root = json;
 	root.x0 = w / 2;
@@ -55,31 +214,63 @@ d3.json("/data/tree-data", function(json) {
 	update(root);
 });
 
+////////////////////////////////////////////////////////////////////////////////
+// Toggle children.
+function toggle(d) {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+}
 
+////////////////////////////////////////////////////////////////////////////////
+// calculate the position of the tree nodes
+function calculateNodesPosition(width, nodes, rootX){
+  var offsetLeft = 0;
+  var ratio;
+  if(nodes.length === 1){
+    ratio = rootX / (width/2);
+  } else {
+    offsetLeft = d3.min(nodes, function(d) {return d.x;});
+    offsetLeft -= 50;
+    ratio = (rootX - offsetLeft) / (width/2);
+  }
+  nodes.forEach(function(d) {
+		d.x = (d.x - offsetLeft) / ratio;
+    d.y += 80;
+	});
+}
 
+////////////////////////////////////////////////////////////////////////////////
+// update for each toggle
 function update(source) {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse();
+  nodesList = nodes;
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * link_height; });
 
 	// update the x position
-  var offsetLeft = 0;
-  var ratio;
-  if(nodes.length == 1){
-    ratio = root.x / (w/2);
-  } else {
-    offsetLeft = d3.min(nodes, function(d) {return d.x;});
-    offsetLeft -= 50;
-    ratio = (root.x - offsetLeft) / (w/2);
-  }
-
-  nodes.forEach(function(d) {
-		d.x = (d.x - offsetLeft) / ratio;
-	});
+  calculateNodesPosition(w, nodes, root.x, root.y);
+  // var offsetLeft = 0;
+  // var ratio;
+  // if(nodes.length === 1){
+  //   ratio = root.x / (w/2);
+  // } else {
+  //   offsetLeft = d3.min(nodes, function(d) {return d.x;});
+  //   offsetLeft -= 50;
+  //   ratio = (root.x - offsetLeft) / (w/2);
+  // }
+  // nodes.forEach(function(d) {
+	// 	d.x = (d.x - offsetLeft) / ratio;
+  //   d.y += 80;
+	// });
 
   // Update the nodes…
   var node = vis.selectAll("g.node")
@@ -90,11 +281,13 @@ function update(source) {
     .attr("class", "node")
     .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; });
 
+  // the node
   nodeEnter.append("svg:circle")
     .attr("r", 1e-6)
     .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
 		.on("click", function(d) { toggle(d); update(d); });
 
+  // text for displaying name
   nodeEnter.append("svg:text")
   //.attr("x", function(d) { return d.children || d._children ? -10 : 10; })
     .attr("y", -19)
@@ -125,14 +318,14 @@ function update(source) {
 	}
 	findMaxDepth(root);
 	var newHeight = (currentMaxDepth + 1) * link_height;
-	// tree = tree.size([newHeight, w]);
 	d3.select("svg").attr("height", newHeight);
 	
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
     .duration(duration)
     .attr("transform", function(d) { 
-			return "translate(" + d.x + "," + d.y + ")"; });
+			return "translate(" + d.x + "," + d.y + ")";
+    });
 
   nodeUpdate.select("circle")
     .attr("r", 10)
@@ -187,15 +380,4 @@ function update(source) {
     d.x0 = d.x;
     d.y0 = d.y;
   });
-}
-
-// Toggle children.
-function toggle(d) {
-  if (d.children) {
-    d._children = d.children;
-    d.children = null;
-  } else {
-    d.children = d._children;
-    d._children = null;
-  }
 }
