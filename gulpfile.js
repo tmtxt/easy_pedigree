@@ -69,6 +69,16 @@ gulp.task('browserify', function(){
     .pipe(gulp.dest('public/js_app'));
 });
 
+gulp.task('test', function(){  
+  gulp.src('client/test.js')
+    .pipe(plumber())
+    .pipe(browserify())
+    .on('prebundle', function(bundle){
+      bundle.require('./test.js', {expose: 'test'});
+    })
+    .pipe(gulp.dest('public/js_app'));
+});
+
 gulp.task('watch-client', function() {
   // linting and then browserify client file
   gulp.watch(appendPrefixPath(clientFiles, 'client'), ['lint-client', 'browserify']);
