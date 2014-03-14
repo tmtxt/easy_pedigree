@@ -58,7 +58,8 @@ csp.go(function*() {
         console.log("STOP");
 
         // it really end here, start align the node here
-        alignNode();
+        alignNode();            // align node to center
+        
         
         break;
       }
@@ -91,6 +92,7 @@ function alignNode(){
   zoomListener.translate([translateX,translateY]);
 }
 
+// find the nearest node to the center
 function findNodeNearestToCenter(){
   var nodes = nodesList;
   var a;
@@ -225,6 +227,24 @@ function toggle(d) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// calculate the position of the tree nodes
+function calculateNodesPosition(width, nodes, rootX){
+  var offsetLeft = 0;
+  var ratio;
+  if(nodes.length === 1){
+    ratio = rootX / (width/2);
+  } else {
+    offsetLeft = d3.min(nodes, function(d) {return d.x;});
+    offsetLeft -= 50;
+    ratio = (rootX - offsetLeft) / (width/2);
+  }
+  nodes.forEach(function(d) {
+		d.x = (d.x - offsetLeft) / ratio;
+    d.y += 80;
+	});
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // update for each toggle
 function update(source) {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
@@ -237,19 +257,20 @@ function update(source) {
   nodes.forEach(function(d) { d.y = d.depth * link_height; });
 
 	// update the x position
-  var offsetLeft = 0;
-  var ratio;
-  if(nodes.length === 1){
-    ratio = root.x / (w/2);
-  } else {
-    offsetLeft = d3.min(nodes, function(d) {return d.x;});
-    offsetLeft -= 50;
-    ratio = (root.x - offsetLeft) / (w/2);
-  }
-  nodes.forEach(function(d) {
-		d.x = (d.x - offsetLeft) / ratio;
-    d.y += 80;
-	});
+  calculateNodesPosition(w, nodes, root.x, root.y);
+  // var offsetLeft = 0;
+  // var ratio;
+  // if(nodes.length === 1){
+  //   ratio = root.x / (w/2);
+  // } else {
+  //   offsetLeft = d3.min(nodes, function(d) {return d.x;});
+  //   offsetLeft -= 50;
+  //   ratio = (root.x - offsetLeft) / (w/2);
+  // }
+  // nodes.forEach(function(d) {
+	// 	d.x = (d.x - offsetLeft) / ratio;
+  //   d.y += 80;
+	// });
 
   // Update the nodes…
   var node = vis.selectAll("g.node")
