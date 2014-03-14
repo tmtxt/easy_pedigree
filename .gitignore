@@ -1,3 +1,4 @@
 node_modules/*
 public/stylesheets/style.css
 public/js_app/*
+.DS_STORE

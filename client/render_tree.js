@@ -3,7 +3,6 @@
 var jquery = require('jquery-browserify');
 var d3 = require('d3-browserify');
 var underscore = require('underscore');
-var math = require('mathjs');
 
 // js-csp
 var csp = require('js-csp');
