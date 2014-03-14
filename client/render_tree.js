@@ -23,8 +23,7 @@ var link_height = 200;           // height of the connection link
 // Zoom feature for tree
 // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
 var zoomListener = d3.behavior.zoom()
-  //.scaleExtent([1, 1])
-.scale(1)
+  .scaleExtent([1, 1])
   .on("zoom", zoomHandler)
   .on("zoomend", zoomEndHandler);
 
