@@ -29,7 +29,8 @@ var zoomListener = d3.behavior.zoom()
 
 // zoom handler
 function zoomHandler() {
-  vis.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  // vis.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  vis.attr("transform", "translate(" + d3.event.translate + ")");
 }
 
 function zoomStartHandler(){
