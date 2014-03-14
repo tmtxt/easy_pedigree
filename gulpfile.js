@@ -58,7 +58,9 @@ gulp.task('uglify-client-lib',function(){
 gulp.task('browserify', function(){  
   gulp.src(appendPrefixPath(clientFiles, 'client'))
     .pipe(plumber())
-    .pipe(browserify())
+    .pipe(browserify({
+      basedir: './'
+    }))
     .on('prebundle', function(bundle){
       bundle.external('jquery-browserify');
       bundle.external('d3-browserify');

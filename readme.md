@@ -7,16 +7,9 @@ please come back later
 
 $ cd easy_pedigree
 $ mkdir -p public/js_app
-$ cd client
-$ browserify -r jquery-browserify > ../public/js_app/lib/jquery.js
-$ browserify -r jquery-ui-browserify > ../public/js_app/lib/jquery-ui.js
-$ browserify -r d3-browserify > ../public/js_app/lib/d3.js
-$ browserify -r react > ../public/js_app/lib/react.js
-$ browserify -r underscore > ../public/js_app/lib/underscore.js
-$ browserify -r underscore > ../public/js_app/lib/js-csp.js
-$ cd ..
+$ browserify -r jquery-browserify > ./public/js_app/jquery.js && browserify -r jquery-ui-browserify > ./public/js_app/jquery-ui.js && browserify -r d3-browserify > ./public/js_app/d3.js && browserify -r react > ./public/js_app/react.js && browserify -r underscore > ./public/js_app/underscore.js && browserify -r js-csp > ./public/js_app/js-csp.js
 $ gulp browserify
 $ gulp uglify-client-lib
 $ gulp uglify-client-lib-reg
 $ gulp uglify-client
-$ gulp watch
+$ gulp watch-client
