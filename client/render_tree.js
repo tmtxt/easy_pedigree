@@ -51,7 +51,7 @@ csp.go(function*() {
     console.log("START");
 
     for(;;){
-      var result = yield csp.alts([ch, csp.timeout(500)]);
+      var result = yield csp.alts([ch, csp.timeout(200)]);
       var value = result.value;
       if(value === csp.CLOSED){
         console.log("STOP");
@@ -77,13 +77,17 @@ function alignNode(){
   console.log(nearestNode);
   translateX = (centerX - nearestNode.data.x);
   translateY = (centerY - nearestNode.data.y);
-  console.log(zoomListener.scale());
-  console.log(centerX + " " + centerY);
-  console.log(translateX + " " + translateY);
+  // console.log(zoomListener.scale());
+  // console.log(centerX + " " + centerY);
+  // console.log(translateX + " " + translateY);
   
+  // vis.transition().duration(500)
+  //   .attr("transform", "translate(" + translateX + "," + translateY + ")" + "
+  //   scale(" + zoomListener.scale() + ")");
+  // zoomListener.translate([translateX,translateY]).scale(zoomListener.scale());
   vis.transition().duration(500)
-    .attr("transform", "translate(" + translateX + "," + translateY + ")" + " scale(" + zoomListener.scale() + ")");
-  zoomListener.translate([translateX,translateY]).scale(zoomListener.scale());
+    .attr("transform", "translate(" + translateX + "," + translateY + ")");
+  zoomListener.translate([translateX,translateY]);
 }
 
 function findNodeNearestToCenter(){
@@ -95,7 +99,7 @@ function findNodeNearestToCenter(){
 
   var translateX = zoomListener.translate()[0];
   var translateY = zoomListener.translate()[1];
-  var scale = zoomListener.scale();
+  // var scale = zoomListener.scale();
 
   var nodeX;
   var nodeY;
@@ -104,8 +108,8 @@ function findNodeNearestToCenter(){
   // find the nearest node to the center
   if(nodes.length > 0){
     nearestNode = {};
-    nodeX = nodes[0].x * scale + translateX;
-    nodeY = nodes[0].y * scale + translateY;
+    nodeX = nodes[0].x + translateX;
+    nodeY = nodes[0].y + translateY;
     nodeX = Math.abs(centerX - nodeX);
     nodeY = Math.abs(centerY - nodeY);
     nearestNode.distance = Math.sqrt(nodeX*nodeX + nodeY*nodeY);
@@ -113,8 +117,8 @@ function findNodeNearestToCenter(){
 
     nodes.forEach(function(d){
       var distance;
-      nodeX = d.x * scale + translateX;
-      nodeY = d.y * scale + translateY;
+      nodeX = d.x + translateX;
+      nodeY = d.y + translateY;
       nodeX = Math.abs(centerX - nodeX);
       nodeY = Math.abs(centerY - nodeY);
       distance = Math.sqrt(nodeX*nodeX + nodeY*nodeY);
@@ -174,8 +178,11 @@ function enableZoom(){
 d3.select("#reset-zoom").on("click", function(){
 
   enableZoom();
-  zoomListener.translate([0,0]).scale(1);
-  zoomListener.event(rootSvg.transition().duration(500));
+  // zoomListener.translate([0,0]).scale(1);
+  vis.transition().duration(300)
+    .attr("transform", "translate(" + 0 + "," + 0 + ")");
+  zoomListener.translate([0,0]);
+  // zoomListener.event(rootSvg.transition().duration(500));
 
   if(d3.select("#zoom-enable").node().checked === false){
     disableZoom();
