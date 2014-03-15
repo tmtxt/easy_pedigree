@@ -51,6 +51,8 @@ sql: |
 table: marriage_relations
 from: null
 to: pd_1
+depends:
+  - [people, pd_2]
 sql: |
   CREATE TABLE marriage_relations
   (
@@ -93,6 +95,8 @@ sql: |
 table: people_hierarchy_relations
 from: null
 to: pd_1
+depends:
+  - [people, pd_2]
 sql: |
   CREATE TABLE people_hierarchy_relations
   (
@@ -138,6 +142,8 @@ sql: |
 table: pedigrees
 from: null
 to: pd_1
+depends:
+  - [people, pd_2]
 sql: |
   CREATE TABLE pedigrees
   (
