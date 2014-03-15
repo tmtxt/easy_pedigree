@@ -19,6 +19,7 @@ function requireAuthMiddleware(req, res, next){
 
   // check if the user is logged in
   if(!req.isAuthenticated()){
+    req.session.messages = "Please login to continue"; // set the error message
     res.redirect('/login');
   }
   
