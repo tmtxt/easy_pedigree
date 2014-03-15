@@ -68,6 +68,9 @@ exports.login_post = function(req, res, next) {
 };
 
 exports.logout = function(req, res){
-	req.logout();
+  if(req.isAuthenticated()){
+    req.logout();
+    req.session.messages = "You have logged out.";
+  }
 	res.redirect('/');
 };
