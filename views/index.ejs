@@ -1,4 +1,9 @@
 <% layout('layout-content-container-full') -%>
 <%= title %>
+
+<% if (message) { %>
+<div class="alert alert-info"><%= message %></div>
+<% } %>
+
 <div id="test_id"></div>
 <script type="text/javascript" src="/js_app/react.js"></script>
