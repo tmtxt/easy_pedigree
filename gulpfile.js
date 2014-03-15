@@ -22,6 +22,9 @@ gulp.task('default', ['watch-client'] ,function() {
   // place code for your default task here
 });
 
+gulp.task('setup', ['uglify-client-lib', 'uglify-client-lib-reg',
+                    'uglify-client']);
+
 gulp.task('lint-client', function(){
   return gulp.src(appendPrefixPath(clientFiles, 'client'))
     .pipe(plumber())
@@ -29,8 +32,8 @@ gulp.task('lint-client', function(){
     .pipe(jshint.reporter('default'));
 });
 
-gulp.task('uglify-client', function(){
-  gulp.src(appendPrefixPath(clientFiles, 'public/js_app'))
+gulp.task('uglify-client', ['browserify'], function(){
+  return gulp.src(appendPrefixPath(clientFiles, 'public/js_app'))
     .pipe(plumber())
     .pipe(regenerator({includeRuntime: true}))
     .pipe(uglify())
@@ -39,7 +42,7 @@ gulp.task('uglify-client', function(){
 });
 
 gulp.task('uglify-client-lib-reg',function(){
-  gulp.src('public/js_app/js-csp.js')
+  return gulp.src('public/js_app/js-csp.js')
     .pipe(plumber())
     .pipe(regenerator({includeRuntime: true}))
     .pipe(uglify())
@@ -48,7 +51,7 @@ gulp.task('uglify-client-lib-reg',function(){
 });
 
 gulp.task('uglify-client-lib',function(){
-  gulp.src(appendPrefixPath(clientLibFiles, 'public/js_app'))
+  return gulp.src(appendPrefixPath(clientLibFiles, 'public/js_app'))
     .pipe(plumber())
     .pipe(uglify())
     .pipe(rename({suffix: '.min'}))
@@ -56,7 +59,7 @@ gulp.task('uglify-client-lib',function(){
 });
 
 gulp.task('browserify', function(){  
-  gulp.src(appendPrefixPath(clientFiles, 'client'))
+  return gulp.src(appendPrefixPath(clientFiles, 'client'))
     .pipe(plumber())
     .pipe(browserify({
       basedir: './'
