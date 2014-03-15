@@ -56,7 +56,12 @@ exports.login_post = function(req, res, next) {
       return res.redirect('/login');
     }
     req.logIn(user, function(err) {
-      if (err) { return next(err); }
+      if (err) {
+        req.session.messages = "Error while logging in";
+        return next(err);
+      }
+
+      req.session.messages = "Successfully logged in";
       return res.redirect('/');
     });
   })(req, res, next);
