@@ -139,7 +139,7 @@ function findNodeNearestToCenter(){
 // basic layout for the tree
 // create a tree layout using d3js
 tree = d3.layout.tree()
-	.size([h, w]);
+	.size([w, h]);
 diagonal = d3.svg.diagonal()
 	.projection(function(d) { return [d.x, d.y]; });
 
@@ -229,17 +229,17 @@ function toggle(d) {
 ////////////////////////////////////////////////////////////////////////////////
 // calculate the position of the tree nodes
 function calculateNodesPosition(width, nodes, rootX){
-  var offsetLeft = 0;
-  var ratio;
-  if(nodes.length === 1){
-    ratio = rootX / (width/2);
-  } else {
-    offsetLeft = d3.min(nodes, function(d) {return d.x;});
-    offsetLeft -= 50;
-    ratio = (rootX - offsetLeft) / (width/2);
-  }
+  // var offsetLeft = 0;
+  // var ratio;
+  // if(nodes.length === 1){
+  //   ratio = rootX / (width/2);
+  // } else {
+  //   offsetLeft = d3.min(nodes, function(d) {return d.x;});
+  //   offsetLeft -= 50;
+  //   ratio = (rootX - offsetLeft) / (width/2);
+  // }
   nodes.forEach(function(d) {
-		d.x = (d.x - offsetLeft) / ratio;
+		// d.x = (d.x - offsetLeft) / ratio;
     d.y += 80;
 	});
 }
