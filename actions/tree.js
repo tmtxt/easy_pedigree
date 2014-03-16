@@ -6,7 +6,15 @@ exports.tree_get_render = function(req, res){
 };
 
 exports.tree_get_data = function(req, res){
-	Person.getFamilyTree().then(function(tree){
+  var rootId = 1;
+
+  if(req.query.rootId){
+    rootId = rootId;
+  } else {
+    rootId = 1;
+  }
+  
+	Person.getFamilyTree(rootId).then(function(tree){
 		convert_tree.childrenObjectToArray(tree);
 		res.json(tree);
 	});
