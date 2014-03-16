@@ -38,6 +38,14 @@
   </div>
 </div>
 
+<script language="javascript">
+ // retrieve the root id from the query string
+ var rootIdQuery = null;
+  <% if (rootId) { %>
+    rootIdQuery = <%= rootId %>;
+  <% } %>
+</script>
+
 <hr/>
 
 <div id="tree-body">

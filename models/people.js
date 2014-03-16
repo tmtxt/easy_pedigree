@@ -89,6 +89,12 @@ function findRootPerson(){
   return sequelize.query(query, null, {logging: console.log, plain: true, raw: true});
 }
 
+//return a promise
+function findFirstRootPerson(){
+  var query = rq("find_first_root");
+  return sequelize.query(query, null, {logging: console.log, plain: true, raw: true});
+}
+
 // return a promise
 function findDescendants(parent){
   // check the type of parent
@@ -107,9 +113,11 @@ function findDescendants(parent){
   }, {rootId: parentId});
 }
 
+
 // return a promise
-function getFamilyTree(){
-  return findRootPerson()
+function getFamilyTree(rootId){
+  
+  return findPersonById(rootId)
     .then(function(root){
       return findDescendants(root)
         .then(function(descendants){
@@ -138,6 +146,14 @@ function getFamilyTree(){
 }
 
 // return a promise
+function findPersonById(id){
+  var query = rq("find_person_by_id");
+  return sequelize.query(query, null,
+                         {logging: console.log, plain: true, raw: true},
+                         {id: id });
+}
+
+// return a promise
 function findMaxDepth(){
   var query = rq("find_max_depth");
   return findRootPerson()
@@ -146,9 +162,9 @@ function findMaxDepth(){
                              {logging: console.log, plain: true, raw: true},
                              {rootId: root.id });
     })
-  .then(function(depth){
-    return depth[0];
-  });
+    .then(function(depth){
+      return depth[0];
+    });
 }
 
 function appendChild(root, path, child){
@@ -159,9 +175,12 @@ function appendChild(root, path, child){
   parent.children[child.id] = child;
 }
 
+
+
 // exports
 exports.model = model;
 exports.getFamilyTree = getFamilyTree;
 exports.findRootPerson = findRootPerson;
 exports.findDescendants = findDescendants;
 exports.findMaxDepth = findMaxDepth;
+exports.findFirstRootPerson = findFirstRootPerson;
