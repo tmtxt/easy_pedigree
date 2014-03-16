@@ -6,22 +6,28 @@ exports.tree_get_render = function(req, res){
 };
 
 exports.tree_get_data = function(req, res){
-  var rootId = 1;
+  var rootId;
 
   if(req.query.rootId){
-    rootId = rootId;
+    rootId = req.query.rootId;
+    Person.getFamilyTree(rootId).then(function(tree){
+      convert_tree.childrenObjectToArray(tree);
+      res.json(tree);
+    });
   } else {
-    rootId = 1;
+    Person.findFirstRootPerson().then(function(root){
+      Person.getFamilyTree(root.id).then(function(tree){
+        convert_tree.childrenObjectToArray(tree);
+        res.json(tree);
+      });
+    });
   }
   
-	Person.getFamilyTree(rootId).then(function(tree){
-		convert_tree.childrenObjectToArray(tree);
-		res.json(tree);
-	});
+  
 };
 
 exports.tree_get_max_depth = function(req, res){
-	Person.findMaxDepth().then(function(depth){
-		res.json(depth);
-	});
+  Person.findMaxDepth().then(function(depth){
+    res.json(depth);
+  });
 };

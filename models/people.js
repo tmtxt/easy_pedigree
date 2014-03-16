@@ -89,6 +89,12 @@ function findRootPerson(){
   return sequelize.query(query, null, {logging: console.log, plain: true, raw: true});
 }
 
+//return a promise
+function findFirstRootPerson(){
+  var query = rq("find_first_root");
+  return sequelize.query(query, null, {logging: console.log, plain: true, raw: true});
+}
+
 // return a promise
 function findDescendants(parent){
   // check the type of parent
@@ -177,3 +183,4 @@ exports.getFamilyTree = getFamilyTree;
 exports.findRootPerson = findRootPerson;
 exports.findDescendants = findDescendants;
 exports.findMaxDepth = findMaxDepth;
+exports.findFirstRootPerson = findFirstRootPerson;
