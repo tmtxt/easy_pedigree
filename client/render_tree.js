@@ -195,7 +195,11 @@ d3.select("#reset-zoom").on("click", function(){
 
 ////////////////////////////////////////////////////////////////////////////////
 // request the tree data from the server and then render
-d3.json("/data/tree-data?rootId=1", function(json) {
+var treeDataUrl = "/data/tree-data";
+if(rootIdQuery !== null){
+  treeDataUrl += "?rootId=" + rootIdQuery;
+}
+d3.json(treeDataUrl, function(json) {
 	root = json;
 	root.x0 = w / 2;
 	root.y0 = 0;

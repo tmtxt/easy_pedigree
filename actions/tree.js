@@ -2,7 +2,11 @@ var Person = require('../models/people.js');
 var convert_tree = require('../util/convert-tree');
 
 exports.tree_get_render = function(req, res){
-  res.render('tree', { title: 'Express' });
+  if(req.query.rootId){
+    res.render('tree', { title: 'Express', rootId: req.query.rootId });
+  } else {
+    res.render('tree', { title: 'Express', rootId: null });
+  }  
 };
 
 exports.tree_get_data = function(req, res){
