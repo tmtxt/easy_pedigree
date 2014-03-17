@@ -1,11 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // required libraries
-var jquery = require('jquery-browserify');
 var d3 = require('d3-browserify');
 var underscore = require('underscore');
-window.jQuery = require('jquery-browserify');
-require('jquery-ui-browserify');
-require('bootstrap-browserify');
 
 // js-csp
 var csp = require('js-csp');
@@ -310,7 +306,8 @@ function update(source) {
     .attr("x", -25)
     .attr("y", -78)
     .attr("height", "50px")
-    .attr("width", "50px");
+    .attr("width", "50px")
+    .on("click", showNodeDialog);
 
 	// compute the new tree height
 	var currentMaxDepth = 0;
@@ -387,4 +384,10 @@ function update(source) {
     d.x0 = d.x;
     d.y0 = d.y;
   });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// display the dialog of the current node info when click
+function showNodeDialog(d){
+  jquery("#myModal").modal();
 }
