@@ -390,4 +390,15 @@ function update(source) {
 // display the dialog of the current node info when click
 function showNodeDialog(d){
   jquery("#myModal").modal();
+
+  // send the request to the server
+  jquery.ajax({
+    url: '/data/person-info?id=' + d.id,
+    beforeSend: function(){
+      
+    },
+    success: function(data){
+      console.log(data);
+    }
+  });
 }

@@ -35,3 +35,11 @@ exports.tree_get_max_depth = function(req, res){
     res.json(depth);
   });
 };
+
+exports.tree_get_person_info = function(req, res){
+  setTimeout(function(){
+    Person.findPersonById(req.query.id).then(function(person){
+      res.json(person);
+    });
+  }, 3000);
+};
