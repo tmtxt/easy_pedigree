@@ -394,11 +394,10 @@ function showNodeDialog(d){
   request = jquery.ajax({
     url: '/data/person-info?id=' + d.id,
     beforeSend: function(){
-      
+      // show the progress bar
+      jquery("#modalProgressBar").css("display", "block");
     },
-    success: function(data){
-      console.log(data);
-    }
+    success: renderModalInfo
   });
   
   jquery("#modalPersonTitle").text(d.name);
@@ -408,5 +407,13 @@ function showNodeDialog(d){
   }).modal();
 
   // send the request to the server
+  
+}
+
+function renderModalInfo(data){
+  // hide the progress bar
+  jquery("#modalProgressBar").css("display", "none");
+
+  
   
 }

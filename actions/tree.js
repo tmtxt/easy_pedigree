@@ -41,5 +41,5 @@ exports.tree_get_person_info = function(req, res){
     Person.findPersonById(req.query.id).then(function(person){
       res.json(person);
     });
-  }, 3000);
+  }, 1000);
 };
