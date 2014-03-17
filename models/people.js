@@ -184,3 +184,4 @@ exports.findRootPerson = findRootPerson;
 exports.findDescendants = findDescendants;
 exports.findMaxDepth = findMaxDepth;
 exports.findFirstRootPerson = findFirstRootPerson;
+exports.findPersonById = findPersonById;

@@ -70,6 +70,7 @@ gulp.task('browserify', function(){
       bundle.external('jquery-ui-browserify');
       bundle.external('underscore');
       bundle.external('js-csp');
+      bundle.external('bootstrap-browserify');
     })
     .pipe(gulp.dest('public/js_app'));
 });

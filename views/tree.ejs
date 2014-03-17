@@ -10,6 +10,10 @@
    stroke-width: 1.5px;
  }
 
+ .node image {
+   cursor: pointer;
+ }
+
  .node text {
    font-size: 11px;
  }
@@ -21,6 +25,122 @@
  }
 
 </style>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modalPersonTitle"></h4>
+      </div>
+      <div class="modal-body">
+
+        <!-- progress bar -->
+        <div class="progress progress-striped active" id="modalProgressBar">
+          <div class="progress-bar"  role="progressbar"
+               aria-valuenow="100" aria-valuemin="0"
+               aria-valuemax="100" style="width: 100%">
+            <span>Loading data</span>
+          </div>
+        </div>
+
+        <table class="table" id="modalPersonInfoTable">
+          <thead>
+            <tr>
+              <th colspan="3">
+                <h4 id="modalPersonName">Name</h4>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 25%;">
+                <strong>Birth date</strong>
+              </td>
+              <td style="width: 25%;">
+                <span id="modalPersonBirthDate"></span>
+              </td>
+              <td rowspan="5">
+                <img src="" id="modalPersonPicture"
+                     class="img-thumbnail img-responsive"
+                     onerror="this.src='/default_member.png'"></img>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 25%;">
+                <strong>Gender</strong>
+              </td>
+              <td style="width: 25%;">
+                <span id="modalPersonGender"></span>
+              </td>
+              
+            </tr>
+            <tr>
+              <td style="width: 25%;">
+                <strong>Alive status</strong>
+              </td>
+              <td style="width: 25%;">
+                <span id="modalPersonAliveStatus"></span>
+              </td>
+              
+            </tr>
+            <tr>
+              <td style="width: 25%;">
+                <strong id="modalDeathDateLabel">Death date</strong>
+              </td>
+              <td style="width: 25%;">
+                <span id="modalPersonDeathDate"></span>
+              </td>
+              
+            </tr>
+            <tr>
+              <td style="width: 25%;">
+                <strong>Job</strong>
+              </td>
+              <td style="width: 25%;">
+                <span id="modalPersonJob"></span>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 25%;">
+                <strong>Phone No</strong>
+              </td>
+              <td style="width: 25%;">
+                <span id="modalPersonPhoneNo"></span>
+              </td>
+              <td rowspan="2">
+                <strong>Address</strong><br/>
+                <p id="modalPersonAddress"></p>
+                </td>
+            </tr>
+            
+            <tr>
+              <td style="width: 25%;">
+                <strong>Id Card</strong>
+              </td>
+              <td style="width: 25%;">
+                <span id="modalPersonIdCard"></span>
+              </td>
+            </tr>
+            
+            <tr>
+              <td colspan="3">
+                <strong>Note</strong><br/>
+                <span id="modalPersonNote"></span>
+              </td>
+              
+            </tr>
+          </tbody>
+        </table>
+
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-12">
@@ -41,9 +161,9 @@
 <script language="javascript">
  // retrieve the root id from the query string
  var rootIdQuery = null;
-  <% if (rootId) { %>
-    rootIdQuery = <%= rootId %>;
-  <% } %>
+ <% if (rootId) { %>
+                  rootIdQuery = <%= rootId %>;
+                  <% } %>
 </script>
 
 <hr/>

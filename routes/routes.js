@@ -37,6 +37,7 @@ exports.do_routing = function(app){
 	// routes for getting data
 	app.get('/data/tree-data', commonMiddleware, tree.tree_get_data);
 	app.get('/data/tree-max-depth', commonMiddleware, tree.tree_get_max_depth);
+  app.get('/data/person-info', tree.tree_get_person_info);
 
 	// processing request
   app.post('/login', commonMiddleware, authenticate.login_post);
