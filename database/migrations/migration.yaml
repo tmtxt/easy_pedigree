@@ -48,6 +48,14 @@ sql: |
   END;
 
 ---
+table: people
+from: pd_2
+to: pd_3
+sql: |
+  ALTER TABLE people ALTER COLUMN phone_no TYPE CHARACTER VARYING;
+  ALTER TABLE people ALTER COLUMN id_card TYPE CHARACTER VARYING;
+
+---
 table: marriage_relations
 from: null
 to: pd_1
