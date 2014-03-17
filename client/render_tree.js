@@ -3,6 +3,9 @@
 var jquery = require('jquery-browserify');
 var d3 = require('d3-browserify');
 var underscore = require('underscore');
+window.jQuery = require('jquery-browserify');
+require('jquery-ui-browserify');
+require('bootstrap-browserify');
 
 // js-csp
 var csp = require('js-csp');
