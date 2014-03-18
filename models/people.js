@@ -42,7 +42,7 @@ var model =
       defaultValue: null
     },
     gender: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: true,
       defaultValue: null
     },
