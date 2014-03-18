@@ -46,22 +46,21 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/">Home</a>
+					<a class="navbar-brand" href="/"><%=__("gnr.homepage")%></a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li><a href="/views/tree">Pedigree Tree</a></li>
-						<li><a href="/views/add-member">Add Member</a></li>
-						<li><a href="#">Link 3</a></li>
+						<li><a href="/views/tree"><%= __("gnr.pedigree_tree") %></a></li>
+						<li><a href="/views/add-member"><%= __("gnr.add_member") %></a></li>
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
 						<% if(!currentUser){ %>
-						<li><a href="/login">Log in</a></li>
+						<li><a href="/login"><%= __("authen.log_in") %></a></li>
 						<%} else {%>
-						<li><a><%= currentUser.username%></a></li>
+						<li><a><%= __("gnr.hello") %> <%= currentUser.username%></a></li>
 						<%}%>
 						
 					</ul>

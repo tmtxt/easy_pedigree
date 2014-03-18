@@ -31,7 +31,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="modalPersonTitle"></h4>
+        <h4 class="modal-title">
+          <%= __("gnr.member_information") %>
+        </h4>
       </div>
       <div class="modal-body">
 
@@ -40,7 +42,7 @@
           <div class="progress-bar"  role="progressbar"
                aria-valuenow="100" aria-valuemin="0"
                aria-valuemax="100" style="width: 100%">
-            <span>Loading data</span>
+            <span><%= __("gnr.loading_data") %></span>
           </div>
         </div>
 
@@ -55,7 +57,7 @@
           <tbody>
             <tr>
               <td style="width: 25%;">
-                <strong>Birth date</strong>
+                <strong><%= __("people.birth_date") %></strong>
               </td>
               <td style="width: 25%;">
                 <span id="modalPersonBirthDate"></span>
@@ -68,7 +70,7 @@
             </tr>
             <tr>
               <td style="width: 25%;">
-                <strong>Gender</strong>
+                <strong><%= __("people.gender") %></strong>
               </td>
               <td style="width: 25%;">
                 <span id="modalPersonGender"></span>
@@ -77,7 +79,7 @@
             </tr>
             <tr>
               <td style="width: 25%;">
-                <strong>Alive status</strong>
+                <strong><%= __("people.alive_status") %></strong>
               </td>
               <td style="width: 25%;">
                 <span id="modalPersonAliveStatus"></span>
@@ -86,7 +88,7 @@
             </tr>
             <tr>
               <td style="width: 25%;">
-                <strong id="modalDeathDateLabel">Death date</strong>
+                <strong id="modalDeathDateLabel"><%= __("people.death_date") %></strong>
               </td>
               <td style="width: 25%;">
                 <span id="modalPersonDeathDate"></span>
@@ -95,7 +97,7 @@
             </tr>
             <tr>
               <td style="width: 25%;">
-                <strong>Job</strong>
+                <strong><%= __("people.job") %></strong>
               </td>
               <td style="width: 25%;">
                 <span id="modalPersonJob"></span>
@@ -103,20 +105,20 @@
             </tr>
             <tr>
               <td style="width: 25%;">
-                <strong>Phone No</strong>
+                <strong><%= __("people.phone_no") %></strong>
               </td>
               <td style="width: 25%;">
                 <span id="modalPersonPhoneNo"></span>
               </td>
               <td rowspan="2">
-                <strong>Address</strong><br/>
+                <strong><%= __("people.address") %></strong><br/>
                 <p id="modalPersonAddress"></p>
                 </td>
             </tr>
             
             <tr>
               <td style="width: 25%;">
-                <strong>Id Card</strong>
+                <strong><%= __("people.id_card") %></strong>
               </td>
               <td style="width: 25%;">
                 <span id="modalPersonIdCard"></span>
@@ -125,7 +127,7 @@
             
             <tr>
               <td colspan="3">
-                <strong>Note</strong><br/>
+                <strong><%= __("people.note") %></strong><br/>
                 <span id="modalPersonNote"></span>
               </td>
               
@@ -148,11 +150,12 @@
       <div class="checkbox">
         <label>
           <input id="zoom-enable" name="zoom-enable" type="checkbox">
-          Enable Zoom
+          <%= __("treeview.enable_zoom") %>
         </label>
       </div>
-      <button id="reset-zoom" name="reset-zoom" class="btn btn-default">
-        Reset Zoom
+      &nbsp;&nbsp;&nbsp;
+      <button id="reset-zoom" name="reset-zoom" class="btn btn-default btn-sm">
+        <%= __("treeview.reset_zoom") %>
       </button>
     </div>
   </div>
@@ -164,6 +167,7 @@
  <% if (rootId) { %>
                   rootIdQuery = <%= rootId %>;
                   <% } %>
+ var currentLocale = "<%= currentLocale %>";
 </script>
 
 <hr/>
