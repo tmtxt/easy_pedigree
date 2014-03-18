@@ -302,7 +302,17 @@ function update(source) {
 
   // append picture
   nodeEnter.append("svg:image")
-    .attr("xlink:href", function(d){ return "/member_images/" + d.picture; })
+    .attr("xlink:href", function(d){
+      var imageLink = "/member_images/" + d.picture;
+      // check if the image exist
+      jquery.ajax({
+        url: imageLink,
+        type: 'GET',
+        async: false,
+        error: function(){ imageLink = "/default_member.png"; }
+      });
+      return imageLink;
+    })
     .attr("x", -25)
     .attr("y", -78)
     .attr("height", "50px")
