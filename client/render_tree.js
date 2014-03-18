@@ -416,38 +416,17 @@ function renderModalInfo(data){
   jquery("#modalProgressBar").css("display", "none");
 
   // set the data
-  jquery("#modalPersonName")
-    .text(data.name === null ? "Unknown name" : data.name);
-  jquery("#modalPersonBirthDate")
-    .text(data.birthDate === null ? "Unknown" : new Date(data.birthDate).toDateString());
-  jquery("#modalPersonGender")
-    .text(data.gender === null ? "Unknown" : data.gender);
-  var aliveStatus = jquery("#modalPersonAliveStatus");
-  if(data.aliveStatus === null){
-    aliveStatus.text("Unknown");
-    jquery("#modalPersonDeathDate")
-      .text("Still alive");
-  } else if(data.aliveStatus === 0) {
-    aliveStatus.text("Death");
-    jquery("#modalPersonDeathDate")
-      .text(data.deathDate === null ? "Unknown" : new Date(data.deathDate).toDateString());
-  } else {
-    aliveStatus.text("Alive");
-    jquery("#modalPersonDeathDate")
-      .text("Still alive");
-  }
-  jquery("#modalPersonJob")
-    .text(data.job === null ? "Unknown" : data.job);
-  jquery("#modalPersonPhoneNo")
-    .text(data.phoneNo === null ? "Unknown" : data.phoneNo);
-  jquery("#modalPersonIdCard")
-    .text(data.idCard === null ? "Unknown" : data.idCard);
-  jquery("#modalPersonAddress")
-    .html(data.address === null ? "Unknown" : data.address.replace(/\n|\r|\r\n/g, "<br/>"));
-  jquery("#modalPersonPicture")
-    .attr("src", "/member_images/" + data.picture);
-  jquery("#modalPersonNote")
-    .html(data.note === null ? "No Note" : data.note.replace(/\n|\r|\r\n/g, "<br/>"));
+  jquery("#modalPersonName").text(data.name);
+  jquery("#modalPersonBirthDate").text(data.birthDate);
+  jquery("#modalPersonGender").text(data.gender === null ? "Unknown" : data.gender);
+  jquery("#modalPersonAliveStatus").text(data.aliveStatus);
+  jquery("#modalPersonDeathDate").text(data.deathDate);
+  jquery("#modalPersonJob").text(data.job);
+  jquery("#modalPersonPhoneNo").text(data.phoneNo);
+  jquery("#modalPersonIdCard").text(data.idCard);
+  jquery("#modalPersonAddress").html(data.address.replace(/\n|\r|\r\n/g, "<br/>"));
+  jquery("#modalPersonPicture").attr("src", "/member_images/" + data.picture);
+  jquery("#modalPersonNote").html(data.note.replace(/\n|\r|\r\n/g, "<br/>"));
 
   // show the info table
   jquery("#modalPersonInfoTable").css("display", "table");

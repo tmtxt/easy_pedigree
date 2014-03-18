@@ -6,6 +6,7 @@
   "gnr.add_member": "Add member",
   "gnr.loading_data": "Loading data...",
   "gnr.member_information": "Member information",
+  "gnr.unknown_info": "No information",
   "authen.log_in": "Login",
   "authen.username": "Username",
   "authen.password": "Password",
@@ -18,6 +19,9 @@
   "people.birth_date": "Birth date",
   "people.gender": "Gender",
   "people.alive_status": "Alive status?",
+  "people.alive_status_alive": "Alive",
+  "people.alive_status_still_alive": "Still alive",
+  "people.alive_status_death": "Death",
   "people.death_date": "Death date",
   "people.job": "Job",
   "people.id_card": "Id Card",
@@ -25,5 +29,9 @@
   "people.address": "Address",
   "people.note": "Extra information",
   "treeview.enable_zoom": "Enable drag and drop",
-  "treeview.reset_zoom": "Reset tree position"
+  "treeview.reset_zoom": "Reset tree position",
+  "gender_male": "Male",
+  "gender_female": "Female",
+  "gender_gay": "Gay",
+  "gender_les": "Les"
 }
