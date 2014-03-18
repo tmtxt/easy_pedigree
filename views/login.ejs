@@ -5,7 +5,7 @@
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Login</h3>
+				<h3 class="panel-title"><%= __("log_in") %></h3>
 			</div>
 			<div class="panel-body">
 
@@ -15,19 +15,19 @@
 				
 				<form action="/login" method="post" role="form">
 					<div class="form-group">
-						<label for="username">Username</label>
+						<label for="username"><%= __("username") %></label>
 						<input type="text" class="form-control" id="username" name="username" placeholder="Username">
 					</div>
 					<div class="form-group">
-						<label for="username">Password</label>
+						<label for="username"><%= __("password") %></label>
 						<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 					</div>
 					<div class="checkbox">
 						<label>
-							<input type="checkbox"> Remember me
+							<input type="checkbox"><%= __("remember_me") %>
 						</label>
 					</div>
-					<button type="submit" class="btn btn-default">Login</button>
+					<button type="submit" class="btn btn-default"><%= __("log_in") %></button>
 				</form>
 
 			</div>

@@ -40,7 +40,7 @@ exports.login_get = function(req, res){
 	if(req.user){									// already logged in
 		res.redirect('/');
 	} else {											// show the login form
-		res.render('login', { user: req.user, message: req.session.messages, title: 'Login' });
+		res.render('login', { user: req.user, message: req.session.messages, title: req.i18n.__("log_in") });
 		req.session.messages = null;
 	}
 };
