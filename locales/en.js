@@ -1,7 +1,8 @@
 {
-	"hello": "hello",
+	"hello": "Hello",
 	"title": "title",
   "homepage": "Homepage",
   "pedigree_tree": "Pedigree Tree",
-  "add_member": "Add member"
+  "add_member": "Add member",
+  "log_in": "Login"
 }

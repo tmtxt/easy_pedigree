@@ -58,9 +58,9 @@
 
 					<ul class="nav navbar-nav navbar-right">
 						<% if(!currentUser){ %>
-						<li><a href="/login">Log in</a></li>
+						<li><a href="/login"><%= __("log_in") %></a></li>
 						<%} else {%>
-						<li><a><%= currentUser.username%></a></li>
+						<li><a><%= __("hello") %> <%= currentUser.username%></a></li>
 						<%}%>
 						
 					</ul>
