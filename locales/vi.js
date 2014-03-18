@@ -15,6 +15,7 @@
 	"authen.log_in_success": "Đăng nhập thành công.",
 	"authen.log_out_success": "Đăng xuất thành công.",
 	"authen.unknown_user_or_password": "Tên đăng nhập hoặc mật khẩu không đúng.",
+  "authen.log_in_to_continue": "Vui lòng đăng nhập để sử dụng tính năng này.",
 	"people.full_name": "Họ và tên",
 	"people.birth_date": "Ngày sinh",
 	"people.gender": "Giới tính",

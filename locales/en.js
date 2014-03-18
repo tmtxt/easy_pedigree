@@ -15,6 +15,7 @@
   "authen.log_in_success": " Successfully logged in",
   "authen.log_out_success": "You have logged out",
   "authen.unknown_user_or_password" : "Either username or password is incorrect",
+  "authen.log_in_to_continue": "Please login to continue.",
   "people.full_name": "Full name",
   "people.birth_date": "Birth date",
   "people.gender": "Gender",
