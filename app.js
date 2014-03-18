@@ -23,12 +23,17 @@ app.set('view engine', 'ejs');
 app.configure(function(){
   i18n.expressBind(app, {
     // setup some locales - other locales default to en silently
-    locales: ['en', 'vi'],
+    locales: ['vi', 'en'],
+    defaultLocale: 'vi',
     // change the cookie name from 'lang' to 'locale'
     cookieName: 'locale'
+    
   });
+  
 
   app.use(function(req, res, next) {
+    // req.i18n.setLocale('vi');
+    req.i18n.setLocaleFromQuery();
     req.i18n.setLocaleFromCookie();
     next();
   });
