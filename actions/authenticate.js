@@ -74,3 +74,14 @@ exports.logout = function(req, res){
   }
 	res.redirect('/');
 };
+
+exports.requireAuthMiddleware = function(req, res, next){
+
+  // check if the user is logged in
+  if(!req.isAuthenticated()){
+    req.session.messages = req.i18n.__("authen.log_in_to_continue"); // set the error message
+    res.redirect('/login');
+  }
+  
+  next();
+};
