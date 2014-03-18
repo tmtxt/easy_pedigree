@@ -3,9 +3,9 @@ var convert_tree = require('../util/convert-tree');
 
 exports.tree_get_render = function(req, res){
   if(req.query.rootId){
-    res.render('tree', { title: req.i18n.__("title"), rootId: req.query.rootId });
+    res.render('tree', { title: req.i18n.__("gnr.title"), rootId: req.query.rootId });
   } else {
-    res.render('tree', { title: req.i18n.__("title"), rootId: null });
+    res.render('tree', { title: req.i18n.__("gnr.title"), rootId: null });
   }  
 };
 
