@@ -392,7 +392,7 @@ function showNodeDialog(d){
   var request;
 
   request = jquery.ajax({
-    url: '/data/person-info?id=' + d.id,
+    url: '/data/person-info?id=' + d.id + '&lang=' + currentLocale,
     beforeSend: function(){
       // show the progress bar
       jquery("#modalProgressBar").css("display", "block");
