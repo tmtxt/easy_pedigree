@@ -4,6 +4,8 @@
   "gnr.homepage": "Homepage",
   "gnr.pedigree_tree": "Pedigree Tree",
   "gnr.add_member": "Add member",
+  "gnr.loading_data": "Loading data...",
+  "gnr.member_information": "Member information",
   "authen.log_in": "Login",
   "authen.username": "Username",
   "authen.password": "Password",
@@ -11,5 +13,17 @@
   "authen.log_in_error": "Error while logging in",
   "authen.log_in_success": " Successfully logged in",
   "authen.log_out_success": "You have logged out",
-  "authen.unknown_user_or_password" : "Either username or password is incorrect"
+  "authen.unknown_user_or_password" : "Either username or password is incorrect",
+  "people.full_name": "Full name",
+  "people.birth_date": "Birth date",
+  "people.gender": "Gender",
+  "people.alive_status": "Alive status?",
+  "people.death_date": "Death date",
+  "people.job": "Job",
+  "people.id_card": "Id Card",
+  "people.phone_no": "Phone number",
+  "people.address": "Address",
+  "people.note": "Extra information",
+  "treeview.enable_zoom": "Enable drag and drop",
+  "treeview.reset_zoom": "Reset tree position"
 }

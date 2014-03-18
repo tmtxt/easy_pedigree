@@ -402,7 +402,6 @@ function showNodeDialog(d){
     success: renderModalInfo
   });
   
-  jquery("#modalPersonTitle").text("Information");
   jquery("#myModal").on("hide.bs.modal", function(e){
     console.log("close");
     request.abort();

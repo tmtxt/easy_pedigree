@@ -4,6 +4,8 @@
   "gnr.homepage": "Trang chủ",
   "gnr.pedigree_tree": "Cây gia phả",
   "gnr.add_member": "Thêm thành viên",
+  "gnr.loading_data": "Đang tải dữ liệu...",
+  "gnr.member_information": "Thông tin thành viên",
   "authen.log_in": "Đăng nhập",
   "authen.username": "Tên đăng nhập",
   "authen.password": "Mật khẩu",
@@ -11,5 +13,17 @@
   "authen.log_in_error": "Có lỗi xảy ra trong quá trình đăng nhập.",
   "authen.log_in_success": "Đăng nhập thành công.",
   "authen.log_out_success": "Đăng xuất thành công.",
-  "authen.unknown_user_or_password" : "Tên đăng nhập hoặc mật khẩu không đúng."
+  "authen.unknown_user_or_password" : "Tên đăng nhập hoặc mật khẩu không đúng.",
+  "people.full_name": "Họ và tên",
+  "people.birth_date": "Ngày sinh",
+  "people.gender": "Giới tính",
+  "people.alive_status": "Còn sống?",
+  "people.death_date": "Ngày mất",
+  "people.job": "Nghề nghiệp",
+  "people.id_card": "Số CMND",
+  "people.phone_no": "Số điện thoại",
+  "people.address": "Nơi ở hiện tại",
+  "people.note": "Thông tin thêm",
+  "treeview.enable_zoom": "Bật kéo thả",
+  "treeview.reset_zoom": "Phục hồi vị trí"
 }
