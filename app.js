@@ -21,10 +21,11 @@ app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
 app.configure(function(){
+  app.use(express.cookieParser('your secret here'));
   i18n.expressBind(app, {
     // setup some locales - other locales default to en silently
     locales: ['vi', 'en'],
-    defaultLocale: 'vi',
+    // defaultLocale: 'vi',
     // change the cookie name from 'lang' to 'locale'
     cookieName: 'locale'
     
@@ -33,7 +34,7 @@ app.configure(function(){
 
   app.use(function(req, res, next) {
     // req.i18n.setLocale('vi');
-    req.i18n.setLocaleFromQuery();
+    // req.i18n.setLocaleFromQuery();
     req.i18n.setLocaleFromCookie();
     next();
   });
@@ -43,7 +44,7 @@ app.configure(function(){
   app.use(express.json());
   app.use(express.urlencoded());
   app.use(express.methodOverride());
-  app.use(express.cookieParser('your secret here'));
+  
   app.use(express.session());
   app.use(passport.initialize());
   app.use(passport.session());

@@ -7,6 +7,7 @@
 	"gnr.loading_data": "Đang tải dữ liệu...",
 	"gnr.member_information": "Thông tin thành viên",
 	"gnr.unknown_info": "Không có thông tin",
+  "gnr.choose_language": "Ngôn ngữ",
 	"authen.log_in": "Đăng nhập",
 	"authen.username": "Tên đăng nhập",
 	"authen.password": "Mật khẩu",
