@@ -401,7 +401,7 @@ function update(source) {
 function showNodeDialog(d){
   var request;
 
-  request = jquery.ajax({
+  request = $.ajax({
     url: '/data/person-info?id=' + d.id + '&lang=' + currentLocale,
     beforeSend: function(){
       // show the progress bar
