@@ -16,7 +16,7 @@ class DictSchema(object):
     def getExpectedTableVersions(self):
         return sorted(self.versions.iteritems())
 
-dbConfig = json.load(open("db.json", "r"))
+dbConfig = json.load(open("database.json", "r"))
 
 pgConn = psycopg2.connect(**dbConfig)
 
