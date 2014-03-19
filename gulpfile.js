@@ -6,6 +6,7 @@ var browserify = require('gulp-browserify');
 var react = require('gulp-react');
 var plumber = require('gulp-plumber');
 var regenerator = require('gulp-regenerator');
+var bower = require('gulp-bower');
 
 var clientFiles = ['render_tree'];
 var clientLibFiles = ['jquery', 'd3', 'jquery-ui', 'react', 'underscore'];
@@ -23,7 +24,7 @@ gulp.task('default', ['watch-client'] ,function() {
 });
 
 gulp.task('setup', ['uglify-client-lib', 'uglify-client-lib-reg',
-                    'uglify-client']);
+                    'uglify-client', 'bower']);
 
 gulp.task('lint-client', function(){
   return gulp.src(appendPrefixPath(clientFiles, 'client'))
@@ -65,12 +66,12 @@ gulp.task('browserify', function(){
       basedir: './'
     }))
     .on('prebundle', function(bundle){
-      bundle.external('jquery-browserify');
-      bundle.external('d3-browserify');
-      bundle.external('jquery-ui-browserify');
-      bundle.external('underscore');
+      // bundle.external('jquery-browserify');
+      // bundle.external('d3-browserify');
+      // bundle.external('jquery-ui-browserify');
+      // bundle.external('underscore');
       bundle.external('js-csp');
-      bundle.external('bootstrap-browserify');
+      // bundle.external('bootstrap-browserify');
     })
     .pipe(gulp.dest('public/js_app'));
 });
@@ -105,4 +106,8 @@ gulp.task('react', function () {
       bundle.external('react');
     })
     .pipe(gulp.dest('public/js_app'));
+});
+
+gulp.task('bower', function(){
+  bower();
 });

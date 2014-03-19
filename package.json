@@ -41,6 +41,7 @@
     "gulp-browserify": "~0.5.0",
     "gulp-react": "~0.2.0",
     "gulp-plumber": "~0.5.6",
-    "gulp-regenerator": "~0.2.0"
+    "gulp-regenerator": "~0.2.0",
+    "gulp-bower": "0.0.3"
   }
 }
