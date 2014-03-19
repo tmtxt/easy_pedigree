@@ -9,6 +9,7 @@
 	"gnr.unknown_info": "Không có thông tin",
   "gnr.choose_language": "Ngôn ngữ",
 	"authen.log_in": "Đăng nhập",
+  "authen.log_out": "Thoát",
 	"authen.username": "Tên đăng nhập",
 	"authen.password": "Mật khẩu",
 	"authen.remember_me": "Lưu lại đăng nhập cho lần sau",

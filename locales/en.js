@@ -9,6 +9,7 @@
   "gnr.unknown_info": "No information",
   "gnr.choose_language": "Language",
   "authen.log_in": "Login",
+  "authen.log_out": "Logout",
   "authen.username": "Username",
   "authen.password": "Password",
   "authen.remember_me": "Remember me",
