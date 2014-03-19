@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // required libraries
-var d3 = require('d3-browserify');
-var underscore = require('underscore');
+// var d3 = require('d3-browserify');
+// var underscore = require('underscore');
 
 // js-csp
 var csp = require('js-csp');
@@ -14,7 +14,7 @@ var tree, diagonal, vis, rootSvg;        // supporting variables for drawing
 var nodesList;
 
 // component size
-var w = jquery("#tree-body").width(); // width
+var w = $("#tree-body").width(); // width
 var h = 1000;                    // height
 var link_height = 200;           // height of the connection link
 
@@ -305,7 +305,7 @@ function update(source) {
     .attr("xlink:href", function(d){
       var imageLink = "/member_images/" + d.picture;
       // check if the image exist
-      jquery.ajax({
+      $.ajax({
         url: imageLink,
         type: 'GET',
         async: false,
@@ -405,14 +405,14 @@ function showNodeDialog(d){
     url: '/data/person-info?id=' + d.id + '&lang=' + currentLocale,
     beforeSend: function(){
       // show the progress bar
-      jquery("#modalProgressBar").css("display", "block");
+      $("#modalProgressBar").css("display", "block");
       // hide the info table
-      jquery("#modalPersonInfoTable").css("display", "none");
+      $("#modalPersonInfoTable").css("display", "none");
     },
     success: renderModalInfo
   });
   
-  jquery("#myModal").on("hide.bs.modal", function(e){
+  $("#myModal").on("hide.bs.modal", function(e){
     console.log("close");
     request.abort();
   }).modal();
@@ -423,22 +423,22 @@ function showNodeDialog(d){
 
 function renderModalInfo(data){
   // hide the progress bar
-  jquery("#modalProgressBar").css("display", "none");
+  $("#modalProgressBar").css("display", "none");
 
   // set the data
-  jquery("#modalPersonName").text(data.name);
-  jquery("#modalPersonBirthDate").text(data.birthDate);
-  jquery("#modalPersonGender").text(data.gender === null ? "Unknown" : data.gender);
-  jquery("#modalPersonAliveStatus").text(data.aliveStatus);
-  jquery("#modalPersonDeathDate").text(data.deathDate);
-  jquery("#modalPersonJob").text(data.job);
-  jquery("#modalPersonPhoneNo").text(data.phoneNo);
-  jquery("#modalPersonIdCard").text(data.idCard);
-  jquery("#modalPersonAddress").html(data.address.replace(/\n|\r|\r\n/g, "<br/>"));
-  jquery("#modalPersonPicture").attr("src", "/member_images/" + data.picture);
-  jquery("#modalPersonNote").html(data.note.replace(/\n|\r|\r\n/g, "<br/>"));
+  $("#modalPersonName").text(data.name);
+  $("#modalPersonBirthDate").text(data.birthDate);
+  $("#modalPersonGender").text(data.gender === null ? "Unknown" : data.gender);
+  $("#modalPersonAliveStatus").text(data.aliveStatus);
+  $("#modalPersonDeathDate").text(data.deathDate);
+  $("#modalPersonJob").text(data.job);
+  $("#modalPersonPhoneNo").text(data.phoneNo);
+  $("#modalPersonIdCard").text(data.idCard);
+  $("#modalPersonAddress").html(data.address.replace(/\n|\r|\r\n/g, "<br/>"));
+  $("#modalPersonPicture").attr("src", "/member_images/" + data.picture);
+  $("#modalPersonNote").html(data.note.replace(/\n|\r|\r\n/g, "<br/>"));
 
   // show the info table
-  jquery("#modalPersonInfoTable").css("display", "table");
+  $("#modalPersonInfoTable").css("display", "table");
   
 }
