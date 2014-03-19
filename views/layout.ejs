@@ -72,10 +72,18 @@
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
-						<% if(!currentUser){ %>
+            <% if(!currentUser){ %>
 						<li><a href="/login"><%= __("authen.log_in") %></a></li>
 						<%} else {%>
-						<li><a><%= __("gnr.hello") %> <%= currentUser.username%></a></li>
+						<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <%= __("gnr.hello") %> <%= currentUser.username%>
+              <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/logout">
+                  <%= __("authen.log_out") %>
+                </a></li>
+              </ul>
+            </li>
 						<%}%>
 
             <!-- language choosing -->
