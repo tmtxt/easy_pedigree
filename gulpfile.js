@@ -23,8 +23,14 @@ gulp.task('default', ['watch-client'] ,function() {
   // place code for your default task here
 });
 
-gulp.task('setup', ['uglify-client-lib', 'uglify-client-lib-reg',
+gulp.task('setup', ['uglify-client-lib-reg',
                     'uglify-client', 'bower']);
+
+gulp.task('create-config-files', function(){
+  gulp.src('./database/database.json.default')
+    .pipe(rename('database.json'))
+  .pipe(gulp.dest('./database'));
+});
 
 gulp.task('lint-client', function(){
   return gulp.src(appendPrefixPath(clientFiles, 'client'))
