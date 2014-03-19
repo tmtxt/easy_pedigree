@@ -13,7 +13,7 @@ exports.do_routing = function(app){
   app.get('/', commons.commonMiddleware, homepage.index);
   app.get('/users', user.list);
 	app.get('/logout', authenticate.logout);
-  app.get('/login', commons.commonMiddleware, authenticate.login_get);
+  app.get('/login', commons.commonMiddleware, authenticate.loginGet);
 
 	// routes for views
 	app.get('/views/tree', commons.commonMiddleware, tree.tree_get_render);
@@ -29,7 +29,7 @@ exports.do_routing = function(app){
   app.get('/actions/change-language', i18n.changeLanguage);
 
 	// processing request
-  app.post('/login', authenticate.login_post);
+  app.post('/login', authenticate.loginPost);
 	app.post('/actions/add-member', add_member.add_member_insert);
 };
 
