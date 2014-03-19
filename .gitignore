@@ -3,3 +3,4 @@ public/stylesheets/style.css
 public/js_app/*
 .DS_STORE
 public/bower/*
+database/database.json
