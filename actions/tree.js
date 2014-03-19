@@ -1,9 +1,9 @@
-var Person = require('../models/people.js');
+var People = require('../models/people.js');
 var convert_tree = require('../util/convert-tree');
 var timeUtil = require('../util/time-util.js');
 var appConst = require('../util/app-const.js');
 
-exports.tree_get_render = function(req, res){
+exports.getRender = function(req, res){
   if(req.query.rootId){
     res.render('tree', {
       title: req.i18n.__("gnr.title"),
@@ -19,19 +19,19 @@ exports.tree_get_render = function(req, res){
   }  
 };
 
-exports.tree_get_data = function(req, res){
+exports.getData = function(req, res){
 
   var rootId;
 
   if(req.query.rootId){
     rootId = req.query.rootId;
-    Person.getFamilyTree(rootId).then(function(tree){
+    People.getFamilyTree(rootId).then(function(tree){
       convert_tree.childrenObjectToArray(tree);
       res.json(tree);
     });
   } else {
-    Person.findFirstRootPerson().then(function(root){
-      Person.getFamilyTree(root.id).then(function(tree){
+    People.findFirstRootPerson().then(function(root){
+      People.getFamilyTree(root.id).then(function(tree){
         convert_tree.childrenObjectToArray(tree);
         res.json(tree);
       });
@@ -41,15 +41,15 @@ exports.tree_get_data = function(req, res){
   
 };
 
-exports.tree_get_max_depth = function(req, res){
-  Person.findMaxDepth().then(function(depth){
+exports.getMaxDepth = function(req, res){
+  People.findMaxDepth().then(function(depth){
     res.json(depth);
   });
 };
 
-exports.tree_get_person_info = function(req, res){
+exports.getPersonInfo = function(req, res){
   setTimeout(function(){
-    Person.findPersonById(req.query.id).then(function(person){
+    People.findPersonById(req.query.id).then(function(person){
 
       var currentLocale = req.query.lang;
       console.log("current locale " + currentLocale);

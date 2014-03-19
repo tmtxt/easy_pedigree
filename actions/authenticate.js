@@ -36,7 +36,7 @@ passport.use(new LocalStrategy(
   }
 ));
 
-exports.login_get = function(req, res){
+exports.loginGet = function(req, res){
 	if(req.user){									// already logged in
 		res.redirect('/');
 	} else {											// show the login form
@@ -45,7 +45,7 @@ exports.login_get = function(req, res){
 	}
 };
 
-exports.login_post = function(req, res, next) {
+exports.loginPost = function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err)
 		{
