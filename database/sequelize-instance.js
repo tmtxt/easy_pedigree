@@ -1,7 +1,9 @@
+var db = require("./database.json");
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('easy_pedigree', 'postgres', '123456', {
+var sequelize = new Sequelize(db.database, db.user, db.password, {
+  host: db.host,
   dialect: "postgres",
-  port:    5432
+  port:    db.port
 });
 
 module.exports = sequelize;
