@@ -1,4 +1,4 @@
-var Person = require('../models/people.js');
+var People = require('../models/people.js');
 var convert_tree = require('../util/convert-tree');
 var timeUtil = require('../util/time-util.js');
 var appConst = require('../util/app-const.js');
@@ -25,13 +25,13 @@ exports.getData = function(req, res){
 
   if(req.query.rootId){
     rootId = req.query.rootId;
-    Person.getFamilyTree(rootId).then(function(tree){
+    People.getFamilyTree(rootId).then(function(tree){
       convert_tree.childrenObjectToArray(tree);
       res.json(tree);
     });
   } else {
-    Person.findFirstRootPerson().then(function(root){
-      Person.getFamilyTree(root.id).then(function(tree){
+    People.findFirstRootPerson().then(function(root){
+      People.getFamilyTree(root.id).then(function(tree){
         convert_tree.childrenObjectToArray(tree);
         res.json(tree);
       });
@@ -42,14 +42,14 @@ exports.getData = function(req, res){
 };
 
 exports.getMaxDepth = function(req, res){
-  Person.findMaxDepth().then(function(depth){
+  People.findMaxDepth().then(function(depth){
     res.json(depth);
   });
 };
 
 exports.getPersonInfo = function(req, res){
   setTimeout(function(){
-    Person.findPersonById(req.query.id).then(function(person){
+    People.findPersonById(req.query.id).then(function(person){
 
       var currentLocale = req.query.lang;
       console.log("current locale " + currentLocale);
