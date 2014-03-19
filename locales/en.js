@@ -7,6 +7,7 @@
   "gnr.loading_data": "Loading data...",
   "gnr.member_information": "Member information",
   "gnr.unknown_info": "No information",
+  "gnr.choose_language": "Language",
   "authen.log_in": "Login",
   "authen.username": "Username",
   "authen.password": "Password",
