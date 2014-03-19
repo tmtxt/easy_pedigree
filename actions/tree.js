@@ -3,7 +3,7 @@ var convert_tree = require('../util/convert-tree');
 var timeUtil = require('../util/time-util.js');
 var appConst = require('../util/app-const.js');
 
-exports.tree_get_render = function(req, res){
+exports.getRender = function(req, res){
   if(req.query.rootId){
     res.render('tree', {
       title: req.i18n.__("gnr.title"),
@@ -19,7 +19,7 @@ exports.tree_get_render = function(req, res){
   }  
 };
 
-exports.tree_get_data = function(req, res){
+exports.getData = function(req, res){
 
   var rootId;
 
@@ -41,13 +41,13 @@ exports.tree_get_data = function(req, res){
   
 };
 
-exports.tree_get_max_depth = function(req, res){
+exports.getMaxDepth = function(req, res){
   Person.findMaxDepth().then(function(depth){
     res.json(depth);
   });
 };
 
-exports.tree_get_person_info = function(req, res){
+exports.getPersonInfo = function(req, res){
   setTimeout(function(){
     Person.findPersonById(req.query.id).then(function(person){
 
