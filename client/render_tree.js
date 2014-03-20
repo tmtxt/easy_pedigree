@@ -185,16 +185,17 @@ d3.select("#marriage-show-enable").on("change", function(){
 });
 
 var marriageInfoEnable = false; // disable by default
+var marriageInfoEnableDuration = 500;
 
 function enableMarriageInfo(){
   marriageInfoEnable = true;
-  console.log(marriageInfoEnable);
+  marriageInfoEnableDuration = 500;
   update(root);
 }
 
 function disableMarriageInfo(){
   marriageInfoEnable = false;
-  console.log(marriageInfoEnable);
+  marriageInfoEnableDuration = 500;
   update(root);
 }
 
@@ -347,9 +348,10 @@ function update(source) {
   
   // marriage pictures
   if(marriageInfoEnable){
+    d3.selectAll("image.node-marriage").remove();
     var nodeExisting = d3.selectAll("g.node").append("svg:image")
       .attr("class", "node-marriage")
-      .attr("x", 25)
+      .attr("x", -25)
       .attr("y", -78)
       .attr("height", "50px")
       .attr("width", "50px")
@@ -361,12 +363,17 @@ function update(source) {
         }
         else {
           return "/member_images/" + d.marriagePicture[0];
-          
         }
-      });
+      })
+      .transition()
+      .duration(marriageInfoEnableDuration)
+      .attr("transform", "translate(50, 0)");    
+    
   } else {
-    d3.selectAll("image.node-marriage").remove();
+    d3.selectAll("image.node-marriage").transition().duration(marriageInfoEnableDuration)
+      .attr("transform", "translate(0,0)").remove();
   }
+  marriageInfoEnableDuration = 0;
   
 
 	// compute the new tree height
