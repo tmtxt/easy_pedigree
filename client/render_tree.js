@@ -211,7 +211,8 @@ d3.json(treeDataUrl, function(json) {
 	}
 
 	// Initialize the display to show a few nodes.
-	root.children.forEach(toggleAll);
+  if(root.children)
+    root.children.forEach(toggleAll);
 
 	// update the new position
 	update(root);
@@ -437,6 +438,7 @@ function renderModalInfo(data){
   $("#modalPersonAddress").html(data.address.replace(/\n|\r|\r\n/g, "<br/>"));
   $("#modalPersonPicture").attr("src", "/member_images/" + data.picture);
   $("#modalPersonNote").html(data.note.replace(/\n|\r|\r\n/g, "<br/>"));
+  $("#modalViewFromThis").attr("href", "/views/tree?rootId=" + data.id);
 
   // show the info table
   $("#modalPersonInfoTable").css("display", "table");
