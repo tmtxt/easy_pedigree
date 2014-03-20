@@ -200,6 +200,7 @@ if(rootIdQuery !== null){
 }
 d3.json(treeDataUrl, function(json) {
 	root = json;
+  console.log(root);
 	root.x0 = w / 2;
 	root.y0 = 0;
 

@@ -133,6 +133,8 @@ function getFamilyTree(rootId){
               id: descendants[i].childId,
               name: descendants[i].childName,
               picture: descendants[i].childPicture,
+              marriageNames: descendants[i].childMarriageName,
+              marriagePictures: descendants[i].childMarriagePicture,
               children: {}
             };
 
