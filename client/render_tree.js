@@ -176,6 +176,29 @@ function enableZoom(){
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Enable/disable marriage info
+d3.select("#marriage-show-enable").on("change", function(){
+  if(this.checked)
+    enableMarriageInfo();
+  else
+    disableMarriageInfo();
+});
+
+var marriageInfoEnable = false; // disable by default
+
+function enableMarriageInfo(){
+  marriageInfoEnable = true;
+  console.log(marriageInfoEnable);
+  update(root);
+}
+
+function disableMarriageInfo(){
+  marriageInfoEnable = false;
+  console.log(marriageInfoEnable);
+  update(root);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Reset zoom
 d3.select("#reset-zoom").on("click", function(){
 
@@ -321,21 +344,30 @@ function update(source) {
     .attr("width", "50px")
     .on("click", showNodeDialog);
 
+  
   // marriage pictures
-  nodeEnter.append("svg:image")
-    .attr("x", 25)
-    .attr("y", -78)
-    .attr("height", "50px")
-    .attr("width", "50px")
-    .attr("xlink:href", function(d){
-      if(d.marriageId.length === 0){
-        // remove the picture
-        this.remove();
-      }
-      else {
-        return "/member_images/" + d.marriagePicture[0];
-      }
-    });
+  if(marriageInfoEnable){
+    var nodeExisting = d3.selectAll("g.node").append("svg:image")
+      .attr("class", "node-marriage")
+      .attr("x", 25)
+      .attr("y", -78)
+      .attr("height", "50px")
+      .attr("width", "50px")
+      .attr("xlink:href", function(d){
+        if(d.marriageId.length === 0){
+          // remove the picture
+          this.remove();
+          return null;
+        }
+        else {
+          return "/member_images/" + d.marriagePicture[0];
+          
+        }
+      });
+  } else {
+    d3.selectAll("image.node-marriage").remove();
+  }
+  
 
 	// compute the new tree height
 	var currentMaxDepth = 0;
