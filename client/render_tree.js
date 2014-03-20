@@ -321,6 +321,22 @@ function update(source) {
     .attr("width", "50px")
     .on("click", showNodeDialog);
 
+  // marriage pictures
+  nodeEnter.append("svg:image")
+    .attr("x", 25)
+    .attr("y", -78)
+    .attr("height", "50px")
+    .attr("width", "50px")
+    .attr("xlink:href", function(d){
+      if(d.marriageId.length === 0){
+        // remove the picture
+        this.remove();
+      }
+      else {
+        return "/member_images/" + d.marriagePicture[0];
+      }
+    });
+
 	// compute the new tree height
 	var currentMaxDepth = 0;
 	function findMaxDepth(parent){

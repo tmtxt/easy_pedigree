@@ -19,7 +19,7 @@ WITH RECURSIVE nodes(
 		ARRAY (SELECT outside_person_picture FROM marriage_relations_union WHERE inside_person_id = r.child_id) AS child_marriage_picture,
 		ARRAY[r."inside_parent_id"]
 	FROM "people_hierarchy_relations_union" AS r
-	WHERE r."inside_parent_id" = 1
+	WHERE r."inside_parent_id" = :rootId
 	UNION ALL
 	SELECT
 		r."inside_parent_id", r."inside_parent_name",
