@@ -371,9 +371,11 @@ function update(source) {
           .attr("height", "40px")
           .attr("width", "40px")
           .attr("xlink:href", calculateLink)
+          .attr("marriage-id", d.__data__.marriageId[i])
+          .on("click", showMarriageDialog)
           .transition()
           .duration(marriageInfoEnableDuration)
-          .attr("transform", "translate (" + (50 * (i+1)) + ",0)");
+          .attr("transform", "translate (" + (41 * (i+1)) + ",0)");
       }
       
     });
@@ -513,6 +515,29 @@ function showNodeDialog(d){
   }).modal();
 
   // send the request to the server
+  
+}
+
+function showMarriageDialog(d){
+  
+  var personId = d3.select(this).attr("marriage-id");
+  var request;
+
+  request = $.ajax({
+    url: '/data/person-info?id=' + personId + '&lang=' + currentLocale,
+    beforeSend: function(){
+      // show the progress bar
+      $("#modalProgressBar").css("display", "block");
+      // hide the info table
+      $("#modalPersonInfoTable").css("display", "none");
+    },
+    success: renderModalInfo
+  });
+  
+  $("#myModal").on("hide.bs.modal", function(e){
+    console.log("close");
+    request.abort();
+  }).modal();
   
 }
 
