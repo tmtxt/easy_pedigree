@@ -113,38 +113,71 @@ function findDescendants(parent){
   }, {rootId: parentId});
 }
 
+// construct descendants
+function constructDescendants(descendants){
+  
+}
 
 // return a promise
 function getFamilyTree(rootId){
   
   return findPersonById(rootId)
     .then(function(root){
-      return findDescendants(root)
-        .then(function(descendants){
+      if(root === null){
+        return findFirstRootPerson().then(function(root){
+          return findDescendants(root)
+            .then(function(descendants){
+              // init the tree
+              var tree = root;
+              tree.children = {};
+              
+              // construct the tree
+              for(var i = 0; i < descendants.length; i++) {
+                // get the current person
+                var currentPerson = {
+                  id: descendants[i].childId,
+                  name: descendants[i].childName,
+                  picture: descendants[i].childPicture,
+                  marriageId: descendants[i].childMarriageId,
+                  marriageName: descendants[i].childMarriageName,
+                  marriagePicture: descendants[i].childMarriagePicture,
+                  children: {}
+                };
 
-          // init the tree
-          var tree = root;
-          tree.children = {};
-          
-          // construct the tree
-          for(var i = 0; i < descendants.length; i++) {
-            // get the current person
-            var currentPerson = {
-              id: descendants[i].childId,
-              name: descendants[i].childName,
-              picture: descendants[i].childPicture,
-              marriageId: descendants[i].childMarriageId,
-              marriageName: descendants[i].childMarriageName,
-              marriagePicture: descendants[i].childMarriagePicture,
-              children: {}
-            };
-
-            // append it to the parent
-            appendChild(tree, descendants[i].path, currentPerson);
-          }
-          
-          return tree;
+                // append it to the parent
+                appendChild(tree, descendants[i].path, currentPerson);
+              }
+              return tree;
+            });
         });
+      } else {
+        return findDescendants(root)
+          .then(function(descendants){
+
+            // init the tree
+            var tree = root;
+            tree.children = {};
+            
+            // construct the tree
+            for(var i = 0; i < descendants.length; i++) {
+              // get the current person
+              var currentPerson = {
+                id: descendants[i].childId,
+                name: descendants[i].childName,
+                picture: descendants[i].childPicture,
+                marriageId: descendants[i].childMarriageId,
+                marriageName: descendants[i].childMarriageName,
+                marriagePicture: descendants[i].childMarriagePicture,
+                children: {}
+              };
+
+              // append it to the parent
+              appendChild(tree, descendants[i].path, currentPerson);
+            }
+            
+            return tree;
+          });
+      }
     });
 }
 
