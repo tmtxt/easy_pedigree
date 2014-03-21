@@ -35,6 +35,7 @@
   "treeview.enable_zoom": "Enable drag and drop",
   "treeview.reset_zoom": "Reset tree position",
   "treeview.view_from_this": "View tree from this person",
+  "treeview.enable_marriage_info": "Show marriage info",
   "gender_male": "Male",
   "gender_female": "Female",
   "gender_gay": "Gay",

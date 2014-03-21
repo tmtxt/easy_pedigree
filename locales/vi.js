@@ -35,6 +35,7 @@
 	"treeview.enable_zoom": "Bật kéo thả",
 	"treeview.reset_zoom": "Phục hồi vị trí",
   "treeview.view_from_this": "Xem gia phả từ thành viên này",
+  "treeview.enable_marriage_info": "Hiện thông tin hôn nhân",
 	"gender_male": "Nam",
   "gender_female": "Nữ",
   "gender_gay": "Gay",
