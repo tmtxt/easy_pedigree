@@ -363,6 +363,20 @@ function update(source) {
         });
         return imageLink;
       };
+      var showMarriageTooltip = function(d){
+        var tooltipText = vis.append("svg:text")
+          .attr("class", "marriage-tooltip")
+          .style("opacity", 0)
+          .attr("text-anchor", "middle")
+          .attr("x", (parseInt(d3.select(this).attr("marriage-order")) + 1) * 40 + d.x)
+          .attr("y", d.y - 71)
+          .text(d3.select(this).attr("marriage-name"));
+        tooltipText.transition().duration(500).style("opacity", 1);
+      };
+      var hideMarriageTooltip = function(d){
+        d3.selectAll(".marriage-tooltip").transition().duration(1000)
+          .style("opacity", 0).remove();
+      };
       for(var i = 0; i < d.__data__.marriageId.length; i++) {
         d3.select(d).append("svg:image")
           .attr("class", "node-marriage")
@@ -372,7 +386,11 @@ function update(source) {
           .attr("width", "40px")
           .attr("xlink:href", calculateLink)
           .attr("marriage-id", d.__data__.marriageId[i])
+          .attr("marriage-name", d.__data__.marriageName[i])
+          .attr("marriage-order", i)
           .on("click", showMarriageDialog)
+          .on("mouseover", showMarriageTooltip)
+          .on("mouseout", hideMarriageTooltip)
           .transition()
           .duration(marriageInfoEnableDuration)
           .attr("transform", "translate (" + (41 * (i+1)) + ",0)");
