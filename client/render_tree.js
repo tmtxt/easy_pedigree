@@ -176,6 +176,30 @@ function enableZoom(){
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Enable/disable marriage info
+d3.select("#marriage-show-enable").on("change", function(){
+  if(this.checked)
+    enableMarriageInfo();
+  else
+    disableMarriageInfo();
+});
+
+var marriageInfoEnable = false; // disable by default
+var marriageInfoEnableDuration = 500;
+
+function enableMarriageInfo(){
+  marriageInfoEnable = true;
+  marriageInfoEnableDuration = 500;
+  update(root);
+}
+
+function disableMarriageInfo(){
+  marriageInfoEnable = false;
+  marriageInfoEnableDuration = 500;
+  update(root);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Reset zoom
 d3.select("#reset-zoom").on("click", function(){
 
@@ -200,6 +224,7 @@ if(rootIdQuery !== null){
 }
 d3.json(treeDataUrl, function(json) {
 	root = json;
+  console.log(root);
 	root.x0 = w / 2;
 	root.y0 = 0;
 
@@ -314,11 +339,100 @@ function update(source) {
       });
       return imageLink;
     })
-    .attr("x", -25)
-    .attr("y", -78)
-    .attr("height", "50px")
-    .attr("width", "50px")
+    .attr("x", -20)
+    .attr("y", -68)
+    .attr("height", "40px")
+    .attr("width", "40px")
     .on("click", showNodeDialog);
+
+  
+  // marriage pictures
+  if(marriageInfoEnable){
+    d3.selectAll("image.node-marriage").remove();
+
+    d3.selectAll("g.node")[0].forEach(function(d){
+      var calculateLink = function(d){
+        var imageLink = "/member_images/" + d.marriagePicture[i];
+
+        // check if the image exist
+        $.ajax({
+          url: imageLink,
+          type: 'GET',
+          async: false,
+          error: function(){ imageLink = "/default_member.png"; }
+        });
+        return imageLink;
+      };
+      var showMarriageTooltip = function(d){
+        var tooltipText = vis.append("svg:text")
+          .attr("class", "marriage-tooltip")
+          .style("opacity", 0)
+          .attr("text-anchor", "middle")
+          .attr("x", (parseInt(d3.select(this).attr("marriage-order")) + 1) * 40 + d.x)
+          .attr("y", d.y - 71)
+          .text(d3.select(this).attr("marriage-name"));
+        tooltipText.transition().duration(500).style("opacity", 1);
+      };
+      var hideMarriageTooltip = function(d){
+        d3.selectAll(".marriage-tooltip").transition().duration(1000)
+          .style("opacity", 0).remove();
+      };
+      for(var i = 0; i < d.__data__.marriageId.length; i++) {
+        d3.select(d).append("svg:image")
+          .attr("class", "node-marriage")
+          .attr("x", -20)
+          .attr("y", -67)
+          .attr("height", "40px")
+          .attr("width", "40px")
+          .attr("xlink:href", calculateLink)
+          .attr("marriage-id", d.__data__.marriageId[i])
+          .attr("marriage-name", d.__data__.marriageName[i])
+          .attr("marriage-order", i)
+          .on("click", showMarriageDialog)
+          .on("mouseover", showMarriageTooltip)
+          .on("mouseout", hideMarriageTooltip)
+          .transition()
+          .duration(marriageInfoEnableDuration)
+          .attr("transform", "translate (" + (41 * (i+1)) + ",0)");
+      }
+      
+    });
+    
+    
+    // var nodeExisting = d3.selectAll("g.node").append("svg:image")
+    //   .attr("class", "node-marriage")
+    //   .attr("x", -20)
+    //   .attr("y", -67)
+    //   .attr("height", "40px")
+    //   .attr("width", "40px")
+    //   .attr("xlink:href", function(d){
+    //     if(d.marriageId.length === 0){
+    //       // remove the picture
+    //       this.remove();
+    //       return null;
+    //     }
+    //     else {
+    //       var imageLink = "/member_images/" + d.marriagePicture;
+    //       // check if the image exist
+    //       $.ajax({
+    //         url: imageLink,
+    //         type: 'GET',
+    //         async: false,
+    //         error: function(){ imageLink = "/default_member.png"; }
+    //       });
+    //       return imageLink;
+    //     }
+    //   })
+    //   .transition()
+    //   .duration(marriageInfoEnableDuration)
+    //   .attr("transform", "translate(50, 0)");    
+    
+  } else {
+    d3.selectAll("image.node-marriage").transition().duration(marriageInfoEnableDuration)
+      .attr("transform", "translate(0,0)").remove();
+  }
+  marriageInfoEnableDuration = 0;
+  
 
 	// compute the new tree height
 	var currentMaxDepth = 0;
@@ -419,6 +533,29 @@ function showNodeDialog(d){
   }).modal();
 
   // send the request to the server
+  
+}
+
+function showMarriageDialog(d){
+  
+  var personId = d3.select(this).attr("marriage-id");
+  var request;
+
+  request = $.ajax({
+    url: '/data/person-info?id=' + personId + '&lang=' + currentLocale,
+    beforeSend: function(){
+      // show the progress bar
+      $("#modalProgressBar").css("display", "block");
+      // hide the info table
+      $("#modalPersonInfoTable").css("display", "none");
+    },
+    success: renderModalInfo
+  });
+  
+  $("#myModal").on("hide.bs.modal", function(e){
+    console.log("close");
+    request.abort();
+  }).modal();
   
 }
 

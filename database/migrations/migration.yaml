@@ -112,6 +112,79 @@ sql: |
   ALTER TABLE marriage_relations ADD COLUMN "order" SMALLINT;
 
 ---
+table: marriage_relations_union
+from: null
+to: pd_1
+depends:
+  - [marriage_relations, pd_2]
+sql: |
+  CREATE VIEW marriage_relations_union AS
+  SELECT
+  mr.husband_id AS inside_person_id,
+  p1.name AS inside_person_name,
+  mr.wife_id AS outside_person_id,
+  p2.name AS outside_person_name,
+  mr.start_date,
+  mr.end_date,
+  mr.status,
+  mr.note,
+  mr.order
+  FROM marriage_relations AS mr, people AS p1, people AS p2
+  WHERE mr.husband_id = p1.id
+  AND mr.wife_id = p2.id
+  UNION
+  SELECT
+  mr.wife_id AS inside_person_id,
+  p1.name AS inside_person_name,
+  mr.husband_id AS outside_person_id,
+  p2.name AS outside_person_name,
+  mr.start_date,
+  mr.end_date,
+  mr.status,
+  mr.note,
+  mr.order
+  FROM marriage_relations AS mr, people AS p1, people AS p2
+  WHERE mr.wife_id = p1.id
+  AND mr.husband_id = p2.id;
+
+---
+table: marriage_relations_union
+from: pd_1
+to: pd_2
+sql: |
+  DROP VIEW marriage_relations_union;
+  CREATE VIEW marriage_relations_union AS
+  SELECT
+  mr.husband_id AS inside_person_id,
+  p1.name AS inside_person_name,
+  mr.wife_id AS outside_person_id,
+  p2.name AS outside_person_name,
+  p2.picture AS outside_person_picture,
+  mr.start_date,
+  mr.end_date,
+  mr.status,
+  mr.note,
+  mr.order
+  FROM marriage_relations AS mr, people AS p1, people AS p2
+  WHERE mr.husband_id = p1.id
+  AND mr.wife_id = p2.id
+  UNION
+  SELECT
+  mr.wife_id AS inside_person_id,
+  p1.name AS inside_person_name,
+  mr.husband_id AS outside_person_id,
+  p2.name AS outside_person_name,
+  p2.picture AS outside_person_picture,
+  mr.start_date,
+  mr.end_date,
+  mr.status,
+  mr.note,
+  mr.order
+  FROM marriage_relations AS mr, people AS p1, people AS p2
+  WHERE mr.wife_id = p1.id
+  AND mr.husband_id = p2.id;
+
+---
 table: people_hierarchy_relations
 from: null
 to: pd_1
