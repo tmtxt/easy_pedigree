@@ -339,35 +339,73 @@ function update(source) {
       });
       return imageLink;
     })
-    .attr("x", -25)
-    .attr("y", -78)
-    .attr("height", "50px")
-    .attr("width", "50px")
+    .attr("x", -20)
+    .attr("y", -68)
+    .attr("height", "40px")
+    .attr("width", "40px")
     .on("click", showNodeDialog);
 
   
   // marriage pictures
   if(marriageInfoEnable){
     d3.selectAll("image.node-marriage").remove();
-    var nodeExisting = d3.selectAll("g.node").append("svg:image")
-      .attr("class", "node-marriage")
-      .attr("x", -25)
-      .attr("y", -78)
-      .attr("height", "50px")
-      .attr("width", "50px")
-      .attr("xlink:href", function(d){
-        if(d.marriageId.length === 0){
-          // remove the picture
-          this.remove();
-          return null;
-        }
-        else {
-          return "/member_images/" + d.marriagePicture[0];
-        }
-      })
-      .transition()
-      .duration(marriageInfoEnableDuration)
-      .attr("transform", "translate(50, 0)");    
+
+    d3.selectAll("g.node")[0].forEach(function(d){
+      var calculateLink = function(d){
+        var imageLink = "/member_images/" + d.marriagePicture[i];
+
+        // check if the image exist
+        $.ajax({
+          url: imageLink,
+          type: 'GET',
+          async: false,
+          error: function(){ imageLink = "/default_member.png"; }
+        });
+        return imageLink;
+      };
+      for(var i = 0; i < d.__data__.marriageId.length; i++) {
+        d3.select(d).append("svg:image")
+          .attr("class", "node-marriage")
+          .attr("x", -20)
+          .attr("y", -67)
+          .attr("height", "40px")
+          .attr("width", "40px")
+          .attr("xlink:href", calculateLink)
+          .transition()
+          .duration(marriageInfoEnableDuration)
+          .attr("transform", "translate (" + (50 * (i+1)) + ",0)");
+      }
+      
+    });
+    
+    
+    // var nodeExisting = d3.selectAll("g.node").append("svg:image")
+    //   .attr("class", "node-marriage")
+    //   .attr("x", -20)
+    //   .attr("y", -67)
+    //   .attr("height", "40px")
+    //   .attr("width", "40px")
+    //   .attr("xlink:href", function(d){
+    //     if(d.marriageId.length === 0){
+    //       // remove the picture
+    //       this.remove();
+    //       return null;
+    //     }
+    //     else {
+    //       var imageLink = "/member_images/" + d.marriagePicture;
+    //       // check if the image exist
+    //       $.ajax({
+    //         url: imageLink,
+    //         type: 'GET',
+    //         async: false,
+    //         error: function(){ imageLink = "/default_member.png"; }
+    //       });
+    //       return imageLink;
+    //     }
+    //   })
+    //   .transition()
+    //   .duration(marriageInfoEnableDuration)
+    //   .attr("transform", "translate(50, 0)");    
     
   } else {
     d3.selectAll("image.node-marriage").transition().duration(marriageInfoEnableDuration)
