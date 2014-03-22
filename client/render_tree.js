@@ -329,15 +329,16 @@ function update(source) {
   // append picture
   nodeEnter.append("svg:image")
     .attr("xlink:href", function(d){
-      var imageLink = "/member_images/" + d.picture;
-      // check if the image exist
-      $.ajax({
-        url: imageLink,
-        type: 'GET',
-        async: false,
-        error: function(){ imageLink = "/default_member.png"; }
-      });
-      return imageLink;
+      return "/member_images/" + d.picture;
+      // var imageLink = "/member_images/" + d.picture;
+      // // check if the image exist
+      // $.ajax({
+      //   url: imageLink,
+      //   type: 'GET',
+      //   async: false,
+      //   error: function(){ imageLink = "/default_member.png"; }
+      // });
+      // return imageLink;
     })
     .attr("x", -20)
     .attr("y", -68)
@@ -352,16 +353,17 @@ function update(source) {
 
     d3.selectAll("g.node")[0].forEach(function(d){
       var calculateLink = function(d){
-        var imageLink = "/member_images/" + d.marriagePicture[i];
+        // var imageLink = "/member_images/" + d.marriagePicture[i];
 
-        // check if the image exist
-        $.ajax({
-          url: imageLink,
-          type: 'GET',
-          async: false,
-          error: function(){ imageLink = "/default_member.png"; }
-        });
-        return imageLink;
+        // // check if the image exist
+        // $.ajax({
+        //   url: imageLink,
+        //   type: 'GET',
+        //   async: false,
+        //   error: function(){ imageLink = "/default_member.png"; }
+        // });
+        // return imageLink;
+        return "/member_images/" + d.marriagePicture[i];
       };
       var showMarriageTooltip = function(d){
         var tooltipText = vis.append("svg:text")
