@@ -20,7 +20,7 @@
 
 Clone the project
 
-    $ git clone git@github.com:tmtxt/tmtxt_pedigree.git
+    $ git clone git@github.com:tmtxt/easy_pedigree.git
     $ cd easy_pedigree
     $ mkdir -p public/js_app
 
