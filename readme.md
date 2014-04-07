@@ -18,22 +18,22 @@
 
 # Website deployment
 
-- Clone the project
+Clone the project
 
     $ git clone git@github.com:tmtxt/tmtxt_pedigree.git
     $ cd easy_pedigree
     $ mkdir -p public/js_app
 
-- Install the dependencies
+Install the dependencies
 
     $ npm install
 
-- Generate, uglify files
+Generate, uglify files
 
     $ browserify -r js-csp > ./public/js_app/js-csp.js
     $ gulp setup
 
-- Create sample config file `database/database.json`, you need to edit
+Create sample config file `database/database.json`, you need to edit
     this file to match your database configuration
 
     $ gulp create-config-files
@@ -48,8 +48,9 @@
 
 ## Steps
 
-- Create new env using virtualenv and activate it
-- Create a file named requirements.txt
+Create new env using virtualenv and activate it
+
+Create a file named requirements.txt
 
     storm==0.19
     Twisted==12.0.0
@@ -58,14 +59,16 @@
     boto
     git+git://github.com/brendonh/schemup.git@5f5d35f5c7e9708e62ca43aa4743610e2cb696ae
 
-- Install the requirements with `pip install -r requirements.txt`
-- Assume that you have change the file `database/database.json` content
+Install the requirements with `pip install -r requirements.txt`
+
+Assume that you have change the file `database/database.json` content
 corresponding to your database server information
-- Cd to the **database** directory and run `update.py` to setup the database
+
+Cd to the **database** directory and run `update.py` to setup the database
 
     $ python update.py commit
 
-- If you want some sample data, you can execute the file `sample-data.sql`
+If you want some sample data, you can execute the file `sample-data.sql`
 
 # Start the website
 
