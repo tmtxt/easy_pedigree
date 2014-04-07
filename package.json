@@ -30,7 +30,6 @@
     "regeneratorify": "0.0.2",
     "browserify": "~3.32.1",
     "browserify-shim": "~3.3.1",
-    "bootstrap-browserify": "~2.1.1",
     "i18n-2": "~0.4.6"
   },
   "devDependencies": {
